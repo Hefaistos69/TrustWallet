@@ -1,0 +1,24 @@
+/* Culori Site
+
+Negru - 212227
+Gri inchis - 6E8387
+Gri deschis - A4B8C4
+Alb - C8D3D5
+Verde - 0CF574
+
+
+*/
+
+:root{
+
+  --dark: #212227;
+  --darkGray: #6E8387;
+  --lightGray: #A4B8C4;
+  --light: #C8D3D5;
+  --green: #0CF574;
+
+}
+
+body{
+  background-color: var(--light);
+}
