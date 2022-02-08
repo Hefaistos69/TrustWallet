@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="container-fluid d-flex vh-100 w-100 bg-dark justify-content-center align-items-center">
-      <div class="d-flex bg-primary h-auto w-60 rounded-3 align-items-center justify-content-center">
+      <div class="d-flex bg-primary h-auto w-50 rounded-3 align-items-center justify-content-center">
         
 
         <div class="h-auto w-80 ">
@@ -31,7 +31,7 @@
               </label>
               <input type="password" class="form-control bg-secondary border-0" id="password" name="password" placeholder="Parolă">
             </div>
-            <div class="d-flex flex-row-reverse mb-1">
+            <div class="d-grid gap-2 d-lg-flex justify-content-xl-end mb-1">
               <button class="mx-1 btn btn-success btn-lg text-light" type="submit">Autentificare</button>
               <button class="mx-1 btn btn-success btn-lg text-light" type="submit">Demo</button>
               <button class="mx-1 btn btn-success btn-lg text-light" type="submit">Deținător</button>
