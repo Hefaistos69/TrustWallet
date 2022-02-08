@@ -1,0 +1,91 @@
+/* Culori Site
+
+Negru - 212227 - dark
+Gri inchis - 6E8387 - primary
+Gri deschis - A4B8C4 - secondary
+Alb - C8D3D5 - light
+Verde - 0CF574 - success
+Verde inchis - #00897B - info
+
+
+*/
+
+
+//inport bootstrap
+
+
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "../node_modules/bootstrap/scss/functions";
+
+// 2. Include any default variable overrides here
+
+
+$dark: #21272a;
+$primary: #2f3d41;
+$secondary: #757575;
+$light: #EEEEEE;
+$success: #43A047;
+$info: #00897B;
+$danger: #d63a25;
+$input-placeholder-color: $primary;
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "../node_modules/bootstrap/scss/variables";
+
+
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+
+// 4. Include any optional Bootstrap CSS as needed
+@import "../node_modules/bootstrap/scss/utilities";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";
+@import "../node_modules/bootstrap/scss/images";
+@import "../node_modules/bootstrap/scss/containers";
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/helpers";
+@import "../node_modules/bootstrap/scss/forms";
+@import "../node_modules/bootstrap/scss/buttons";
+
+
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "height": map-merge(
+      map-get($utilities, "height"),
+      (
+        values: map-merge(
+          map-get(map-get($utilities, "height"), "values"),
+          (
+            60: 60%,
+            80: 80%
+          ),
+        ),
+      ),
+    ),
+  )
+);
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "width": map-merge(
+      map-get($utilities, "width"),
+      (
+        values: map-merge(
+          map-get(map-get($utilities, "width"), "values"),
+          (
+            60: 60%,
+            80: 80%
+          ),
+        ),
+      ),
+    ),
+  )
+);
+
+@import "../node_modules/bootstrap/scss/utilities/api";
+
+
