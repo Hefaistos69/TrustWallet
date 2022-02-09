@@ -11,11 +11,11 @@
 
 </head>
 <body>
-    <div class="container-fluid d-flex vh-100 w-100 bg-dark justify-content-center align-items-center">
-      <div class="d-flex bg-primary h-auto w-50 rounded-3 align-items-center justify-content-center">
+    <div class="container-fluid d-flex h-auto min-vh-100 w-100 bg-dark justify-content-center align-items-center">
+      <div class="container-sm d-flex bg-primary h-auto rounded-3 align-items-center justify-content-center">
         
 
-        <div class="h-auto w-80 ">
+        <div class="h-auto w-80">
           <h1 class="mt-5 text-light text-center">Autentificare</h1>
           <hr class="text-light mb-3">
           <form action="" method="post">
@@ -37,7 +37,7 @@
               <button class="mx-1 btn btn-success btn-lg text-light" type="submit">Deținător</button>
             </div>  
             <div class="d-flex flex-column mb-5">
-              <p class="fs-5 text-light mb-0">Nu ai cont? <a class="text-success fs-5 text-decoration-none" href="">Crează nou</a></p>
+              <p class="fs-5 text-light mb-0">Nu ai cont? <a class="text-success fs-5 text-decoration-none" href="">Crează cont</a></p>
               <p class="fs-5 text-light mb-0">Ți-ai uitat parola? <a class="text-success fs-5 text-decoration-none" href="">Recuperare parolă</a></p>
             </div>
 
