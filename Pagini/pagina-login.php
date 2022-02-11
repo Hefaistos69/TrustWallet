@@ -43,9 +43,10 @@
                     <input type="password" class="form-control bg-secondary border-0" id="password" name="password" placeholder="Parolă">
                   </div>
                   <div class="d-grid gap-2 d-lg-flex justify-content-xl-end mb-1">
-                    <button class="mx-1 btn btn-success btn-lg text-light" type="submit">Autentificare</button>
-                    <button class="mx-1 btn btn-success btn-lg text-light" type="submit">Demo</button>
-                    <button class="mx-1 btn btn-success btn-lg text-light" type="submit">Deținător</button>
+                    <button class="mx-1 btn btn-success btn text-light" type="submit">Deținător</button>
+                    <button class="mx-1 btn btn-success btn text-light" type="submit">Membru</button>
+                    <button class="mx-1 btn btn-success btn text-light" type="submit">Demo</button>
+                    <button class="mx-1 btn btn-success btn text-light" type="submit">Autentificare</button>
                   </div>
                   <div class="d-flex flex-column mb-5">
                     <p class="fs-5 text-light mb-0">Nu ai cont? <a class="text-success fs-5 text-decoration-none" href="">Crează cont</a></p>
