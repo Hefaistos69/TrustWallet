@@ -29,30 +29,30 @@
               <div class="h-auto w-80">
                 <h1 class="mt-5 text-light text-center">Înregistrare</h1>
                 <hr class="text-light mb-3">
-                <form action="" method="post">
+                <form action="Scripturi/script-signup.php" method="post">
                   <div class="mb-2">
                     <label for="username" class="form-label text-light fs-4">
                       Nume utilizator
                     </label>
-                    <input type="text" class="form-control bg-secondary border-0" id="username" name="username" placeholder="Nume utilizator">
+                    <input type="text" class="form-control text-light bg-secondary border-0" id="username" name="username" placeholder="Nume utilizator">
                   </div>
                   <div class="mb-2">
                     <label for="email" class="form-label text-light fs-4">
                       Email
                     </label>
-                    <input type="email" class="form-control bg-secondary border-0" id="email" name="email" placeholder="Email">
+                    <input type="email" class="form-control text-light bg-secondary border-0" id="email" name="email" placeholder="Email">
                   </div>
                   <div class="mb-2">
                     <label for="password" class="form-label text-light fs-4">
                       Parolă
                     </label>
-                    <input type="password" class="form-control bg-secondary border-0" id="password" name="password" placeholder="Parolă">
+                    <input type="password" class="form-control text-light bg-secondary border-0" id="password" name="password" placeholder="Parolă">
                   </div>
                   <div class="mb-4">
                     <label for="repeat-password" class="form-label text-light fs-4">
                       Repetă parola
                     </label>
-                    <input type="password" class="form-control bg-secondary border-0" id="repeat-password" name="repeat-password" placeholder="Repetă parola">
+                    <input type="password" class="form-control text-light bg-secondary border-0" id="repeat-password" name="repeat-password" placeholder="Repetă parola">
                   </div>
                   <div class="d-grid gap-2 d-lg-flex justify-content-xl-end mb-1">
                     

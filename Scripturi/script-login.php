@@ -46,6 +46,6 @@ else
 {
   //eroare
   ?>
-      <div>eroare: <?=mysqli_error($conn)?></div>
+      <div>eroare</div>
     <?php
 }

@@ -34,13 +34,13 @@
                     <label for="username" class="form-label text-light fs-4">
                       Utilizator sau email
                     </label>
-                    <input type="text" class="form-control bg-secondary border-0" id="username" name="username" placeholder="Utilizator sau email">
+                    <input type="text" class="form-control text-light bg-secondary border-0" id="username" name="username" placeholder="Utilizator sau email">
                   </div>
                   <div class="mb-4">
                     <label for="password" class="form-label text-light fs-4">
                       Parolă
                     </label>
-                    <input type="password" class="form-control bg-secondary border-0" id="password" name="password" placeholder="Parolă">
+                    <input type="password" class="form-control text-light bg-secondary border-0" id="password" name="password" placeholder="Parolă">
                   </div>
                   <div class="d-grid gap-2 d-lg-flex justify-content-xl-end mb-1">
                     <button class="mx-1 btn btn-success btn text-light" type="submit">Deținător</button>

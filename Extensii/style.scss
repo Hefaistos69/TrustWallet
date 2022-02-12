@@ -21,17 +21,17 @@ Verde inchis - #00897B - info
 // 2. Include any default variable overrides here
 
 
-$dark: #21272a;
-$primary: #2f3d41;
-$secondary: #757575;
-$light: #EEEEEE;
-$success: #43A047;
+$dark: #1c1f20;
+$primary: #263134;
+$secondary: #585f63;
+$light: #dddad6;
+$success: #37843a;
 $info: #00897B;
 $danger: #d63a25;
-$input-placeholder-color: $primary;
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../node_modules/bootstrap/scss/variables";
+$input-placeholder-color: $gray-500;
 
 
 @import "../node_modules/bootstrap/scss/mixins";
