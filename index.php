@@ -11,29 +11,28 @@ if (isset($_GET['pagina']))
   else
     $pagina = '404';
 
-    
+
 
 if ($pagina == '') {
-  ?>
-    <script>alert("hh <?=isset($_SESSION['userId'])?>")</script>
-  <?php
+?>
+  <script>
+    alert("hh <?= isset($_SESSION['userId']) ?>")
+  </script>
+<?php
   if (!Loggedin()) {
     $pagina = 'login';
-  }
-  else
-  {
+  } else {
     $pagina = 'pornire';
   }
 }
 
 $fisier = "Pagini/pagina-{$pagina}.php";
 
-if(file_exists($fisier))
+if (file_exists($fisier))
   include $fisier;
 else
   include "Pagini/pagina-404.php";
 
-
+ShowMessages();
 
 ?>
-
