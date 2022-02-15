@@ -14,11 +14,7 @@ if (isset($_GET['pagina']))
 
 
 if ($pagina == '') {
-?>
-  <script>
-    alert("hh <?= isset($_SESSION['userId']) ?>")
-  </script>
-<?php
+
   if (!Loggedin()) {
     $pagina = 'login';
   } else {

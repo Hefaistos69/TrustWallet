@@ -39,6 +39,41 @@ function ShowMessages()
   unset($_SESSION['messages']);
 }
 
+function QueryDatabase($conn, $query, $values)
+{
+  $valueString = "";
+  foreach ($values as $value) {
+    $valueString .= 's';
+  }
+
+  $stmt = mysqli_stmt_init($conn);
+
+  if (!mysqli_stmt_prepare($stmt, $query)) {
+    //error
+    return false;
+  }
+
+  if (!mysqli_stmt_bind_param($stmt, $valueString, ...$values)) {
+    //error
+    return false;
+  }
+
+  if (!mysqli_stmt_execute($stmt)) {
+    //error
+    return false;
+  }
+
+
+
+  if (!($result = mysqli_stmt_get_result($stmt))) {
+    //query with no result
+    return true;
+  }
+  mysqli_stmt_close($stmt);
+
+  return $result;
+}
+
 //Sign up
 function EmptyInput($username, $email, $password, $repeat_password)
 {
@@ -86,43 +121,36 @@ function PasswordDontMatch($password, $repeat_password)
 
 function UserExists($conn, $username_email)
 {
-  $stmt = mysqli_stmt_init($conn);
+
   $query = "SELECT * FROM users 
             WHERE usersUsername = ? OR usersEmail = ?;";
+  $values[] = $username_email;
+  $values[] = $username_email;
+  $result = QueryDatabase($conn, $query, $values);
 
-  if (!mysqli_stmt_prepare($stmt, $query)) {
-    //error
-  }
-
-  mysqli_stmt_bind_param($stmt, "ss", $username_email, $username_email);
-  mysqli_stmt_execute($stmt);
-  $result = mysqli_stmt_get_result($stmt);
-
-
-  $data = mysqli_fetch_assoc($result);
-  if (!$data) {
-    //error
+  if (!$result) {
     return false;
   } else {
-    return $data;
+    $data = mysqli_fetch_assoc($result);
+    if (!$data)
+      return false;
+    else
+      return $data;
   }
-  mysqli_stmt_close($stmt);
 }
 
-function CreateUser($conn, $username, $email, $password)
+function CreateUser($conn, ...$values)
 {
-  $stmt = mysqli_stmt_init($conn);
-  $query = "INSERT INTO users (usersId, usersEmail, usersUsername, usersPassword) 
+  $query = "INSERT INTO users (usersId, usersUsername, usersEmail, usersPassword) 
             VALUES (NULL, ?, ?, ?);";
-  if (!mysqli_stmt_prepare($stmt, $query)) {
+  if (!QueryDatabase($conn, $query, $values)) {
     //error
+    header("Location: ../?pagina=signup&error=createUser");
+    die();
   }
-
-  mysqli_stmt_bind_param($stmt, "sss", $email, $username, $password);
-
-  mysqli_stmt_execute($stmt);
-  mysqli_stmt_close($stmt);
-  //success
-  header("Location: ../?pagina=signup?error=none");
-  die();
+  else{  
+    //success
+    header("Location: ../?pagina=signup&error=none");
+    die();
+  }
 }

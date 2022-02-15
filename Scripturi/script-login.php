@@ -1,51 +1,46 @@
 <?php
-
+  session_start();
   include_once "../Module/modul-db.php";
   include_once "../Module/modul-functii.php";
 
 
 if(isset($_POST['username']) && isset($_POST['password']))
 {
-  $clean = [];
-  $clean['username'] = mysqli_escape_string($conn, $_POST['username']);
-  //$clean['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
-  $clean['password'] = $_POST['password'];
+  $values = [];
+  $values[] = $_POST['username'];
+  $values[] = $_POST['password'];
 
   $query = "SELECT * FROM users 
-            WHERE (usersUsername = '{$clean['username']}' OR usersEmail = '{$clean['username']}') 
-            AND usersPassword = '{$clean['password']}'";
+            WHERE (usersUsername = ? OR usersEmail = ?);";
 
-  $result = mysqli_query($conn, $query);
-
-  if(!$result)
+  $result = QueryDatabase($conn, $query, $values);
+  if(mysqli_num_rows($result) == 1)
   {
-    //eroare
-    ?>
-      <div>eroare: <?=mysqli_error($conn)?></div>
-    <?php
-    
-  }
-  else
-  {
-    if(mysqli_num_rows($result) == 1){
-      $user = mysqli_fetch_assoc($result);
-      $_SESSION['userId'] = $user['usersId'];
-
+    $data = mysqli_fetch_assoc($result);
+    if(password_verify($password, $data['usersPassword']))
+    {
+      //success
+      $_SESSION['userId'] = $data['usersId'];
       header("Location: ../");
       die();
     }
     else
     {
-      ?>
-      <div>user sau parola incorecte</div>
-    <?php
+      //error
+      header("Location: ../?pagina=login&error=incorrectPassword");
+      die();
     }
   }
-  
+  else
+  {
+    //error
+    header("Location: ../?pagina=login&eroare=incorrectUser");
+    die();
+  }
 }
 else
 {
-  //eroare
+  //error
   ?>
       <div>eroare</div>
     <?php
