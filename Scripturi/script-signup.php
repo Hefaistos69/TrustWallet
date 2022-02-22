@@ -37,7 +37,7 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
   //verify password match
   if (PasswordDontMatch($password, $repeat_password) !== false) {
     //AddMessage("Parolele nu sunt identice!", "danger");
-    header("Location: ../?pagina=signup&error=pwdnotmatch");
+    header("Location: ../?pagina=signup&error=pwddontmatch");
     die();
   }
   

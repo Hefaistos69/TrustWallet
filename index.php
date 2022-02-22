@@ -24,11 +24,13 @@ if ($pagina == '') {
 
 $fisier = "Pagini/pagina-{$pagina}.php";
 
+ShowMessages();
+
+
 if (file_exists($fisier))
   include $fisier;
 else
   include "Pagini/pagina-404.php";
 
-ShowMessages();
 
 ?>

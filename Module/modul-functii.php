@@ -24,18 +24,18 @@ function ShowMessages()
   if (!isset($_SESSION['messages']))
     return;
 
-?>
-  <div class="container py-3">
-    <?php
     foreach ($_SESSION['messages'] as $message) {
     ?>
-      <div class="alert alert-<?= $message['type'] ?>"><?= htmlspecialchars($message['text']) ?></div>
+      <div class="toast align-items-center text-white bg-<?=$message['type']?> border-0" role="alert" >
+        <div class="d-flex">
+          <div class="toast-body">
+            <?=$message['text']?>
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
     <?php
     }
-
-    ?>
-  </div>
-<?php
   unset($_SESSION['messages']);
 }
 
@@ -150,7 +150,7 @@ function CreateUser($conn, ...$values)
   }
   else{  
     //success
-    header("Location: ../?pagina=signup&error=none");
+    header("Location: ../?pagina=login&error=none");
     die();
   }
 }

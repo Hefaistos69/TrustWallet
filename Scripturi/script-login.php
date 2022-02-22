@@ -6,9 +6,10 @@
 
 if(isset($_POST['username']) && isset($_POST['password']))
 {
-  $values = [];
+  $values = [];// for query
   $values[] = $_POST['username'];
   $values[] = $_POST['password'];
+  $password = $_POST['password'];//for verification
 
   $query = "SELECT * FROM users 
             WHERE (usersUsername = ? OR usersEmail = ?);";
@@ -26,6 +27,7 @@ if(isset($_POST['username']) && isset($_POST['password']))
     }
     else
     {
+      
       //error
       header("Location: ../?pagina=login&error=incorrectPassword");
       die();
