@@ -1,18 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <?php
-  include_once "Module/modul-css.php";
-  ?>
-  <title>Autentificare</title>
-
-</head>
-
-<body>
 
   <div class="container-fluid d-flex h-auto min-vh-100 w-100 bg-dark justify-content-center align-items-center">
     <div class="container-sm d-flex h-auto align-items-center justify-content-center">
@@ -65,6 +50,3 @@
 
     </div>
   </div>
-</body>
-
-</html>
