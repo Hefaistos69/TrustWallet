@@ -8,6 +8,79 @@ function Loggedin()
   return false;
 }
 
+function SetOldValues($username, $email)
+{
+  $_SESSION['username'] = $username;
+  $_SESSION['email'] = $email;
+}
+
+function DeleteOldValues()
+{
+  if (isset($_SESSION['username']))
+    unset($_SESSION['username']);
+  if (isset($_SESSION['email']))
+    unset($_SESSION['email']);
+}
+
+function GetOldValue($value)
+{
+  $result = '';
+  switch ($value) {
+    case 'username':
+      if (isset($_SESSION['username'])) {
+        $result = $_SESSION['username'];
+        unset($_SESSION['username']);
+      }
+      break;
+    case 'email':
+      if (isset($_SESSION['email'])) {
+        $result = $_SESSION['email'];
+        unset($_SESSION['email']);
+      }
+      break;
+  }
+  return htmlspecialchars($result);
+}
+
+function ShowError()
+{
+  if (!isset($_SESSION['error']))
+    return;
+  $error = $_SESSION['error'];
+  $message = '';
+  switch ($error) {
+    case 'invalidUsername':
+      $message = '◍ Numele de utilizator este invalid!';
+      break;
+    case 'invalidEmail':
+      $message = '◍ Email-ul este invalid!';
+      break;
+    case 'pwddontmatch':
+      $message = '◍ Parolele nu sunt identice!';
+      break;
+    case 'userExists':
+      $message = '◍ Numele de utilizator exista deja!';
+      break;
+    case 'emailExists':
+      $message = '◍ Exista un utilizator cu acest email deja!'; //505
+      break;
+    case 'emptyInput':
+      $message = '◍ Toate campurile sunt obligatorii!'; //505
+      break;
+    case 'incorrectUser':
+      $message = '◍ Numele de utilizator este incorect!';
+      break;
+    case 'incorrectPassword':
+      $message = '◍ Parola este incorecta!';//505
+      break;
+  }
+?>
+  <div class="text-danger fs-6 mb-2"><?= htmlspecialchars($message) ?></div>
+  <?php
+  unset($_SESSION['error']);
+}
+
+
 function AddMessage($text, $type)
 {
   if (!isset($_SESSION['messages']))
@@ -24,18 +97,18 @@ function ShowMessages()
   if (!isset($_SESSION['messages']))
     return;
 
-    foreach ($_SESSION['messages'] as $message) {
-    ?>
-      <div class="toast align-items-center text-white bg-<?=$message['type']?> border-0" role="alert" >
-        <div class="d-flex">
-          <div class="toast-body">
-            <?=$message['text']?>
-          </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  foreach ($_SESSION['messages'] as $message) {
+  ?>
+    <div class="toast align-items-center text-white bg-<?= $message['type'] ?> border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">
+          <?= $message['text'] ?>
         </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
-    <?php
-    }
+    </div>
+<?php
+  }
   unset($_SESSION['messages']);
 }
 
@@ -147,8 +220,7 @@ function CreateUser($conn, ...$values)
     //error
     header("Location: ../?pagina=signup&error=createUser");
     die();
-  }
-  else{  
+  } else {
     //success
     header("Location: ../?pagina=login&error=none");
     die();
