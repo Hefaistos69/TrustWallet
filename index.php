@@ -6,7 +6,7 @@ require_once "Module/modul-db.php";
 
 $pagina = '';
 $numePagina = '';
-if (isset($_GET['pagina']))
+if (isset($_GET['pagina'])) {
   if (in_array($_GET['pagina'], ['login', 'signup', 'pornire'])) {
     $pagina = $_GET['pagina'];
     switch ($pagina) {
@@ -14,7 +14,7 @@ if (isset($_GET['pagina']))
         $numePagina = 'Autentificare';
         break;
       case 'signup':
-        $numePagina = 'Inregistrare';//505
+        $numePagina = 'Înregistrare';
         break;
       case 'pornire':
         $numePagina = 'Pornire';
@@ -25,11 +25,11 @@ if (isset($_GET['pagina']))
     }
   } else
     $pagina = '404';
+}
 
 
 
 if ($pagina == '') {
-
   if (!Loggedin()) {
     $pagina = 'login';
   } else {
@@ -37,11 +37,8 @@ if ($pagina == '') {
   }
 }
 
+
 $fisier = "Pagini/pagina-{$pagina}.php";
-
-
-
-
 
 
 ?>
@@ -56,12 +53,12 @@ $fisier = "Pagini/pagina-{$pagina}.php";
   <?php
   include_once "Module/modul-css.php";
   ?>
-  <title><?= $numePagina ?></title>
+  <title><?= htmlspecialchars($numePagina) ?></title>
 
 </head>
 
 <body>
-<?=ShowMessages();?>
+  <?= ShowMessages(); ?>
   <?php
   if (file_exists($fisier))
     include $fisier;

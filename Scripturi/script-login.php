@@ -9,6 +9,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
   $values[] = $_POST['username'];
   $values[] = $_POST['password'];
   $password = $_POST['password']; //for verification
+  SetOldValues($_POST['username']);
 
   $query = "SELECT * FROM users 
             WHERE (usersUsername = ? OR usersEmail = ?);";
@@ -20,6 +21,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
       //success
       $_SESSION['userId'] = $data['usersId'];
       header("Location: ../");
+      DeleteOldValues();
       die();
     } else {
 

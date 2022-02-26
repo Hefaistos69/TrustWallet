@@ -8,36 +8,31 @@ function Loggedin()
   return false;
 }
 
-function SetOldValues($username, $email)
+function SetOldValues(...$data)
 {
-  $_SESSION['username'] = $username;
-  $_SESSION['email'] = $email;
+  foreach ($data as $element) {
+    $_SESSION['data'][] = $element;
+  }
 }
 
 function DeleteOldValues()
 {
-  if (isset($_SESSION['username']))
-    unset($_SESSION['username']);
-  if (isset($_SESSION['email']))
-    unset($_SESSION['email']);
+  unset($_SESSION['data']);
 }
 
-function GetOldValue($value)
+function GetOldValue()
 {
   $result = '';
-  switch ($value) {
-    case 'username':
-      if (isset($_SESSION['username'])) {
-        $result = $_SESSION['username'];
-        unset($_SESSION['username']);
+  if (isset($_SESSION['data'])) {
+    if (!empty($_SESSION['data'])) {
+      foreach ($_SESSION['data'] as $i => $v) {
+        $result = $v;
+        unset($_SESSION['data'][$i]);
+        break;
       }
-      break;
-    case 'email':
-      if (isset($_SESSION['email'])) {
-        $result = $_SESSION['email'];
-        unset($_SESSION['email']);
-      }
-      break;
+    } else {
+      unset($_SESSION['data']);
+    }
   }
   return htmlspecialchars($result);
 }
@@ -62,16 +57,16 @@ function ShowError()
       $message = '◍ Numele de utilizator exista deja!';
       break;
     case 'emailExists':
-      $message = '◍ Exista un utilizator cu acest email deja!'; //505
+      $message = '◍ Există un utilizator cu acest email deja!'; 
       break;
     case 'emptyInput':
-      $message = '◍ Toate campurile sunt obligatorii!'; //505
+      $message = '◍ Toate câmpurile sunt obligatorii!'; 
       break;
     case 'incorrectUser':
       $message = '◍ Numele de utilizator este incorect!';
       break;
     case 'incorrectPassword':
-      $message = '◍ Parola este incorecta!';//505
+      $message = '◍ Parola este incorectă!'; 
       break;
   }
 ?>

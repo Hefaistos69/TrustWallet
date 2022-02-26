@@ -1,3 +1,11 @@
+<?php
+  if(Loggedin())
+  {
+    header("Location: ./?pagina=pornire");
+    die();
+  }
+?>
+
 <div class="container-fluid d-flex h-auto min-vh-100 w-100 bg-dark justify-content-center align-items-center">
   <div class="container-sm d-flex h-auto align-items-center justify-content-center">
     <div class="card w-100 bg-primary rounded-3">
@@ -18,7 +26,7 @@
                   <label for="username" class="form-label text-light fs-4">
                     Utilizator sau email
                   </label>
-                  <input type="text" class="form-control text-light bg-secondary border-0" id="username" name="username" placeholder="Utilizator sau email">
+                  <input type="text" class="form-control text-light bg-secondary border-0" id="username" name="username" placeholder="Utilizator sau email" value="<?=GetOldValue()?>">
                 </div>
                 <div class="mb-4">
                   <label for="password" class="form-label text-light fs-4">
