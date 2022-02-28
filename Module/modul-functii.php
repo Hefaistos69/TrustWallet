@@ -191,7 +191,7 @@ function UserExists($conn, $username_email)
 {
 
   $query = "SELECT * FROM users 
-            WHERE usersUsername = ? OR usersEmail = ?;";
+            WHERE BINARY usersUsername = ? OR BINARY usersEmail = ?;";
   $values[] = $username_email;
   $values[] = $username_email;
   $result = QueryDatabase($conn, $query, $values);

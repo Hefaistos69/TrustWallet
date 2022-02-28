@@ -1,4 +1,4 @@
 -loading screen
--popover asincron
+-popover asyncron
 -forgot password
 -

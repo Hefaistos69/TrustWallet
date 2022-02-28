@@ -11,12 +11,13 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
   $password = $_POST['password']; //for verification
   SetOldValues($_POST['username']);
 
-  $query = "SELECT * FROM users 
-            WHERE (usersUsername = ? OR usersEmail = ?);";
+  $data = UserExists($conn, $_POST['username']);
+  // $query = "SELECT * FROM users 
+  //           WHERE (BINARY usersUsername = ? OR BINARY usersEmail = ?);";
 
-  $result = QueryDatabase($conn, $query, $values);
-  if (mysqli_num_rows($result) == 1) {
-    $data = mysqli_fetch_assoc($result);
+  // $result = QueryDatabase($conn, $query, $values);
+   if ($data) {
+  //   $data = mysqli_fetch_assoc($result);
     if (password_verify($password, $data['usersPassword'])) {
       //success
       $_SESSION['userId'] = $data['usersId'];
