@@ -59,6 +59,26 @@ $fisier = "Pagini/pagina-{$pagina}.php";
 
 <body>
   <?= ShowMessages(); ?>
+  <div class="loading-wrapper">
+  <div class="loading">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>
   <?php
   if (file_exists($fisier))
     include $fisier;

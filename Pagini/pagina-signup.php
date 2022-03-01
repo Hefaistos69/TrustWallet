@@ -29,7 +29,7 @@ if (isset($_SESSION['error'])) {
                     Nume utilizator
                   </label>
                   <div class="<?= $error == 'invalidUsername' ? "border rounded-3 border-2 border-danger" : "" ?>">
-                    <input type="text" class="form-control text-light bg-secondary border-0" id="username" name="username" placeholder="Nume utilizator" value="<?= GetOldValue('username') ?>">
+                    <input type="text" class="form-control text-light bg-secondary border-0" id="username" name="username" placeholder="Nume utilizator" value="<?= GetOldValue() ?>">
                   </div>
                 </div>
                 <div class="mb-2">
@@ -37,7 +37,7 @@ if (isset($_SESSION['error'])) {
                     Email
                   </label>
                   <div class="<?= $error == 'invalidEmail' ? "border rounded-3 border-2 border-danger" : "" ?>">
-                    <input type="text" class="form-control text-light bg-secondary border-0" id="email" name="email" placeholder="Email" value="<?= GetOldValue('email') ?>">
+                    <input type="text" class="form-control text-light bg-secondary border-0" id="email" name="email" placeholder="Email" value="<?= GetOldValue() ?>">
                   </div>
                 </div>
                 <div class="mb-2">

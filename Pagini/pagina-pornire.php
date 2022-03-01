@@ -1,10 +1,9 @@
 <?php
-  
-  if(!Loggedin())
-  {
-    header("Location: ./?pagina=login");
-    die();
-  }
+
+if (!Loggedin()) {
+  header("Location: ./?pagina=login");
+  die();
+}
 ?>
 <h1>Pornire!</h1>
 
