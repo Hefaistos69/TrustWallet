@@ -57,21 +57,21 @@ function ShowError()
       $message = '◍ Numele de utilizator exista deja!';
       break;
     case 'emailExists':
-      $message = '◍ Există un utilizator cu acest email deja!'; 
+      $message = '◍ Există un utilizator cu acest email deja!';
       break;
     case 'emptyInput':
-      $message = '◍ Toate câmpurile sunt obligatorii!'; 
+      $message = '◍ Toate câmpurile sunt obligatorii!';
       break;
     case 'incorrectUser':
       $message = '◍ Numele de utilizator este incorect!';
       break;
     case 'incorrectPassword':
-      $message = '◍ Parola este incorectă!'; 
+      $message = '◍ Parola este incorectă!';
       break;
   }
 ?>
   <div class="text-danger fs-6 mb-2"><?= htmlspecialchars($message) ?></div>
-  <?php
+<?php
   unset($_SESSION['error']);
 }
 
@@ -91,19 +91,24 @@ function ShowMessages()
 {
   if (!isset($_SESSION['messages']))
     return;
-
-  foreach ($_SESSION['messages'] as $message) {
-  ?>
-    <div class="toast align-items-center text-white bg-<?= $message['type'] ?> border-0" role="alert">
-      <div class="d-flex">
-        <div class="toast-body">
-          <?= $message['text'] ?>
+?>
+  <div class="toast-container position-absolute p-3 top-0 end-0">
+    <?php
+    foreach ($_SESSION['messages'] as $message) {
+    ?>
+      <div class="toast align-items-center text-white bg-<?= $message['type'] ?> border-0 p-2" role="alert">
+        <div class="d-flex">
+          <div class="toast-body fs-6">
+            <?= $message['text'] ?>
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>        
         </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
-    </div>
+    <?php
+    }
+    ?>
+  </div>
 <?php
-  }
   unset($_SESSION['messages']);
 }
 

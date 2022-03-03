@@ -14,7 +14,8 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
 
   //verify empty input
   if (EmptyInput($username, $email, $password, $repeat_password) !== false) {
-    //AddMessage("Toate campurile sunt obligatorii!", "danger");
+    AddMessage("Toate campurile sunt obligatorii!", "danger");
+    AddMessage("Toate campurile sunt vandklska", "success");
     header("Location: ../?pagina=signup");
     $_SESSION['error'] = 'emptyInput';
     die();

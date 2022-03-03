@@ -22,9 +22,11 @@ if (isset($_GET['pagina'])) {
       default:
         $numePagina = 'Ce ma?';
         break;
-    }
-  } else
+    };
+  } else {
     $pagina = '404';
+    $numePagina = '404';
+  }
 }
 
 
@@ -32,8 +34,10 @@ if (isset($_GET['pagina'])) {
 if ($pagina == '') {
   if (!Loggedin()) {
     $pagina = 'login';
+    $numePagina = 'Autentificare';
   } else {
     $pagina = 'pornire';
+    $numePagina = 'Pornire';
   }
 }
 
@@ -60,30 +64,27 @@ $fisier = "Pagini/pagina-{$pagina}.php";
 <body>
   <?= ShowMessages(); ?>
   <div class="loading-wrapper">
-  <div class="loading">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div class="loading">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   </div>
-</div>
   <?php
-  if (file_exists($fisier))
-    include $fisier;
-  else
-    include "Pagini/pagina-404.php";
+  include $fisier;
 
   include_once "Module/modul-js.php";
   ?>
