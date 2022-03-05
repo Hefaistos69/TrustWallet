@@ -63,27 +63,9 @@ $fisier = "Pagini/pagina-{$pagina}.php";
 
 <body>
   <?= ShowMessages(); ?>
-  <div class="loading-wrapper">
-    <div class="loading">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  </div>
+  
   <?php
+ // include 'Module/modul-loadingscreen.php';
   include $fisier;
 
   include_once "Module/modul-js.php";

@@ -92,18 +92,22 @@ function ShowMessages()
   if (!isset($_SESSION['messages']))
     return;
 ?>
-  <div class="toast-container position-absolute p-3 top-0 end-0">
+  <div class="toast-container position-fixed m-3 top-0 end-0">
     <?php
     foreach ($_SESSION['messages'] as $message) {
     ?>
-      <div class="toast align-items-center text-white bg-<?= $message['type'] ?> border-0 p-2" role="alert">
-        <div class="d-flex">
-          <div class="toast-body fs-6">
-            <?= $message['text'] ?>
+      <div class="toast shadow-lg text-white bg-<?= $message['type'] ?> border-0" role="alert">
+
+        <div class="timer-animation">
+          <div class="d-flex p-2 ">
+            <div class="toast-body fs-6">
+              <?= $message['text'] ?>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
           </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>        
         </div>
       </div>
+
     <?php
     }
     ?>
