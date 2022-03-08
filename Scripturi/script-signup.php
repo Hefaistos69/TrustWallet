@@ -14,8 +14,6 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
 
   //verify empty input
   if (EmptyInput($username, $email, $password, $repeat_password) !== false) {
-    AddMessage("Toa", "warning");
-    AddMessage("Toate campurile sunt vandklska", "success");
     header("Location: ../?pagina=signup");
     $_SESSION['error'] = 'emptyInput';
     die();
@@ -24,7 +22,6 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
 
   //verify username
   if (InvalidUsername($username) !== false) {
-    //AddMessage("Nume de utilizator invalid!", "danger");
     header("Location: ../?pagina=signup");
     $_SESSION['error'] = 'invalidUsername';
     die();
@@ -32,7 +29,6 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
 
   //verify email
   if (InvalidEmail($email) !== false) {
-    //AddMessage("Email invalid!", "danger");
     header("Location: ../?pagina=signup");
     $_SESSION['error'] = 'invalidEmail';
     die();
@@ -40,7 +36,6 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
   
   //verify password match
   if (PasswordDontMatch($password, $repeat_password) !== false) {
-    //AddMessage("Parolele nu sunt identice!", "danger");
     header("Location: ../?pagina=signup");
     $_SESSION['error'] = 'pwddontmatch';
     die();
@@ -48,7 +43,6 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
   
   //verify user via username
   if (UserExists($conn, $username) !== false) {
-    //AddMessage("Numele de utilizator exita deja!", "danger");
     header("Location: ../?pagina=signup");
     $_SESSION['error'] = 'userExists';
     die();
@@ -56,12 +50,12 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
   
   //verify user via email
   if (UserExists($conn, $email) !== false) {
-    //AddMessage("Emailul exita deja!", "danger");
     header("Location: ../?pagina=signup");
     $_SESSION['error'] = 'emailExists';
     die();
   }
   DeleteOldValues();
+  AddMessage("Inregistrarea s-a efectuat cu succes!", "success");//505
   $password = password_hash($password, PASSWORD_DEFAULT);
   CreateUser($conn, $username, $email, $password);
 } else {

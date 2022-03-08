@@ -61,11 +61,10 @@ $fisier = "Pagini/pagina-{$pagina}.php";
 
 </head>
 
-<body>
-  <?= ShowMessages(); ?>
-  
+<body>  
   <?php
- // include 'Module/modul-loadingscreen.php';
+  ShowMessages();
+  include 'Module/modul-loadingscreen.php';
   include $fisier;
 
   include_once "Module/modul-js.php";

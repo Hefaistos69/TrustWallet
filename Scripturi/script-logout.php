@@ -6,5 +6,7 @@ if($userId = Loggedin())
 {
   unset($_SESSION['userId']);
 }
+AddMessage("Te-ai deconectat cu succes!", "success");
+
 header("Location: ../");
 die();
