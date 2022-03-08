@@ -49,7 +49,7 @@ if (isset($_SESSION['error'])) {
                 </div>
                 <div class="d-flex flex-column mb-5">
                   <p class="fs-5 text-light mb-0">Nu ai cont? <a class="text-success fs-5 text-decoration-none" href="./?pagina=signup">Crează cont</a></p>
-                  <p class="fs-5 text-light mb-0">Ți-ai uitat parola? <a class="text-success fs-5 text-decoration-none" href="">Recuperare parolă</a></p>
+                  <p class="fs-5 text-light mb-0">Ți-ai uitat parola? <a class="text-success fs-5 text-decoration-none" href="Scripturi/script-mesaj.php">Recuperare parolă</a></p>
                 </div>
 
               </form>

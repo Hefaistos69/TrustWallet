@@ -60,6 +60,7 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
   CreateUser($conn, $username, $email, $password);
 } else {
   //error
+  AddMessage("A aparut o eroare la inregistrare!", "danger");//505
   header("Location: ../?pagina=signup");
   die();
 }
