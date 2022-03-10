@@ -237,11 +237,13 @@ function CreateUser($conn, ...$values)
             VALUES (NULL, ?, ?, ?);";
   if (!QueryDatabase($conn, $query, $values)) {
     //error
+    AddMessage("A aparut o eroare la inregistrare!", "danger");//505
     header("Location: ../?pagina=signup&error=createUser");
     die();
   } else {
     //success
-    header("Location: ../?pagina=login&error=none");
+    AddMessage("Inregistrarea s-a efectuat cu succes!", "success");//505
+    header("Location: ../?pagina=login");
     die();
   }
 }

@@ -10,6 +10,7 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
   $password = $_POST['password'];
   $repeat_password = $_POST['repeat-password'];
   SetOldValues($username, $email);
+  
   //ERROR HANDLING
 
   //verify empty input
@@ -55,7 +56,6 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
     die();
   }
   DeleteOldValues();
-  AddMessage("Inregistrarea s-a efectuat cu succes!", "success");//505
   $password = password_hash($password, PASSWORD_DEFAULT);
   CreateUser($conn, $username, $email, $password);
 } else {
