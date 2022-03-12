@@ -6,7 +6,7 @@ if (!Loggedin()) {
 }
 ?>
 
-<div class="container-fluid bg-primary h-100" style="">
+<div class="container-fluid bg-primary h-100">
 
   <!-- Header -->
   <nav class="navbar navbar-dark bg-primary shadow-sm">
@@ -25,7 +25,7 @@ if (!Loggedin()) {
 
   <!-- Side nav -->
 
-  <div class="row h-80 me-3" style="">
+  <div class="row h-80 me-3">
 
 
     <div class="col-2">
