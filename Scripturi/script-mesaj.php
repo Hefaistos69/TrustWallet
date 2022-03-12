@@ -5,5 +5,5 @@ AddMessage("bla bla bla", "danger");
 AddMessage("bla bla bla", "warning");
 AddMessage("bla bla bla", "success");
 
-header('Location: ../?pagina=login');
+header('Location: ../');
 die();

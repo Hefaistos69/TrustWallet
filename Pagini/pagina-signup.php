@@ -8,9 +8,9 @@ if (isset($_SESSION['error'])) {
 }
 ?>
 
-<div class="container-fluid d-flex h-auto min-vh-100 w-100 bg-dark justify-content-center align-items-center">
+<div class="container-fluid d-flex h-auto min-vh-100 w-100 bg-primary justify-content-center align-items-center">
   <div class="container-sm d-flex h-auto align-items-center  justify-content-center">
-    <div class="card w-100 shadow-lg bg-primary rounded-3">
+    <div class="card w-100 bg-dark rounded-3">
       <div class="row g-0">
         <div class="col-lg-5 d-flex align-items-center justify-content-center p-3 rounded border border-3 border-success">
           <div class="my-auto">

@@ -15,7 +15,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
    if ($data) {
     if (password_verify($password, $data['usersPassword'])) {
       //success
-      AddMessage("Te-ai conectat cu succes!", "warning");
+      AddMessage("Te-ai conectat cu succes!", "success");
       $_SESSION['userId'] = $data['usersId'];
       header("Location: ../");
       DeleteOldValues();

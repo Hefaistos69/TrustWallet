@@ -21,13 +21,19 @@ Verde inchis - #00897B - info
 // 2. Include any default variable overrides here
 
 
-$dark: #1c1f20;
-$primary: #263134;
-$secondary: #585f63;
+$dark: #1f2324;
+$primary: #2d3335;
+$secondary: #4e5558;
 $light: #dddad6;
 $success: #37843a;
-$info: #00897B;
+$info: #6e777c;
 $danger: #d63a25;
+$link-color: $info;
+$link-hover-color: $light;
+// $input-focus-border-color: $info;
+// $input-focus-color: $info;
+// $input-focus-bg: $info;
+$component-active-bg: $success;
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../node_modules/bootstrap/scss/variables";
@@ -50,6 +56,9 @@ $input-placeholder-color: $gray-500;
 @import "../node_modules/bootstrap/scss/toasts";
 @import "../node_modules/bootstrap/scss/close";
 @import "../node_modules/bootstrap/scss/transitions";
+@import "../node_modules/bootstrap/scss/nav";
+@import "../node_modules/bootstrap/scss/navbar";
+@import "../node_modules/bootstrap/scss/functions";
 // @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
 
@@ -94,11 +103,13 @@ $utilities: map-merge(
 
 @import "../node_modules/bootstrap/scss/utilities/api";
 
-
+body{
+  height: 100vh;
+}
 
 .loading-wrapper{
   position: fixed;
-  z-index: 100;
+  z-index: 2000;
   top: 0;
   left: 0;
   width: 100vw;
@@ -206,6 +217,9 @@ $utilities: map-merge(
   to{width: 100%;}
 }
 
+.toast-container{
+  z-index: 1999!important;
+}
 
 .timer-animation div, button{
   z-index: 2;

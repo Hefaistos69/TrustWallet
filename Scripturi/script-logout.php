@@ -2,7 +2,7 @@
 session_start();
 include "../Module/modul-functii.php";
 
-if($userId = Loggedin())
+if(Loggedin())
 {
   unset($_SESSION['userId']);
 }

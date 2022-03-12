@@ -108,7 +108,7 @@ function ShowMessages()
     <?php
     foreach ($_SESSION['messages'] as $message) {
     ?>
-      <div class="toast shadow-lg text-white bg-<?= $message['type'] ?> border-0" role="alert">
+      <div class="toast shadow text-white bg-<?= $message['type'] ?> border-0" role="alert" style="z-index: 1990;">
 
         <div class="timer-animation">
           <div class="d-flex p-2 ">
@@ -237,12 +237,12 @@ function CreateUser($conn, ...$values)
             VALUES (NULL, ?, ?, ?);";
   if (!QueryDatabase($conn, $query, $values)) {
     //error
-    AddMessage("A aparut o eroare la inregistrare!", "danger");//505
-    header("Location: ../?pagina=signup&error=createUser");
+    AddMessage("A apărut o eroare la înregistrare!", "danger");
+    header("Location: ../?pagina=signup");
     die();
   } else {
     //success
-    AddMessage("Inregistrarea s-a efectuat cu succes!", "success");//505
+    AddMessage("Înregistrarea s-a efectuat cu succes!", "success");
     header("Location: ../?pagina=login");
     die();
   }

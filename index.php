@@ -7,7 +7,7 @@ require_once "Module/modul-db.php";
 $pagina = '';
 $numePagina = '';
 if (isset($_GET['pagina'])) {
-  if (in_array($_GET['pagina'], ['login', 'signup', 'pornire'])) {
+  if (in_array($_GET['pagina'], ['login', 'signup', 'lobby'])) {
     $pagina = $_GET['pagina'];
     switch ($pagina) {
       case 'login':
@@ -16,8 +16,8 @@ if (isset($_GET['pagina'])) {
       case 'signup':
         $numePagina = 'Înregistrare';
         break;
-      case 'pornire':
-        $numePagina = 'Pornire';
+      case 'lobby':
+        $numePagina = 'Acasă';
         break;
       default:
         $numePagina = 'Ce ma?';
@@ -36,14 +36,16 @@ if ($pagina == '') {
     $pagina = 'login';
     $numePagina = 'Autentificare';
   } else {
-    $pagina = 'pornire';
-    $numePagina = 'Pornire';
+    $pagina = 'lobby';
+    $numePagina = 'Acasă';
   }
 }
 
 
 $fisier = "Pagini/pagina-{$pagina}.php";
 
+if(!file_exists($fisier))
+  $fisier = "Pagini/pagina-404.php";
 
 ?>
 
