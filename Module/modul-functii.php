@@ -108,7 +108,7 @@ function ShowMessages()
     <?php
     foreach ($_SESSION['messages'] as $message) {
     ?>
-      <div class="toast shadow text-white bg-<?= $message['type'] ?> border-0" role="alert" style="z-index: 1990;">
+      <div class="toast shadow text-light bg-<?= $message['type'] ?> border-0" role="alert" style="z-index: 1990;">
 
         <div class="timer-animation">
           <div class="d-flex p-2 ">

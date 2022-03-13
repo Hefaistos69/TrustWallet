@@ -24,20 +24,24 @@ Verde inchis - #00897B - info
 $dark: #1f2324;
 $primary: #2d3335;
 $secondary: #4e5558;
-$light: #dddad6;
+$light: #c3c1bd;
 $success: #37843a;
 $info: #6e777c;
 $danger: #d63a25;
 $link-color: $info;
 $link-hover-color: $light;
-// $input-focus-border-color: $info;
-// $input-focus-color: $info;
-// $input-focus-bg: $info;
+
 $component-active-bg: $success;
+$input-btn-focus-color-opacity: .4;
+
+$modal-header-border-color: $secondary;
+$modal-footer-border-color: $secondary;
+
+$btn-close-color: $info;
+$input-placeholder-color: $gray-500;
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../node_modules/bootstrap/scss/variables";
-$input-placeholder-color: $gray-500;
 
 
 @import "../node_modules/bootstrap/scss/mixins";
@@ -59,6 +63,7 @@ $input-placeholder-color: $gray-500;
 @import "../node_modules/bootstrap/scss/nav";
 @import "../node_modules/bootstrap/scss/navbar";
 @import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/modal";
 // @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
 
@@ -103,9 +108,8 @@ $utilities: map-merge(
 
 @import "../node_modules/bootstrap/scss/utilities/api";
 
-body{
-  height: 100vh;
-}
+
+//loading screen
 
 .loading-wrapper{
   position: fixed;
@@ -213,6 +217,8 @@ body{
   }
 }
 
+//for toasts
+
 @keyframes timer{
   to{width: 100%;}
 }
@@ -250,4 +256,8 @@ body{
   animation: 0;
 }
 
+//for nav links
 
+.link-nav:hover{
+  background-color:darken($color: #000000, $amount: 20%)
+}

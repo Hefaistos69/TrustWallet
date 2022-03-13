@@ -3,38 +3,42 @@ session_start();
 include_once "../Module/modul-db.php";
 include_once "../Module/modul-functii.php";
 
-
-if (isset($_POST['username']) && isset($_POST['password'])) {
+if (isset($_POST['btnDemo'])) {
+  $password = '1234';
+  $username = 'Demo';
+}
+else if (isset($_POST['username']) && isset($_POST['password'])) {
   $password = $_POST['password']; //for verification
   $username = $_POST['username']; //for verification
 
-  SetOldValues($username);
+} else {
+  //error
+  AddMessage("A apărut o eroare la logare!", "danger"); 
+  header("Location: ../?pagina=login");
+}
 
-  $data = UserExists($conn, $username);
- 
-   if ($data) {
-    if (password_verify($password, $data['usersPassword'])) {
-      //success
-      AddMessage("Te-ai conectat cu succes!", "success");
-      $_SESSION['userId'] = $data['usersId'];
-      header("Location: ../");
-      DeleteOldValues();
-      die();
-    } else {
+SetOldValues($username);
 
-      //error
-      header("Location: ../?pagina=login");
-      $_SESSION['error'] = 'incorrectPassword';
-      die();
-    }
+$data = UserExists($conn, $username);
+
+if ($data) {
+  if (password_verify($password, $data['usersPassword'])) {
+    //success
+    AddMessage("Te-ai conectat cu succes!", "success");
+    $_SESSION['userId'] = $data['usersId'];
+    header("Location: ../");
+    DeleteOldValues();
+    die();
   } else {
+
     //error
     header("Location: ../?pagina=login");
-    $_SESSION['error'] = 'incorrectUser';
+    $_SESSION['error'] = 'incorrectPassword';
     die();
   }
 } else {
   //error
-  AddMessage("A aparut o eroare la logare!", "danger");//505
   header("Location: ../?pagina=login");
+  $_SESSION['error'] = 'incorrectUser';
+  die();
 }

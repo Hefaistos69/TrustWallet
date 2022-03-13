@@ -25,28 +25,27 @@ if (!Loggedin()) {
 
   <!-- Side nav -->
 
-  <div class="row h-80 me-3">
+  <div class="row h-80 w-100">
 
 
-    <div class="col-2">
+    <div class="col-2 top-0 start-0">
 
       <ul class="nav flex-column fs-5">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="Scripturi/script-mesaj.php"><i class="bi bi-house-door-fill"></i> Acasă</a>
+          <a class="nav-link" aria-current="page" href="Scripturi/script-mesaj.php"><i class="bi bi-speedometer2"></i> Acasă</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
             <i class="bi bi-bank2"></i> Conturi
           </a>
-          <div class="collapse" id="collapseExample">
+          <div class="collapse bg-dark" id="collapseExample">
             <div class="card card-body ms-2">
               <a class="nav-link" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Conturi
-              </a><a class="nav-link" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Conturi
-              </a><a class="nav-link" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Conturi
+                Economii
               </a>
+              <button class="btn nav-link fs-5 border-0" data-bs-toggle="modal" data-bs-target="#createAccountModal">
+              <i class="bi bi-plus-lg fw-bold"></i> Adaugă cont 
+              </button>
             </div>
           </div>
         </li>
@@ -60,36 +59,109 @@ if (!Loggedin()) {
         <div class="col-4">
           <div class="card mx-2 bg-primary rounded-3">
             <div class="card-body">
-              <a class="btn btn-primary w-100">
+              <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#createAccountModal">
                 <p class="card-text text-center text-success" style="font-size: 8rem;"><i class="bi bi-bank2"></i></p>
-              
-              <h5 class="card-title text-info text-center pb-3">Crează un cont</h5>
-              </a>
+
+                <h5 class="card-title text-info text-center pb-3">Adaugă un cont</h5>
+              </button>
             </div>
           </div>
+
+
+
         </div>
         <div class="col-4  ">
-        <div class="card mx-2 bg-primary rounded-3">
+          <div class="card mx-2 bg-primary rounded-3">
             <div class="card-body">
-              <a class="btn btn-primary w-100">
+              <button class="btn btn-primary w-100">
                 <p class="card-text text-center text-success" style="font-size: 8rem;"><i class="bi bi-bank"></i></p>
-              
-              <h5 class="card-title text-info  text-center pb-3">Crează un cont comun</h5>
-              </a>
+
+                <h5 class="card-title text-info  text-center pb-3">Crează un cont comun</h5>
+              </button>
             </div>
           </div>
         </div>
         <div class="col-4">
-        <div class="card mx-2 bg-primary rounded-3">
+          <div class="card mx-2 bg-primary rounded-3">
             <div class="card-body">
-              <a class="btn btn-primary w-100">
+              <button class="btn btn-primary w-100">
                 <p class="card-text text-center text-success" style="font-size: 8rem;"><i class="bi bi-door-open-fill"></i></p>
-              
-              <h5 class="card-title text-info text-center pb-3">Alătură-te unui cont comun</h5>
-              </a>
+
+                <h5 class="card-title text-info text-center pb-3">Alătură-te unui cont comun</h5>
+              </button>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Create account modal -->
+<div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content text-info bg-dark">
+      <div class="modal-header ">
+        <h5 class="modal-title" id="exampleModalLabel">Adaugă un cont</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post" class="mx-5 mt-3">
+          <div class="row mb-4 g-3 align-items-center">
+            <div class="col-2">
+              <label for="accountName" class="form-label text-light fs-6">Nume cont</label>
+            </div>
+            <div class="col-9 offset-1">
+              <input id="accountName" name="accountName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="20" placeholder="Numele contului">
+            </div>
+
+            <div class="col-2">
+              <label for="bankName" class="form-label text-light fs-6">Nume bancă</label>
+            </div>
+            <div class="col-9 offset-1">
+              <input id="bankName" name="bankName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="20" placeholder="Numele băncii">
+            </div>
+
+            <div class="col-2">
+              <label for="accountType" class="form-label text-light fs-6">Tip cont</label>
+            </div>
+            <div class="col-9 offset-1">
+              <select class="form-select text-light bg-dark border-secondary border-1" name="accountType" id="accountType">
+                <option selected>Alege tipul contului</option>
+                <option value="">Economii</option>
+                <option value="">Salariu</option>
+                <option value="">Credit</option>
+              </select>
+            </div>
+
+            <div class="col-2">
+              <label for="accountCurrency" class="form-label text-light fs-6">Valuta</label>
+            </div>
+            <div class="col-9 offset-1">
+              <select class="form-select text-light bg-dark border-secondary border-1" name="accountCurrency" id="accountCurrency">
+                <option selected>Alege valuta contului</option>
+                <option value="">Dolar(USD)</option>
+                <option value="">Euro(EUR)</option>
+                <option value="">Leu(RON)</option>
+              </select>
+            </div>
+
+            <div class="col-2">
+              <label for="accountBalance" class="form-label text-light fs-6">Suma</label>
+            </div>
+            <div class="col-9 offset-1">
+              <div class="input-group mb-3">
+                <span class="input-group-text text-light border-secondary bg-dark">USD</span>
+                <input name="accountBalance" id="accountBalance" type="text" class="form-control text-light bg-dark border-secondary border-1" aria-label="Amount (to the nearest dollar)">
+                <span class="input-group-text bg-dark border-secondary text-light">.00</span>
+              </div>
+            </div>
+          </div>
+          <div class="float-end mb-3">
+            <button type="submit" class="btn btn-success text-light">Salvează</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

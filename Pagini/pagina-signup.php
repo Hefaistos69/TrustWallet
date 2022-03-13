@@ -29,7 +29,7 @@ if (isset($_SESSION['error'])) {
                     Nume utilizator
                   </label>
                   <div class="<?= $error == 'invalidUsername' ? "border rounded-3 border-2 border-danger" : "" ?>">
-                    <input type="text" class="form-control text-light bg-secondary border-0" id="username" name="username" placeholder="Nume utilizator" value="<?= GetOldValue() ?>">
+                    <input type="text" class="form-control text-light bg-dark border-secondary border-1" id="username" name="username" placeholder="Nume utilizator" value="<?= GetOldValue() ?>">
                   </div>
                 </div>
                 <div class="mb-2">
@@ -37,7 +37,7 @@ if (isset($_SESSION['error'])) {
                     Email
                   </label>
                   <div class="<?= $error == 'invalidEmail' ? "border rounded-3 border-2 border-danger" : "" ?>">
-                    <input type="text" class="form-control text-light bg-secondary border-0" id="email" name="email" placeholder="Email" value="<?= GetOldValue() ?>">
+                    <input type="text" class="form-control text-light bg-dark border-secondary border-1" id="email" name="email" placeholder="Email" value="<?= GetOldValue() ?>">
                   </div>
                 </div>
                 <div class="mb-2">
@@ -45,7 +45,7 @@ if (isset($_SESSION['error'])) {
                     Parolă
                   </label>
                   <div class="<?= $error == 'invalidPassword' ? "border rounded-3 border-2 border-danger" : "" ?>">
-                    <input type="password" class="form-control text-light bg-secondary border-0" id="password" name="password" placeholder="Parolă">
+                    <input type="password" class="form-control text-light bg-dark border-secondary border-1" id="password" name="password" placeholder="Parolă">
                   </div>
                 </div>
                 <div class="mb-4">
@@ -53,7 +53,7 @@ if (isset($_SESSION['error'])) {
                     Repetă parola
                   </label>
                   <div class="<?= $error == 'pwddontmatch' ? "border rounded-3 border-2 border-danger" : "" ?>">
-                    <input type="password" class="form-control text-light bg-secondary border-0" id="repeat-password" name="repeat-password" placeholder="Repetă parola">
+                    <input type="password" class="form-control text-light bg-dark border-secondary border-1" id="repeat-password" name="repeat-password" placeholder="Repetă parola">
                   </div>
                 </div>
                 <?= ShowError() ?>

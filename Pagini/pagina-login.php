@@ -29,7 +29,7 @@ if (isset($_SESSION['error'])) {
                     Utilizator sau email
                   </label>
                   <div class="<?= $error == 'incorrectUser' ? "border rounded-3 border-2 border-danger" : "" ?>">
-                    <input type="text" class="form-control text-light bg-secondary border-0" id="username" name="username" placeholder="Utilizator sau email" value="<?= GetOldValue() ?>">
+                    <input type="text" class="form-control text-light bg-dark border-secondary border-1" id="username" name="username" placeholder="Utilizator sau email" value="<?= GetOldValue() ?>">
                   </div>
                 </div>
                 <div class="mb-4">
@@ -37,15 +37,15 @@ if (isset($_SESSION['error'])) {
                     Parolă
                   </label>
                   <div class="<?= $error == 'incorrectPassword' ? "border rounded-3 border-2 border-danger" : "" ?>">
-                    <input type="password" class="form-control border border-danger text-light bg-secondary border-0" id="password" name="password" placeholder="Parolă">
+                    <input type="password" class="form-control text-light bg-dark border-secondary border-1" id="password" name="password" placeholder="Parolă">
                   </div>
                 </div>
                 <?= ShowError() ?>
                 <div class="d-grid gap-2 d-lg-flex justify-content-xl-end mb-1">
-                  <button class="mx-1 btn btn-success btn text-light" type="submit">Deținător</button>
-                  <button class="mx-1 btn btn-success btn text-light" type="submit">Membru</button>
-                  <button class="mx-1 btn btn-success btn text-light" type="submit">Demo</button>
-                  <button class="mx-1 btn btn-success btn text-light" type="submit">Autentificare</button>
+                  <button class="mx-1 btn btn-success text-light" type="submit">Deținător</button>
+                  <button class="mx-1 btn btn-success text-light" type="submit">Membru</button>
+                  <input class="mx-1 btn btn-success text-light" type="submit"  name="btnDemo" value="Demo">
+                  <button class="mx-1 btn btn-success text-light" type="submit">Autentificare</button>
                 </div>
                 <div class="d-flex flex-column mb-5">
                   <p class="fs-5 text-light mb-0">Nu ai cont? <a class="text-success fs-5 text-decoration-none" href="./?pagina=signup">Crează cont</a></p>

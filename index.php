@@ -66,7 +66,7 @@ if(!file_exists($fisier))
 <body>  
   <?php
   ShowMessages();
-  include 'Module/modul-loadingscreen.php';
+  //include 'Module/modul-loadingscreen.php';
   include $fisier;
 
   include_once "Module/modul-js.php";
