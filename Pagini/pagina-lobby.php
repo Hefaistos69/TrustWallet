@@ -43,9 +43,9 @@ if (!Loggedin()) {
               <a class="nav-link" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                 Economii
               </a>
-              <button class="btn nav-link fs-5 border-0" data-bs-toggle="modal" data-bs-target="#createAccountModal">
-              <i class="bi bi-plus-lg fw-bold"></i> Adaugă cont 
-              </button>
+              <a style="cursor: pointer;" class="nav-link fs-5 border-0" data-bs-toggle="modal" data-bs-target="#createAccountModal">
+                <i class="bi bi-plus-lg fw-bold"></i> Adaugă cont
+              </a>
             </div>
           </div>
         </li>
