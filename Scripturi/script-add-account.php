@@ -38,13 +38,13 @@ if(isset($_POST['accountName']) && isset($_POST['bankName']) && isset($_POST['ac
   $values[] = $accountType;
   $values[] = $accountBalance;
   if(QueryDatabase($conn, $query, $values))
-    {
-      AddMessage("Contul a fost adăugat cu succes!", "success");
-    }
-    else
-    {
-      AddMessage("Eroare!", "danger");
-    }
+  {
+    AddMessage("Contul a fost adăugat cu succes!", "success");
+  }
+  else
+  {
+    AddMessage("Eroare!", "danger");
+  }
   header("Location: ../");
   die();
 }
