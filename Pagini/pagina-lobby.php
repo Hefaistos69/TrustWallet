@@ -1,12 +1,18 @@
 <?php
 
+
 if (!Loggedin()) {
   header("Location: ./?pagina=login");
   die();
 }
+
+$query = "SELECT * FROM accounts WHERE usersId = ?;";
+$values[] = $_SESSION['userId'];
+$result = QueryDatabase($conn, $query, $values);
+
 ?>
 
-<div class="container-fluid bg-primary h-100">
+<div class="container-fluid bg-primary h-auto min-vh-100">
 
   <!-- Header -->
   <nav class="navbar navbar-dark bg-primary shadow-sm">
@@ -25,25 +31,44 @@ if (!Loggedin()) {
 
   <!-- Side nav -->
 
-  <div class="row h-80 w-100">
+  <div class="row w-100">
 
 
-    <div class="col-2 top-0 start-0">
+    <div class="col-2">
 
-      <ul class="nav flex-column fs-5">
+      <ul class="nav nav-tabs flex-column fs-5">
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="Scripturi/script-mesaj.php"><i class="bi bi-speedometer2"></i> Acasă</a>
+          <a class="nav-link active" aria-current="page" href="Scripturi/script-mesaj.php"><i class="bi bi-speedometer2"></i> Acasă</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
             <i class="bi bi-bank2"></i> Conturi
           </a>
           <div class="collapse bg-dark" id="collapseExample">
-            <div class="card card-body ms-2">
-              <a class="nav-link" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Economii
-              </a>
-              <a style="cursor: pointer;" class="nav-link fs-5 border-0" data-bs-toggle="modal" data-bs-target="#createAccountModal">
+            <div class="card card-body">
+              <?php
+              while ($data = mysqli_fetch_assoc($result)) {
+              ?>
+                <a class="nav-link" data-bs-toggle="collapse" href="" role="button" aria-expanded="false" aria-controls="collapseExample">
+                  <?php
+                    switch($data['accountType']){
+                      case "Economie":
+                        ?><i class="bi bi-piggy-bank"></i><?php
+                        break;
+                      case "Salariu":
+                        ?><i class="bi bi-cash"></i><?php
+                        break;
+                      case "Credit":
+                        ?><i class="bi bi-wallet2"></i><?php
+                        break;
+                    }
+                  ?> <?=$data['accountName']?>
+                </a>
+              <?php
+              }
+              ?>
+              
+              <a style="cursor: pointer;" class="nav-link fs-5" data-bs-toggle="modal" data-bs-target="#createAccountModal">
                 <i class="bi bi-plus-lg fw-bold"></i> Adaugă cont
               </a>
             </div>
@@ -55,8 +80,8 @@ if (!Loggedin()) {
     </div>
 
     <div class="col shadow bg-dark rounded-3">
-      <div class="row m-4 g-2">
-        <div class="col-4">
+      <div class="row row-cols-1 row-cols-md-3 g-4 mb-5 mt-4">
+        <div class="col">
           <div class="card mx-2 bg-primary rounded-3">
             <div class="card-body">
               <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#createAccountModal">
@@ -70,7 +95,7 @@ if (!Loggedin()) {
 
 
         </div>
-        <div class="col-4  ">
+        <div class="col">
           <div class="card mx-2 bg-primary rounded-3">
             <div class="card-body">
               <button class="btn btn-primary w-100">
@@ -81,7 +106,7 @@ if (!Loggedin()) {
             </div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col">
           <div class="card mx-2 bg-primary rounded-3">
             <div class="card-body">
               <button class="btn btn-primary w-100">
@@ -107,7 +132,7 @@ if (!Loggedin()) {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="" method="post" class="mx-5 mt-3">
+        <form action="Scripturi/script-add-account.php" method="post" class="mx-5 mt-3">
           <div class="row mb-4 g-3 align-items-center">
             <div class="col-2">
               <label for="accountName" class="form-label text-light fs-6">Nume cont</label>
@@ -129,9 +154,9 @@ if (!Loggedin()) {
             <div class="col-9 offset-1">
               <select class="form-select text-light bg-dark border-secondary border-1" name="accountType" id="accountType">
                 <option selected>Alege tipul contului</option>
-                <option value="">Economii</option>
-                <option value="">Salariu</option>
-                <option value="">Credit</option>
+                <option value="Economie">Economie</option>
+                <option value="Salariu">Salariu</option>
+                <option value="Credit">Credit</option>
               </select>
             </div>
 
@@ -139,11 +164,11 @@ if (!Loggedin()) {
               <label for="accountCurrency" class="form-label text-light fs-6">Valuta</label>
             </div>
             <div class="col-9 offset-1">
-              <select class="form-select text-light bg-dark border-secondary border-1" name="accountCurrency" id="accountCurrency">
+              <select onchange="ChangeCurrency(this.value)" class="form-select text-light bg-dark border-secondary border-1" name="accountCurrency" id="accountCurrency">
                 <option selected>Alege valuta contului</option>
-                <option value="">Dolar(USD)</option>
-                <option value="">Euro(EUR)</option>
-                <option value="">Leu(RON)</option>
+                <option value="USD">Dolar(USD)</option>
+                <option value="EUR">Euro(EUR)</option>
+                <option value="RON">Leu(RON)</option>
               </select>
             </div>
 
@@ -152,7 +177,7 @@ if (!Loggedin()) {
             </div>
             <div class="col-9 offset-1">
               <div class="input-group mb-3">
-                <span class="input-group-text text-light border-secondary bg-dark">USD</span>
+                <span id="spanSuma" class="input-group-text text-light border-secondary bg-dark">USD</span>
                 <input name="accountBalance" id="accountBalance" type="text" class="form-control text-light bg-dark border-secondary border-1" aria-label="Amount (to the nearest dollar)">
                 <span class="input-group-text bg-dark border-secondary text-light">.00</span>
               </div>

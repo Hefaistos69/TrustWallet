@@ -14,6 +14,9 @@ function ShowToasts()
     toastList.forEach(toast => toast.show());
 }
 
-$(document).ready(function(){
-    //ShowToasts();
-})
+function ChangeCurrency(value)
+{
+    if(value == "EUR" || value == "USD" || value == "RON")
+        $("#spanSuma").html(value);
+}
+

@@ -142,16 +142,25 @@ function QueryDatabase($conn, $query, $values)
 
   if (!mysqli_stmt_prepare($stmt, $query)) {
     //error
+    AddMessage(mysqli_error($conn), "danger");
+    header("location: ../");
+    die();
     return false;
   }
 
   if (!mysqli_stmt_bind_param($stmt, $valueString, ...$values)) {
     //error
+    AddMessage("binding", "danger");
+    header("location: ../");
+    die();
     return false;
   }
 
   if (!mysqli_stmt_execute($stmt)) {
     //error
+    AddMessage("execute", "danger");
+    header("location: ../");
+    die();
     return false;
   }
 

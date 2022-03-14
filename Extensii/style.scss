@@ -23,11 +23,12 @@ Verde inchis - #00897B - info
 
 $dark: #1f2324;
 $primary: #2d3335;
-$secondary: #4e5558;
-$light: #c3c1bd;
+$secondary: #565e61;
+$light: #d6d3cd;
 $success: #37843a;
-$info: #6e777c;
+$info: #747e83;
 $danger: #d63a25;
+$warning: #c2a500;
 $link-color: $info;
 $link-hover-color: $light;
 
@@ -38,7 +39,15 @@ $modal-header-border-color: $secondary;
 $modal-footer-border-color: $secondary;
 
 $btn-close-color: $info;
-$input-placeholder-color: $gray-500;
+$input-placeholder-color: $light;
+$nav-tabs-link-active-color: $light;
+$nav-tabs-link-active-bg: transparent;
+$nav-link-hover-color: $light;
+$nav-tabs-link-active-bg: #00000023;
+$nav-tabs-link-active-border-color: transparent transparent transparent $success;
+$nav-tabs-link-hover-border-color: transparent transparent transparent $success;
+$nav-tabs-border-color: transparent;
+
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../node_modules/bootstrap/scss/variables";
@@ -256,8 +265,6 @@ $utilities: map-merge(
   animation: 0;
 }
 
-//for nav links
-
-.link-nav:hover{
-  background-color:darken($color: #000000, $amount: 20%)
+.active i{
+  color: $success;
 }
