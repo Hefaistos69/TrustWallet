@@ -1,6 +1,6 @@
 <?php
 if (Loggedin()) {
-  header("Location: ./?pagina=pornire");
+  header("Location: ./?pagina=lobby");
   die();
 }
 if (isset($_SESSION['error'])) {

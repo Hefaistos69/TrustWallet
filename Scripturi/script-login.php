@@ -15,6 +15,7 @@ else if (isset($_POST['username']) && isset($_POST['password'])) {
   //error
   AddMessage("A apărut o eroare la logare!", "danger"); 
   header("Location: ../?pagina=login");
+  die();
 }
 
 SetOldValues($username);
@@ -32,13 +33,13 @@ if ($data) {
   } else {
 
     //error
-    header("Location: ../?pagina=login");
+    header("Location: ../");
     $_SESSION['error'] = 'incorrectPassword';
     die();
   }
 } else {
   //error
-  header("Location: ../?pagina=login");
+  header("Location: ../");
   $_SESSION['error'] = 'incorrectUser';
   die();
 }
