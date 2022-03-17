@@ -28,7 +28,7 @@ if(isset($_POST['accountName']) && isset($_POST['bankName']) && isset($_POST['ac
     case 'RON': 
       $currency = "amountRON";
       break;
-  }//+error
+  }
 
   $query = "INSERT INTO accounts (accountId, usersId, accountName, accountBank, accountType, {$currency}, creationDate)
             VALUES(NULL, ?, ?, ?, ?, ?, NOW());";

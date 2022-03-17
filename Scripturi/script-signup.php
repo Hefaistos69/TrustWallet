@@ -14,6 +14,11 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
   //ERROR HANDLING
 
   //verify empty input
+  $values['username'] = $username;
+  $values['email'] = $email;
+  $values['password'] = $password;
+  $values['repeat_password'] = $repeat_password;
+  
   if (EmptyInput($username, $email, $password, $repeat_password) !== false) {
     header("Location: ../?pagina=signup");
     $_SESSION['error'] = 'emptyInput';

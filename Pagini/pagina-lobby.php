@@ -132,7 +132,7 @@ $result = QueryDatabase($conn, $query, $values);
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="Scripturi/script-add-account.php" method="post" class="mx-5 mt-3">
+        <form id="addAccountForm" action="Scripturi/script-add-account.php" method="post"   class="mx-5 mt-3">
           <div class="row mb-4 g-3 align-items-center">
             <div class="col-2">
               <label for="accountName" class="form-label text-light fs-6">Nume cont</label>

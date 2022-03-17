@@ -176,14 +176,15 @@ function QueryDatabase($conn, $query, $values)
 }
 
 //Sign up
-function EmptyInput($username, $email, $password, $repeat_password)
+function EmptyInput(...$values)
 {
-  $result = true;
-  if (empty($username) || empty($email) || empty($password) || empty($repeat_password)) {
-    $result = true;
-  } else {
-    $result = false;
+  $result = false;
+  foreach($values as $value)
+  {
+    if(empty($value))
+      $result = true;
   }
+  
   return $result;
 }
 

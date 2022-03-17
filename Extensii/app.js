@@ -20,3 +20,30 @@ function ChangeCurrency(value)
         $("#spanSuma").html(value);
 }
 
+
+
+$(function() {
+    $('#addAccountForm').on("submit", function(event){
+        event.preventDefault();
+        
+        $.ajax({
+            type: "POST",
+            url: "Ajax/ajax-validate-account.php",
+            data: $(this).serialize(),
+            success: function(response){
+                var result = JSON.parse(response);
+                if(result.success == '1')
+                {
+                    console.log('yes');
+                }
+                else if(result.success == '0')
+                {
+                    console.log('no');
+
+                }
+
+            }
+        });
+    })
+}); 
+
