@@ -38,7 +38,7 @@ $(function() {
                 }
                 else if(result.success == '0')
                 {
-                    console.log('no');
+                    $("#errorDiv").html(result.error);
 
                 }
 

@@ -45,7 +45,7 @@ function ShowError()
   $message = '';
   switch ($error) {
     case 'invalidUsername':
-      $message = '◍ Numele de utilizator este invalid!';
+      $message = '◍ Numele de utilizator este invalid! Folosește doar litere și numere (maxim 20 de caractere)!';
       break;
     case 'invalidEmail':
       $message = '◍ Email-ul este invalid!';
@@ -68,11 +68,28 @@ function ShowError()
     case 'incorrectPassword':
       $message = '◍ Parola este incorectă!';
       break;
+    case 'invalidAccountName':
+      $message = '◍ Numele contului este invalid! Folosește doar litere și numere (maxim 20 de caractere)!';
+      break;
+    case 'invalidBankName':
+      $message = '◍ Numele băncii este invalid! Folosește doar litere și numere (maxim 20 de caractere)!';
+      break;
+    case 'invalidAccountCurrency':
+      $message = '◍ Valuta contului este invalidă!';
+      break;
+    case 'invalidAccountType':
+      $message = '◍ Tipul contului este invalid!';
+      break;
+    case 'balanceNotNumeric':
+      $message = '◍ Suma trebuie să fie un număr!';
+      break;
+    case 'balanceOverflow':
+      $message = '◍ Suma trebuie să fie între 0 și 999,999,999!';
+      break;
   }
-?>
-  <div class="text-danger fs-6 mb-2"><?= htmlspecialchars($message) ?></div>
-<?php
+
   unset($_SESSION['error']);
+  return "<div class=\"text-danger fs-6 mb-3\">{$message}</div>";
 }
 
 
@@ -193,7 +210,9 @@ function InvalidUsername($username)
   $result = true;
   if (!preg_match("/^[a-zA-Z0-9]*$/", $username)) {
     $result = true;
-  } else {
+  } else if(strlen($username) > 20){
+    $result = true;
+  }else{
     $result = false;
   }
   return $result;

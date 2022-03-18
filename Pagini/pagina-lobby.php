@@ -138,7 +138,7 @@ $result = QueryDatabase($conn, $query, $values);
               <label for="accountName" class="form-label text-light fs-6">Nume cont</label>
             </div>
             <div class="col-9 offset-1">
-              <input id="accountName" name="accountName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="20" placeholder="Numele contului">
+              <input id="accountName" name="accountName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="10" placeholder="Numele contului">
             </div>
 
             <div class="col-2">
@@ -183,6 +183,7 @@ $result = QueryDatabase($conn, $query, $values);
               </div>
             </div>
           </div>
+          <div id="errorDiv"></div>
           <div class="float-end mb-3">
             <button type="submit" class="btn btn-success text-light">Salvează</button>
           </div>
