@@ -16,33 +16,33 @@ if (
     {
         $error = true;
         $_SESSION['error'] = 'emptyInput';
-    }
+    }else
     //Invalid account name (== Invalid username)
     if(InvalidUsername($accountName) !== false)
     {
         $error = true;
         $_SESSION['error'] = 'invalidAccountName';
-    }
+    }else
     //Invalid bank name (== Invalid account name)
     if(InvalidUsername($bankName) !== false)
     {
         $error = true;
         $_SESSION['error'] = 'invalidBankName';
-    }
+    }else
 
     //Invalid account currency
     if(!in_array($accountCurrency, ['RON', 'EUR', 'USD']))
     {
         $error = true;
         $_SESSION['error'] = 'invalidAccountCurrency';
-    }
+    }else
 
     //Invalid account type
     if(!in_array($accountType, ['Economie', 'Salariu', 'Credit']))
     {
         $error = true;
         $_SESSION['error'] = 'invalidAccountType';
-    }
+    }else
 
     //Invalid account balance
     if(!is_numeric($accountBalance))
@@ -53,6 +53,7 @@ if (
     {
         $error = true;
         $_SESSION['error'] = 'balanceOverflow';
+        
     }
 
     

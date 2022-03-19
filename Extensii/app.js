@@ -5,8 +5,7 @@ $(window).on("load", function () {
     }, 500);
 });
 
-function ShowToasts()
-{
+function ShowToasts() {
     var toastElList = [].slice.call(document.querySelectorAll('.toast'))
     var toastList = toastElList.map(function (toastEl) {
         return new bootstrap.Toast(toastEl);
@@ -14,36 +13,47 @@ function ShowToasts()
     toastList.forEach(toast => toast.show());
 }
 
-function ChangeCurrency(value)
-{
-    if(value == "EUR" || value == "USD" || value == "RON")
+function ChangeCurrency(value) {
+    if (value == "EUR" || value == "USD" || value == "RON")
         $("#spanSuma").html(value);
 }
 
 
 
-$(function() {
-    $('#addAccountForm').on("submit", function(event){
+$(function () {
+    $('#addAccountForm').on("submit", function (event) {
         event.preventDefault();
-        
+        var data = $(this).serialize();
         $.ajax({
             type: "POST",
             url: "Ajax/ajax-validate-account.php",
-            data: $(this).serialize(),
-            success: function(response){
+            data: data,
+            success: function (response) {
                 var result = JSON.parse(response);
-                if(result.success == '1')
-                {
-                    console.log('yes');
+                if (result.success == '1') {
+                    event.currentTarget.submit();
+                    // $.ajax({
+                    //     type: 'POST',
+                    //     url: 'Scripturi/script-add-account.php',
+                    //     data: data,
+                    //     success: function(response){
+                    //         var result = JSON.parse(response);
+                    //         if(result.success == '1')
+                    //         {
+                                
+                    //         }
+                    //     }
+                    // });
                 }
-                else if(result.success == '0')
-                {
+                else if (result.success == '0') {
+
                     $("#errorDiv").html(result.error);
 
                 }
 
             }
         });
+        
     })
-}); 
+});
 

@@ -8,7 +8,7 @@ $pagina = '';
 $numePagina = '';
 
 if (isset($_GET['pagina'])) {
-  if (in_array($_GET['pagina'], ['login', 'signup', 'lobby'])) {
+  if (in_array($_GET['pagina'], ['login', 'signup', 'lobby', 'account', 'noaccess'])) {
     $pagina = $_GET['pagina'];
     switch ($pagina) {
       case 'login':
@@ -19,9 +19,6 @@ if (isset($_GET['pagina'])) {
         break;
       case 'lobby':
         $numePagina = 'Acasă';
-        break;
-      default:
-        $numePagina = 'Ce ma?';
         break;
     };
   } else {
@@ -45,32 +42,33 @@ if ($pagina == '') {
 $fisier = "Pagini/pagina-{$pagina}.php";
 
 if (!file_exists($fisier))
-$fisier = "Pagini/pagina-404.php";
+  $fisier = "Pagini/pagina-404.php";
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-  
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <?php
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <?php
   include_once "Module/modul-css.php";
   ?>
   <title><?= htmlspecialchars($numePagina) ?></title>
-  
+
 </head>
 
 <body>
   <?php
-  ShowMessages();
-  //include 'Module/modul-loadingscreen.php';
+
+  include 'Module/modul-loadingscreen.php';
   include $fisier;
-  
+
   include_once "Module/modul-js.php";
+  ShowMessages();
   ?>
 
 </body>

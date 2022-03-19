@@ -3,29 +3,27 @@ session_start();
 include "../Module/modul-functii.php";
 include "../Module/modul-db.php";
 
-if(isset($_POST['accountName']) && isset($_POST['bankName']) && isset($_POST['accountType'])
- && isset($_POST['accountCurrency']) && isset($_POST['accountBalance']))
-{
+if (
+  isset($_POST['accountName']) && isset($_POST['bankName']) && isset($_POST['accountType'])
+  && isset($_POST['accountCurrency']) && isset($_POST['accountBalance'])
+) {
   $accountName = $_POST['accountName'];
   $bankName = $_POST['bankName'];
   $accountType = $_POST['accountType'];
   $accountCurrency = $_POST['accountCurrency'];
   $accountBalance = $_POST['accountBalance'];
 
-  //Error handling
 
-  //Success
-  
+
   $currency = '';
-  switch($accountCurrency)
-  {
+  switch ($accountCurrency) {
     case 'EUR':
       $currency = "amountEUR";
       break;
     case 'USD':
       $currency = "amountUSD";
       break;
-    case 'RON': 
+    case 'RON':
       $currency = "amountRON";
       break;
   }
@@ -37,20 +35,15 @@ if(isset($_POST['accountName']) && isset($_POST['bankName']) && isset($_POST['ac
   $values[] = $bankName;
   $values[] = $accountType;
   $values[] = $accountBalance;
-  if(QueryDatabase($conn, $query, $values))
-  {
+
+  if (QueryDatabase($conn, $query, $values)) {
     AddMessage("Contul a fost adăugat cu succes!", "success");
-  }
-  else
-  {
+  } else {
     AddMessage("Eroare!", "danger");
   }
-  header("Location: ../");
-  die();
-}
-else
-{
+
+} else {
   AddMessage("A apărut o eroare la adăugarea contului!", "danger");
-  header("Location: ../");
-  die();
 }
+header('Location: ../');
+die();
