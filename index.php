@@ -8,7 +8,7 @@ $pagina = '';
 $numePagina = '';
 
 if (isset($_GET['pagina'])) {
-  if (in_array($_GET['pagina'], ['login', 'signup', 'lobby', 'account', 'noaccess'])) {
+  if (in_array($_GET['pagina'], ['login', 'signup', 'lobby', 'account', 'noaccess', 'dberror'])) {
     $pagina = $_GET['pagina'];
     switch ($pagina) {
       case 'login':
@@ -19,6 +19,10 @@ if (isset($_GET['pagina'])) {
         break;
       case 'lobby':
         $numePagina = 'Acasă';
+        break;
+      case 'account':
+        $fisier = "Pagini/pagina-lobby.php";
+        $numePagina = "Cont";
         break;
     };
   } else {
@@ -38,8 +42,8 @@ if ($pagina == '') {
   }
 }
 
-
-$fisier = "Pagini/pagina-{$pagina}.php";
+if(!isset($fisier)) 
+  $fisier = "Pagini/pagina-{$pagina}.php";
 
 if (!file_exists($fisier))
   $fisier = "Pagini/pagina-404.php";
@@ -64,7 +68,7 @@ if (!file_exists($fisier))
 <body>
   <?php
 
-  include 'Module/modul-loadingscreen.php';
+  //include 'Module/modul-loadingscreen.php';
   include $fisier;
 
   include_once "Module/modul-js.php";

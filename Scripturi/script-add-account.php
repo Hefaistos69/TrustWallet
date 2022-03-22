@@ -28,13 +28,14 @@ if (
       break;
   }
 
-  $query = "INSERT INTO accounts (accountId, usersId, accountName, accountBank, accountType, {$currency}, creationDate)
-            VALUES(NULL, ?, ?, ?, ?, ?, NOW());";
+  $query = "INSERT INTO accounts (accountId, usersId, accountName, accountBank, accountType, {$currency}, creationDate, accountCurrency)
+            VALUES(NULL, ?, ?, ?, ?, ?, NOW(), ?);";
   $values[] = $_SESSION['userId'];
   $values[] = $accountName;
   $values[] = $bankName;
   $values[] = $accountType;
   $values[] = $accountBalance;
+  $values[] = $accountCurrency;
 
   if (QueryDatabase($conn, $query, $values)) {
     AddMessage("Contul a fost adăugat cu succes!", "success");

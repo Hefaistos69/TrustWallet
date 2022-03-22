@@ -1,0 +1,1 @@
+<h1>Eroare la baza de date!</h1>
