@@ -16,7 +16,7 @@ if (!$userAccounts = QueryDatabase($conn, $query, $values)) {
 
 //preluarea datelor contului activ (daca exista)
 if ($pagina == 'account' && isset($_GET['accountId'])) {
-  $accountId = $_GET['accountId'];
+  $accountId = intval($_GET['accountId']);
   $query = "SELECT * FROM accounts WHERE accountId = ?;";
   $values = array();
   $values[] = $accountId;
@@ -30,7 +30,7 @@ if ($pagina == 'account' && isset($_GET['accountId'])) {
     header("Location: ./?pagina=noaccess");
     die();
   }
-    $_SESSION['selectedCurrency'] = $accountData['accountCurrency'];
+  $_SESSION['selectedCurrency'] = $accountData['accountCurrency'];
 }
 
 //preluarea datelor userului activ
@@ -123,11 +123,11 @@ $userData = mysqli_fetch_assoc($result);
         if ($pagina == 'account') {
         ?>
           <div class="d-flex mx-2">
-            <button class="btn btn-outline-secondary me-2"><i class="bi bi-pencil-fill"></i> Editează</button>
-            <button class="btn btn-outline-danger"><i class="bi bi-trash-fill"></i> Șterge</button> 
+            <button class="btn btn-outline-secondary me-2" type="button" data-bs-toggle="modal" data-bs-target="#editAccountModal"><i class="bi bi-pencil-fill"></i> Editează</button>
+            <button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteAccountModal"><i class="bi bi-trash-fill"></i> Șterge</button>
           </div>
         <?php
-          } 
+        }
         ?>
       </div>
       <div class="shadow bg-dark rounded-3 pb-3">
@@ -147,11 +147,11 @@ $userData = mysqli_fetch_assoc($result);
 </div>
 
 <!-- Create account modal -->
-<div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content text-info bg-dark">
       <div class="modal-header ">
-        <h5 class="modal-title" id="exampleModalLabel">Adaugă un cont</h5>
+        <h5 class="modal-title" id="createModalLabel">Adaugă un cont</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -215,4 +215,98 @@ $userData = mysqli_fetch_assoc($result);
     </div>
   </div>
 </div>
+
+<!-- Edit account modal -->
+<div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content text-info bg-dark">
+      <div class="modal-header ">
+        <h5 class="modal-title" id="editModalLabel">Modifica contul <?=$accountData['accountName']?></h5> <!--505-->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="Scripturi/script-edit-account.php" method="post" class="mx-5 mt-3">
+          <input type="hidden" name="accountId" value="<?=$accountData['accountId']?>">
+          <div class="row mb-4 g-3 align-items-center">
+            <div class="col-2">
+              <label for="accountName" class="form-label text-light fs-6">Nume cont</label>
+            </div>
+            <div class="col-9 offset-1">
+              <input value="<?=$accountData['accountName']?>" id="accountName" name="accountName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="10" placeholder="Numele contului">
+            </div>
+
+            <div class="col-2">
+              <label for="bankName" class="form-label text-light fs-6">Nume bancă</label>
+            </div>
+            <div class="col-9 offset-1">
+              <input value="<?=$accountData['accountBank']?>" id="bankName" name="bankName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="20" placeholder="Numele băncii">
+            </div>
+
+            <div class="col-2">
+              <label for="accountType" class="form-label text-light fs-6">Tip cont</label>
+            </div>
+            <div class="col-9 offset-1">
+              <select class="form-select text-light bg-dark border-secondary border-1" name="accountType" id="accountType">
+                <option <?=$accountData['accountType'] == 'Economie'? 'selected': ''?> value="Economie">Economie</option>
+                <option <?=$accountData['accountType'] == 'Salariu'? 'selected': ''?> value="Salariu">Salariu</option>
+                <option <?=$accountData['accountType'] == 'Credit'? 'selected': ''?> value="Credit">Credit</option>
+              </select>
+            </div>
+
+            <div class="col-2">
+              <label for="accountCurrency" class="form-label text-light fs-6">Valuta</label>
+            </div>
+            <div class="col-9 offset-1">
+              <select class="form-select text-light bg-dark border-secondary border-1" name="accountCurrency" id="accountCurrency">
+                <option <?=$accountData['accountCurrency'] == 'USD'? 'selected': ''?> value="USD">Dolar(USD)</option>
+                <option <?=$accountData['accountCurrency'] == 'EUR'? 'selected': ''?> value="EUR">Euro(EUR)</option>
+                <option <?=$accountData['accountCurrency'] == 'RON'? 'selected': ''?> value="RON">Leu(RON)</option>
+              </select>
+            </div>
+
+          </div>
+          <div id="errorDiv"></div>
+          <div class="float-end mb-3">
+            <button type="submit" class="btn btn-success text-light">Salvează</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteAccountModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-info bg-dark">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="text-danger" style="font-size: 10rem">
+          <i class="bi bi-exclamation-triangle"></i>
+        </div>
+        <div class="text-light fs-5">
+          Esti sigur ca vrei sa stergi contul?
+          <!--505-->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="mx-auto">
+          <?php
+          if(!isset($_GET['accountId']))
+          {
+            $accountId = -1;
+          }
+          ?>
+          <a href="Scripturi/script-delete-account.php?accountId=<?=$accountId?>" class="btn btn-outline-danger">Sterge</a>
+          <!--505-->
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">Inchide</button>
+          <!--505-->
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
