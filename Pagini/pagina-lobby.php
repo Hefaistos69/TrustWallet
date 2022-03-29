@@ -221,8 +221,7 @@ $userData = mysqli_fetch_assoc($result);
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content text-info bg-dark">
       <div class="modal-header ">
-        <h5 class="modal-title" id="editModalLabel">Modifica contul <?=$accountData['accountName']?></h5> <!--505-->
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="editModalLabel">Modifică contul <?=$accountData['accountName']?></h5>        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form action="Scripturi/script-edit-account.php" method="post" class="mx-5 mt-3">
@@ -281,7 +280,7 @@ $userData = mysqli_fetch_assoc($result);
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-info bg-dark">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="deleteModalLabel">Ștergere cont <?=$accountData['accountName']?></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center">
@@ -289,8 +288,7 @@ $userData = mysqli_fetch_assoc($result);
           <i class="bi bi-exclamation-triangle"></i>
         </div>
         <div class="text-light fs-5">
-          Esti sigur ca vrei sa stergi contul?
-          <!--505-->
+          Ești sigur că vrei să ștergi contul?
         </div>
       </div>
       <div class="modal-footer">
@@ -301,10 +299,8 @@ $userData = mysqli_fetch_assoc($result);
             $accountId = -1;
           }
           ?>
-          <a href="Scripturi/script-delete-account.php?accountId=<?=$accountId?>" class="btn btn-outline-danger">Sterge</a>
-          <!--505-->
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">Inchide</button>
-          <!--505-->
+          <a href="Scripturi/script-delete-account.php?accountId=<?=$accountId?>" class="btn btn-outline-danger">Șterge</a>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">Închide</button>
         </div>
       </div>
     </div>

@@ -11,16 +11,16 @@ if(isset($_GET['accountId']))
 
     if(QueryDatabase($conn, $query, $values))
     {
-        AddMessage("Contul a fost sters!", "warning");//505
+        AddMessage("Contul a fost șters!", "warning");
     }
     else
     {
-        AddMessage("A aparut o eroare la stergere!", "danger"); //505
+        AddMessage("A apărut o eroare la ștergere!", "danger"); 
     }
 }
 else
 {
- AddMessage("Stergerea nu s-a putut efectua!", "danger"); //505
+ AddMessage("Ștergerea nu s-a putut efectua!", "danger"); 
 }
 header("Location: ../");
 die();

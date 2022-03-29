@@ -6,7 +6,7 @@
 
         <h3 class="fs-4 text-secondary mx-3 pt-2"><i class="bi bi-cash-stack "></i> Soldul</h3>
 
-        <h1 class="text-success mx-3 fw-lighter">
+        <h1 class="text-success mx-3 fw-lighter pb-4">
           <?php
           switch ($_SESSION['selectedCurrency']) {
             case 'RON':
@@ -21,7 +21,6 @@
           }
           ?>
         </h1>
-        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#createAccountModal">
 
         </button>
       </div>
