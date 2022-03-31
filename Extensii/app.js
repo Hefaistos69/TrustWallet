@@ -18,6 +18,11 @@ function ChangeCurrency(value) {
         $("#spanSuma").html(value);
 }
 
+function ChangeCurrencyAccount(value)
+{   
+    if (value == "EUR" || value == "USD" || value == "RON")
+        $("#dropdownMenuButton1").html(value);
+}
 
 
 $(function () {
@@ -32,22 +37,32 @@ $(function () {
                 var result = JSON.parse(response);
                 if (result.success == '1') {
                     event.currentTarget.submit();
-                    // $.ajax({
-                    //     type: 'POST',
-                    //     url: 'Scripturi/script-add-account.php',
-                    //     data: data,
-                    //     success: function(response){
-                    //         var result = JSON.parse(response);
-                    //         if(result.success == '1')
-                    //         {
-                                
-                    //         }
-                    //     }
-                    // });
                 }
                 else if (result.success == '0') {
 
-                    $("#errorDiv").html(result.error);
+                    $("#createErrorDiv").html(result.error);
+
+                }
+
+            }
+        });
+        
+    });
+    $('#editAccountForm').on("submit", function (event) {
+        event.preventDefault();
+        var data = $(this).serialize();
+        $.ajax({
+            type: "POST",
+            url: "Ajax/ajax-validate-account.php",
+            data: data,
+            success: function (response) {
+                var result = JSON.parse(response);
+                if (result.success == '1') {
+                    event.currentTarget.submit();
+                }
+                else if (result.success == '0') {
+
+                    $("#editErrorDiv").html(result.error);
 
                 }
 

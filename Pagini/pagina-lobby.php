@@ -156,6 +156,7 @@ $userData = mysqli_fetch_assoc($result);
       </div>
       <div class="modal-body">
         <form id="addAccountForm" action="Scripturi/script-add-account.php" method="post" class="mx-5 mt-3">
+          <input type="hidden" name="createAccountForm">
           <div class="row mb-4 g-3 align-items-center">
             <div class="col-2">
               <label for="accountName" class="form-label text-light fs-6">Nume cont</label>
@@ -206,7 +207,7 @@ $userData = mysqli_fetch_assoc($result);
               </div>
             </div>
           </div>
-          <div id="errorDiv"></div>
+          <div id="createErrorDiv"></div>
           <div class="float-end mb-3">
             <button type="submit" class="btn btn-success text-light">Salvează</button>
           </div>
@@ -224,7 +225,9 @@ $userData = mysqli_fetch_assoc($result);
         <h5 class="modal-title" id="editModalLabel">Modifică contul <?=$accountData['accountName']?></h5>        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="Scripturi/script-edit-account.php" method="post" class="mx-5 mt-3">
+        <form id="editAccountForm" action="Scripturi/script-edit-account.php" method="post" class="mx-5 mt-3">
+        <input type="hidden" name="editAccountForm">
+
           <input type="hidden" name="accountId" value="<?=$accountData['accountId']?>">
           <div class="row mb-4 g-3 align-items-center">
             <div class="col-2">
@@ -252,19 +255,8 @@ $userData = mysqli_fetch_assoc($result);
               </select>
             </div>
 
-            <div class="col-2">
-              <label for="accountCurrency" class="form-label text-light fs-6">Valuta</label>
-            </div>
-            <div class="col-9 offset-1">
-              <select class="form-select text-light bg-dark border-secondary border-1" name="accountCurrency" id="accountCurrency">
-                <option <?=$accountData['accountCurrency'] == 'USD'? 'selected': ''?> value="USD">Dolar(USD)</option>
-                <option <?=$accountData['accountCurrency'] == 'EUR'? 'selected': ''?> value="EUR">Euro(EUR)</option>
-                <option <?=$accountData['accountCurrency'] == 'RON'? 'selected': ''?> value="RON">Leu(RON)</option>
-              </select>
-            </div>
-
           </div>
-          <div id="errorDiv"></div>
+          <div id="editErrorDiv"></div>
           <div class="float-end mb-3">
             <button type="submit" class="btn btn-success text-light">Salvează</button>
           </div>
