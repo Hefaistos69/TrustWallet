@@ -18,10 +18,28 @@ function ChangeCurrency(value) {
         $("#spanSuma").html(value);
 }
 
-function ChangeCurrencyAccount(value)
+function ChangeCurrencyAccount(value, accountId)
 {   
     if (value == "EUR" || value == "USD" || value == "RON")
         $("#dropdownMenuButton1").html(value);
+    let data = {'currency': value, 'accountId': accountId};
+    $.ajax({
+        type: "POST",
+        url: "Ajax/ajax-get-account-data.php",
+        data: data,
+        success: function(response){
+            let result = JSON.parse(response);
+            console.log(result.success);
+            if(result.success == '1')
+            {
+                console.log('ok');
+            }
+            else
+            {
+                console.log('not ok');
+            }
+        }
+    });
 }
 
 
@@ -61,7 +79,7 @@ $(function () {
                     event.currentTarget.submit();
                 }
                 else if (result.success == '0') {
-
+                    console.log(result.error);
                     $("#editErrorDiv").html(result.error);
 
                 }

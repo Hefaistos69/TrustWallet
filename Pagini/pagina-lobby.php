@@ -222,26 +222,26 @@ $userData = mysqli_fetch_assoc($result);
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content text-info bg-dark">
       <div class="modal-header ">
-        <h5 class="modal-title" id="editModalLabel">Modifică contul <?=$accountData['accountName']?></h5>        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="editModalLabel">Modifică contul <?=htmlspecialchars($accountData['accountName'])?></h5>        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form id="editAccountForm" action="Scripturi/script-edit-account.php" method="post" class="mx-5 mt-3">
         <input type="hidden" name="editAccountForm">
 
-          <input type="hidden" name="accountId" value="<?=$accountData['accountId']?>">
+          <input type="hidden" name="accountId" value="<?=htmlspecialchars($accountData['accountId'])?>">
           <div class="row mb-4 g-3 align-items-center">
             <div class="col-2">
               <label for="accountName" class="form-label text-light fs-6">Nume cont</label>
             </div>
             <div class="col-9 offset-1">
-              <input value="<?=$accountData['accountName']?>" id="accountName" name="accountName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="10" placeholder="Numele contului">
+              <input value="<?=htmlspecialchars($accountData['accountName'])?>" id="accountName" name="accountName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="10" placeholder="Numele contului">
             </div>
 
             <div class="col-2">
               <label for="bankName" class="form-label text-light fs-6">Nume bancă</label>
             </div>
             <div class="col-9 offset-1">
-              <input value="<?=$accountData['accountBank']?>" id="bankName" name="bankName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="20" placeholder="Numele băncii">
+              <input value="<?=htmlspecialchars($accountData['accountBank'])?>" id="bankName" name="bankName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="20" placeholder="Numele băncii">
             </div>
 
             <div class="col-2">
@@ -272,7 +272,7 @@ $userData = mysqli_fetch_assoc($result);
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-info bg-dark">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Ștergere cont <?=$accountData['accountName']?></h5>
+        <h5 class="modal-title" id="deleteModalLabel">Ștergere cont <?=htmlspecialchars($accountData['accountName'])?></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center">
@@ -291,7 +291,7 @@ $userData = mysqli_fetch_assoc($result);
             $accountId = -1;
           }
           ?>
-          <a href="Scripturi/script-delete-account.php?accountId=<?=$accountId?>" class="btn btn-outline-danger">Șterge</a>
+          <a href="Scripturi/script-delete-account.php?accountId=<?=htmlspecialchars($accountId)?>" class="btn btn-outline-danger">Șterge</a>
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">Închide</button>
         </div>
       </div>
