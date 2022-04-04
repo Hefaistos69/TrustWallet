@@ -4,11 +4,10 @@ include "../Module/modul-functii.php";
 include "../Module/modul-db.php";
 
 if (
-  isset($_POST['accountName']) && isset($_POST['bankName']) && isset($_POST['accountType'])
+  isset($_POST['accountName']) && isset($_POST['accountType'])
   && isset($_POST['accountCurrency']) && isset($_POST['accountBalance'])
 ) {
   $accountName = $_POST['accountName'];
-  $bankName = $_POST['bankName'];
   $accountType = $_POST['accountType'];
   $accountCurrency = $_POST['accountCurrency'];
   $accountBalance = $_POST['accountBalance'];
@@ -28,11 +27,10 @@ if (
       break;
   }
 
-  $query = "INSERT INTO accounts (accountId, usersId, accountName, accountBank, accountType, {$currency}, creationDate, accountCurrency)
-            VALUES(NULL, ?, ?, ?, ?, ?, NOW(), ?);";
+  $query = "INSERT INTO accounts (accountId, usersId, accountName, accountType, {$currency}, creationDate, accountCurrency)
+            VALUES(NULL, ?, ?, ?, ?, NOW(), ?);";
   $values[] = $_SESSION['userId'];
   $values[] = $accountName;
-  $values[] = $bankName;
   $values[] = $accountType;
   $values[] = $accountBalance;
   $values[] = $accountCurrency;

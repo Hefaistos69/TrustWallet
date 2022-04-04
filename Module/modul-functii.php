@@ -71,9 +71,6 @@ function ShowError()
     case 'invalidAccountName':
       $message = '◍ Numele contului este invalid! Folosește doar litere și numere (maxim 20 de caractere)!';
       break;
-    case 'invalidBankName':
-      $message = '◍ Numele băncii este invalid! Folosește doar litere și numere (maxim 20 de caractere)!';
-      break;
     case 'invalidAccountCurrency':
       $message = '◍ Valuta contului este invalidă!';
       break;

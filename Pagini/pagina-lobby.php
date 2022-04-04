@@ -15,6 +15,7 @@ if (!$userAccounts = QueryDatabase($conn, $query, $values)) {
 }
 
 //preluarea datelor contului activ (daca exista)
+
 if ($pagina == 'account' && isset($_GET['accountId'])) {
   $accountId = intval($_GET['accountId']);
   $query = "SELECT * FROM accounts WHERE accountId = ?;";
@@ -30,7 +31,8 @@ if ($pagina == 'account' && isset($_GET['accountId'])) {
     header("Location: ./?pagina=noaccess");
     die();
   }
-  $_SESSION['selectedCurrency'] = $accountData['accountCurrency'];
+  if (!isset($_SESSION['selectedCurrency']))
+    $_SESSION['selectedCurrency'] = $accountData['accountCurrency'];
 }
 
 //preluarea datelor userului activ
@@ -67,13 +69,13 @@ $userData = mysqli_fetch_assoc($result);
       <div class="text-secondary fs-5 mt-2 mb-4">Cont personal</div>
       <ul class="nav nav-tabs flex-column fs-5">
         <li class="nav-item">
-          <a class="nav-link <?= $pagina == 'lobby' ? 'active' : '' ?>" aria-current="page" href="Scripturi/script-mesaj.php"><i class="bi bi-speedometer2"></i> Acasă</a>
+          <a class="nav-link <?= $pagina == 'lobby' ? 'active' : '' ?>" aria-current="page" href="./?pagina=lobby"><i class="bi bi-speedometer2"></i> Acasă</a>
         </li>
         <li class="nav-item ">
-          <a class="nav-link" data-bs-toggle="collapse" href="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+          <a class="nav-link <?= $pagina == 'account' ? 'active' : '' ?>" data-bs-toggle="collapse" href="#collapseNav" aria-expanded="true" aria-controls="collapseNav">
             <i class="bi bi-bank2"></i> Conturi
           </a>
-          <div class="collapse bg-dark <?= $pagina == 'account' ? 'show' : '' ?>" id="collapseExample">
+          <div class="collapse bg-dark <?= $pagina == 'account' ? 'show' : '' ?>" id="collapseNav">
             <div class="card card-body">
               <?php
               while ($data = mysqli_fetch_assoc($userAccounts)) {
@@ -123,7 +125,7 @@ $userData = mysqli_fetch_assoc($result);
         if ($pagina == 'account') {
         ?>
           <div class="d-flex mx-2">
-            <button class="btn btn-outline-secondary me-2" type="button" data-bs-toggle="modal" data-bs-target="#editAccountModal"><i class="bi bi-pencil-fill"></i> Editează</button>
+            <button class="btn btn-outline-info me-2" type="button" data-bs-toggle="modal" data-bs-target="#editAccountModal"><i class="bi bi-pencil-fill"></i> Editează</button>
             <button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteAccountModal"><i class="bi bi-trash-fill"></i> Șterge</button>
           </div>
         <?php
@@ -141,6 +143,7 @@ $userData = mysqli_fetch_assoc($result);
         else
           header("Location: ./?pagina=404");
         ?>
+        
       </div>
     </div>
   </div>
@@ -165,12 +168,6 @@ $userData = mysqli_fetch_assoc($result);
               <input id="accountName" name="accountName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="10" placeholder="Numele contului">
             </div>
 
-            <div class="col-2">
-              <label for="bankName" class="form-label text-light fs-6">Nume bancă</label>
-            </div>
-            <div class="col-9 offset-1">
-              <input id="bankName" name="bankName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="20" placeholder="Numele băncii">
-            </div>
 
             <div class="col-2">
               <label for="accountType" class="form-label text-light fs-6">Tip cont</label>
@@ -222,26 +219,19 @@ $userData = mysqli_fetch_assoc($result);
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content text-info bg-dark">
       <div class="modal-header ">
-        <h5 class="modal-title" id="editModalLabel">Modifică contul <?=htmlspecialchars($accountData['accountName'])?></h5>        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="editModalLabel">Modifică contul <?= htmlspecialchars($accountData['accountName']) ?></h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form id="editAccountForm" action="Scripturi/script-edit-account.php" method="post" class="mx-5 mt-3">
-        <input type="hidden" name="editAccountForm">
+          <input type="hidden" name="editAccountForm">
 
-          <input type="hidden" name="accountId" value="<?=htmlspecialchars($accountData['accountId'])?>">
+          <input type="hidden" name="accountId" value="<?= htmlspecialchars($accountData['accountId']) ?>">
           <div class="row mb-4 g-3 align-items-center">
             <div class="col-2">
               <label for="accountName" class="form-label text-light fs-6">Nume cont</label>
             </div>
             <div class="col-9 offset-1">
-              <input value="<?=htmlspecialchars($accountData['accountName'])?>" id="accountName" name="accountName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="10" placeholder="Numele contului">
-            </div>
-
-            <div class="col-2">
-              <label for="bankName" class="form-label text-light fs-6">Nume bancă</label>
-            </div>
-            <div class="col-9 offset-1">
-              <input value="<?=htmlspecialchars($accountData['accountBank'])?>" id="bankName" name="bankName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="20" placeholder="Numele băncii">
+              <input value="<?= htmlspecialchars($accountData['accountName']) ?>" id="accountName" name="accountName" type="text" class="form-control text-light bg-dark border-secondary border-1" max="10" placeholder="Numele contului">
             </div>
 
             <div class="col-2">
@@ -249,9 +239,9 @@ $userData = mysqli_fetch_assoc($result);
             </div>
             <div class="col-9 offset-1">
               <select class="form-select text-light bg-dark border-secondary border-1" name="accountType" id="accountType">
-                <option <?=$accountData['accountType'] == 'Economie'? 'selected': ''?> value="Economie">Economie</option>
-                <option <?=$accountData['accountType'] == 'Salariu'? 'selected': ''?> value="Salariu">Salariu</option>
-                <option <?=$accountData['accountType'] == 'Credit'? 'selected': ''?> value="Credit">Credit</option>
+                <option <?= $accountData['accountType'] == 'Economie' ? 'selected' : '' ?> value="Economie">Economie</option>
+                <option <?= $accountData['accountType'] == 'Salariu' ? 'selected' : '' ?> value="Salariu">Salariu</option>
+                <option <?= $accountData['accountType'] == 'Credit' ? 'selected' : '' ?> value="Credit">Credit</option>
               </select>
             </div>
 
@@ -272,7 +262,7 @@ $userData = mysqli_fetch_assoc($result);
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-info bg-dark">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Ștergere cont <?=htmlspecialchars($accountData['accountName'])?></h5>
+        <h5 class="modal-title" id="deleteModalLabel">Ștergere cont <?= htmlspecialchars($accountData['accountName']) ?></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center">
@@ -286,12 +276,11 @@ $userData = mysqli_fetch_assoc($result);
       <div class="modal-footer">
         <div class="mx-auto">
           <?php
-          if(!isset($_GET['accountId']))
-          {
+          if (!isset($_GET['accountId'])) {
             $accountId = -1;
           }
           ?>
-          <a href="Scripturi/script-delete-account.php?accountId=<?=htmlspecialchars($accountId)?>" class="btn btn-outline-danger">Șterge</a>
+          <a href="Scripturi/script-delete-account.php?accountId=<?= htmlspecialchars($accountId) ?>" class="btn btn-outline-danger">Șterge</a>
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">Închide</button>
         </div>
       </div>

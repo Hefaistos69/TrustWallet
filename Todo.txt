@@ -1,4 +1,4 @@
--loading screen -done
--popover asyncron - almost
--forgot password
+-loading screen -done X
+-popover asyncron - almost X
+-forgot password -nope
 -verificare la logout

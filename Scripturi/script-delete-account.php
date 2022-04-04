@@ -11,6 +11,7 @@ if(isset($_GET['accountId']))
 
     if(QueryDatabase($conn, $query, $values))
     {
+        unset($_SESSION['selectedCurrency']);
         AddMessage("Contul a fost șters!", "warning");
     }
     else

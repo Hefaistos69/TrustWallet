@@ -60,6 +60,7 @@ if (!file_exists($fisier))
 
   <?php
   include_once "Module/modul-css.php";
+  include_once "Module/modul-js.php";
   ?>
   <title><?= htmlspecialchars($numePagina) ?></title>
 
@@ -71,7 +72,7 @@ if (!file_exists($fisier))
   //include 'Module/modul-loadingscreen.php';
   include $fisier;
 
-  include_once "Module/modul-js.php";
+  
   ShowMessages();
   ?>
 

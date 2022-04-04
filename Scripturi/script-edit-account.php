@@ -5,16 +5,15 @@ include "../Module/modul-functii.php";
 include "../Module/modul-db.php";
 
 if (
-    isset($_POST['accountName']) && isset($_POST['bankName']) && isset($_POST['accountType'])
+    isset($_POST['accountName']) && isset($_POST['accountType'])
     && isset($_POST['accountId'])
 ) {
     $accountId = intval($_POST['accountId']);
     $values[] = $_POST['accountName'];
-    $values[] = $_POST['bankName'];
     $values[] = $_POST['accountType'];
     $values[] = $_POST['accountId'];
     $query = "UPDATE accounts 
-              SET accountName = ?, accountBank = ?, accountType = ?
+              SET accountName = ?, accountType = ?
               WHERE accountId = ?;";
 
     if (QueryDatabase($conn, $query, $values)) {

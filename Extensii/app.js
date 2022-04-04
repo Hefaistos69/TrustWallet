@@ -1,9 +1,4 @@
-$(window).on("load", function () {
-    setTimeout(() => {
-        $('.loading-wrapper').fadeOut('slow');
-        ShowToasts();
-    }, 500);
-});
+
 
 function ShowToasts() {
     var toastElList = [].slice.call(document.querySelectorAll('.toast'))
@@ -18,32 +13,59 @@ function ChangeCurrency(value) {
         $("#spanSuma").html(value);
 }
 
-function ChangeCurrencyAccount(value, accountId)
-{   
+function ChangeCurrencyAccount(value, accountId) {
     if (value == "EUR" || value == "USD" || value == "RON")
         $("#dropdownMenuButton1").html(value);
-    let data = {'currency': value, 'accountId': accountId};
+    let data = { 'currency': value, 'accountId': accountId };
     $.ajax({
         type: "POST",
         url: "Ajax/ajax-get-account-data.php",
         data: data,
-        success: function(response){
+        success: function (response) {
             let result = JSON.parse(response);
-            console.log(result.success);
-            if(result.success == '1')
-            {
-                console.log('ok');
+            if (result.success == '1') {
+                let currentCurrency = '';
+                let currencyAmount = '';
+                switch (value) {
+                    case 'RON':
+                        currencyAmount = result.accountData.amountRON;
+                        currentCurrency = '<span class="fw-bolder ms-1"> lei</span>';
+                        break;
+                    case 'EUR':
+                        currencyAmount = result.accountData.amountEUR;
+                        currentCurrency = '<i class="bi bi-currency-euro"></i>';
+                        break;
+                    case 'USD':
+                        currencyAmount = result.accountData.amountUSD;
+                        currentCurrency = '<i class="bi bi-currency-dollar"></i>';
+                        break;
+                }
+
+                $('#accountBalance').html(currencyAmount);
+                $(".accountCurrency").html(currentCurrency);
             }
-            else
-            {
+            else {
                 console.log('not ok');
             }
         }
     });
 }
 
+function TransactionTypeForm(value)
+{
+    
+}
+
+$(window).on("load", function () {
+    $('.loading-wrapper').fadeOut('slow');
+    ShowToasts();
+
+});
 
 $(function () {
+    
+
+
     $('#addAccountForm').on("submit", function (event) {
         event.preventDefault();
         var data = $(this).serialize();
@@ -52,6 +74,7 @@ $(function () {
             url: "Ajax/ajax-validate-account.php",
             data: data,
             success: function (response) {
+                console.log(response);
                 var result = JSON.parse(response);
                 if (result.success == '1') {
                     event.currentTarget.submit();
@@ -64,7 +87,7 @@ $(function () {
 
             }
         });
-        
+
     });
     $('#editAccountForm').on("submit", function (event) {
         event.preventDefault();
@@ -86,7 +109,7 @@ $(function () {
 
             }
         });
-        
+
     })
 });
 
