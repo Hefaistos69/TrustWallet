@@ -8,14 +8,17 @@ function ShowToasts() {
     toastList.forEach(toast => toast.show());
 }
 
-function ChangeCurrency(value) {
-    if (value == "EUR" || value == "USD" || value == "RON")
-        $("#spanSuma").html(value);
+function ChangeCurrency(value, id, inputId = '') {
+    if (value == "EUR" || value == "USD" || value == "RON") {
+        $(id).html(value);
+        if (inputId != '') {
+            $(inputId).val(value);
+        }
+    }
 }
 
-function ChangeCurrencyAccount(value, accountId) {
-    if (value == "EUR" || value == "USD" || value == "RON")
-        $("#dropdownMenuButton1").html(value);
+function ChangeCurrencyAccount(value, accountId, itemId) {
+    ChangeCurrency(value, itemId);
     let data = { 'currency': value, 'accountId': accountId };
     $.ajax({
         type: "POST",
@@ -51,8 +54,11 @@ function ChangeCurrencyAccount(value, accountId) {
     });
 }
 
-function TransactionTypeForm(value)
-{
+function TransactionTypeSelect(value) {
+    if (value == 'Transfer') 
+        $('#transferToAccount').removeClass('d-none');
+    else
+        $('#transferToAccount').addClass('d-none');
     
 }
 
@@ -63,7 +69,7 @@ $(window).on("load", function () {
 });
 
 $(function () {
-    
+
 
 
     $('#addAccountForm').on("submit", function (event) {
