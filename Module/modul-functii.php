@@ -71,8 +71,8 @@ function ShowError()
     case 'invalidAccountName':
       $message = '◍ Numele contului este invalid! Folosește doar litere și numere (maxim 20 de caractere)!';
       break;
-    case 'invalidAccountCurrency':
-      $message = '◍ Valuta contului este invalidă!';
+    case 'invalidCurrency':
+      $message = '◍ Valuta este invalidă!';
       break;
     case 'invalidAccountType':
       $message = '◍ Tipul contului este invalid!';
@@ -82,6 +82,12 @@ function ShowError()
       break;
     case 'balanceOverflow':
       $message = '◍ Suma trebuie să fie între 0 și 999,999,999!';
+      break;
+    case 'invalidTransactionType':
+      $message = '◍ Tipul tranzacției este invalid!';
+      break;
+    case 'invalidMemo':
+      $message = '◍ Notița trebuie să conțină cel mult 20 de caractere!';
       break;
   }
 

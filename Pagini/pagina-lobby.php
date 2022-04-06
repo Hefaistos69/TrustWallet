@@ -164,7 +164,7 @@ $userData = mysqli_fetch_assoc($result);
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="addAccountForm" action="Scripturi/script-add-account.php" method="post" class="mx-5 mt-3">
+        <form id="createAccountForm" action="Scripturi/script-add-account.php" method="post" class="mx-5 mt-3">
           <input type="hidden" name="createAccountForm">
           <div class="row mb-4 g-3 align-items-center">
             <div class="col-2">
@@ -191,7 +191,7 @@ $userData = mysqli_fetch_assoc($result);
               <label for="accountCurrency" class="form-label text-light fs-6">Valuta</label>
             </div>
             <div class="col-9 offset-1">
-              <select onchange="ChangeCurrency(this.value, '#spanSuma')" class="form-select text-light bg-dark border-secondary border-1" name="accountCurrency" id="accountCurrency">
+              <select  onchange="ChangeCurrency(this.value, '#spanSuma')" class="form-select text-light bg-dark border-secondary border-1" name="accountCurrency" id="accountCurrency">
                 <option selected>Alege valuta contului</option>
                 <option value="USD">Dolar(USD)</option>
                 <option value="EUR">Euro(EUR)</option>

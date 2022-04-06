@@ -85,7 +85,15 @@
       <div class="collapse show" id="collapseAddTransaction">
         <div class="card card-body">
 
-          <form action="">
+          <div id="spinner" class="text-center  d-none  py-5">
+            <div class="spinner-border text-center text-success" style="width: 3rem; height: 3rem;" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text-secondary fs-6 mt-2">Te rugăm să aștepți procesarea tranzacției!</p>
+          </div>
+          <!-- <form id="addTransactionForm" action="Scripturi/script-add-transaction.php" method="POST"> -->
+          <form id="addTransactionForm" class="" method="POST">
+            <input type="hidden" name="addTransaction">
             <div class="ms-3 pb-3 me-4">
               <div class="d-flex py-2 align-items-center justify-content-between">
                 <div class="d-flex w-50">
@@ -154,6 +162,7 @@
                 <label for="transactionMemo" class="form-label text-info fs-5 me-2">Notiță</label>
                 <input id="transactionMemo" name="transactionMemo" type="text" class="form-control text-info bg-dark border-secondary border-1" placeholder="max. 20 de caractere">
               </div>
+              <div id="transactionErrorDiv"></div>
               <div class="text-end">
                 <button type="submit" class="btn btn-success">Adaugă</button>
               </div>

@@ -55,24 +55,15 @@ function ChangeCurrencyAccount(value, accountId, itemId) {
 }
 
 function TransactionTypeSelect(value) {
-    if (value == 'Transfer') 
+    if (value == 'Transfer')
         $('#transferToAccount').removeClass('d-none');
     else
         $('#transferToAccount').addClass('d-none');
-    
+
 }
 
-$(window).on("load", function () {
-    $('.loading-wrapper').fadeOut('slow');
-    ShowToasts();
-
-});
-
-$(function () {
-
-
-
-    $('#addAccountForm').on("submit", function (event) {
+function ValidateAjax(id, errorId) {
+    $(id).on("submit", function (event) {
         event.preventDefault();
         var data = $(this).serialize();
         $.ajax({
@@ -81,41 +72,57 @@ $(function () {
             data: data,
             success: function (response) {
                 console.log(response);
+
                 var result = JSON.parse(response);
                 if (result.success == '1') {
-                    event.currentTarget.submit();
+                    if (result.transaction == true) {
+                        $(id).addClass('d-none');
+                        $('#spinner').removeClass('d-none');
+                        setTimeout(() => {
+                            // $('#spinner').addClass('d-none');
+                            // $(id).removeClass('d-none');
+                            event.currentTarget.submit();
+                        }, Math.floor(Math.random() * 2500) + 1000);
+                    }
+                    else
+                        event.currentTarget.submit();
                 }
                 else if (result.success == '0') {
-
-                    $("#createErrorDiv").html(result.error);
+                    $(errorId).html(result.error);
 
                 }
 
             }
         });
-
     });
-    $('#editAccountForm').on("submit", function (event) {
-        event.preventDefault();
-        var data = $(this).serialize();
-        $.ajax({
-            type: "POST",
-            url: "Ajax/ajax-validate-account.php",
-            data: data,
-            success: function (response) {
-                var result = JSON.parse(response);
-                if (result.success == '1') {
-                    event.currentTarget.submit();
-                }
-                else if (result.success == '0') {
-                    console.log(result.error);
-                    $("#editErrorDiv").html(result.error);
 
-                }
+}
 
-            }
-        });
+$(window).on("load", function () {
+    $('.loading-wrapper').fadeOut('slow');
+    ShowToasts();
 
-    })
+});
+
+
+$(function () {
+
+    var forms = [
+        {
+            'formId': '#createAccountForm',
+            'errorId': '#createErrorDiv'
+        },
+        {
+            'formId': '#editAccountForm',
+            'errorId': '#editErrorDiv'
+        },
+        {
+            'formId': '#addTransactionForm',
+            'errorId': '#transactionErrorDiv'
+        }
+    ];
+    forms.forEach(element => {
+        ValidateAjax(element.formId, element.errorId);
+    });
 });
 
