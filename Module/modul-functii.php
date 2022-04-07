@@ -37,6 +37,11 @@ function GetOldValue()
   return htmlspecialchars($result);
 }
 
+function PrepareValues(...$values)
+{
+  return $values;
+}
+
 function ShowError()
 {
   if (!isset($_SESSION['error']))

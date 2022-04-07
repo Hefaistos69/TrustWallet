@@ -33,7 +33,7 @@
     <div class="card mx-2 bg-primary rounded-3">
       <div class="card-body">
 
-        <h3 class="fs-4 text-secondary mx-3 pt-2"><i class="bi bi-credit-card"></i> Cheltuieli lunare</h3>
+        <h3 class="fs-4 text-secondary mx-3 pt-2"><i class="bi bi-basket2"></i> Cheltuieli lunare</h3>
 
         <h1 class="text-danger mx-3 fw-lighter pb-4 d-flex">
           <div>0</div>
