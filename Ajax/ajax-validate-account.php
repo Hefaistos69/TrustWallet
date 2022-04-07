@@ -1,7 +1,7 @@
 <?php
 session_start();
 include "../Module/modul-functii.php";
-//validate the create form
+//validate the create account form
 
 if (isset($_POST['createAccountForm'])) {
     if (
@@ -54,7 +54,7 @@ if (isset($_POST['createAccountForm'])) {
     }
 }
 
-//validate the edit form 
+//validate the edit accountS form 
 if (isset($_POST['editAccountForm'])) {
     if (
         isset($_POST['accountName']) && isset($_POST['accountType'])

@@ -91,8 +91,8 @@
             </div>
             <p class="text-secondary fs-6 mt-2">Te rugăm să aștepți procesarea tranzacției!</p>
           </div>
-          <!-- <form id="addTransactionForm" action="Scripturi/script-add-transaction.php" method="POST"> -->
-          <form id="addTransactionForm" class="" method="POST">
+          <form id="addTransactionForm" action="Scripturi/script-add-transaction.php" method="POST">
+            <input type="hidden" name="accountId" value="<?=$accountId?>">
             <input type="hidden" name="addTransaction">
             <div class="ms-3 pb-3 me-4">
               <div class="d-flex py-2 align-items-center justify-content-between">
