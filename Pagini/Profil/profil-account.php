@@ -92,7 +92,7 @@
             <p class="text-secondary fs-6 mt-2">Te rugăm să aștepți procesarea tranzacției!</p>
           </div>
           <form id="addTransactionForm" action="Scripturi/script-add-transaction.php" method="POST">
-            <input type="hidden" name="accountId" value="<?=$accountId?>">
+            <input type="hidden" name="accountId" value="<?= $accountId ?>">
             <input type="hidden" name="addTransaction">
             <div class="ms-3 pb-3 me-4">
               <div class="d-flex py-2 align-items-center justify-content-between">
@@ -180,9 +180,14 @@
       <div class="d-flex justify-content-between pt-1">
         <h1 class="text-secondary fs-4 ms-2">Schimb valutar</h1>
 
-        <a class="text-decoration-none text-secondary fs-4" data-bs-toggle="collapse" href="#collapseAddTransaction" role="button" aria-expanded="true" aria-controls="collapseAddTransaction">
+        <a class="text-decoration-none text-secondary fs-4" data-bs-toggle="collapse" href="#collapseExchange" role="button" aria-expanded="true" aria-controls="collapseExchange">
           <i class="bi bi-caret-down-fill"></i>
         </a>
+      </div>
+      <div class="collapse show" id="collapseExchange">
+        <div class="card card-body h-100">
+          <p class="text-info">sal</p>
+        </div>
       </div>
     </div>
   </div>
@@ -190,8 +195,39 @@
 
 </div>
 
+<div class=" bg-primary p-3 m-3 rounded-3">
+  <div class="d-flex justify-content-between pt-1">
+    <h1 class="text-secondary fs-4">Tranzacții</h1>
 
+    <a class="text-decoration-none text-secondary fs-4" data-bs-toggle="collapse" href="#collapseTransactionTable" role="button" aria-expanded="true" aria-controls="collapseTransactionTable">
+      <i class="bi bi-caret-down-fill"></i>
+    </a>
+  </div>
+
+  <div class="collapse show" id="collapseTransactionTable">
+    <div class="card card-body">
+      <div id="noTransactions" class="text-warning d-none text-center">Nu există nicio tranzacție!</div>
+      <table id="transactionTable" class="table table-hover">
+        <thead class="text-info border-bottom ">
+          <tr>
+            <th scope="col">Suma</th>
+            <th scope="col">Notiță</th>
+            <th scope="col">Data</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody id="transactionTableBody" class="text-secondary">
+
+        </tbody>
+        <tfoot>
+          <tr></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
 
 <script>
+  GetTransactionsAjax(<?= $accountId ?>);
   ChangeCurrencyAccount('<?= $accountData['accountCurrency'] ?>', <?= $accountId ?>, '#soldValutaDropdown')
 </script>

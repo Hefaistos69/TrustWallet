@@ -47,6 +47,10 @@ $nav-tabs-link-active-bg: #00000023;
 $nav-tabs-link-active-border-color: transparent transparent transparent $success;
 $nav-tabs-link-hover-border-color: transparent transparent transparent $success;
 $nav-tabs-border-color: transparent;
+$border-color: rgba($secondary, 0.3);
+$table-color: $info;
+$table-border-width: 1px;
+$table-group-separator-color: $dark;
 
 
 // 3. Include remainder of required Bootstrap stylesheets
@@ -75,6 +79,7 @@ $nav-tabs-border-color: transparent;
 @import "../node_modules/bootstrap/scss/modal";
 @import "../node_modules/bootstrap/scss/dropdown";
 @import "../node_modules/bootstrap/scss/spinners";
+@import "../node_modules/bootstrap/scss/tables";
 // @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
 

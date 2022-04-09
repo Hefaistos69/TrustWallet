@@ -17,41 +17,55 @@ function ChangeCurrency(value, id, inputId = '') {
     }
 }
 
-function ChangeCurrencyAccount(value, accountId, itemId) {
-    ChangeCurrency(value, itemId);
-    let data = { 'currency': value, 'accountId': accountId };
-    $.ajax({
+async function GetAccountDataAjax(data) {
+
+    var result;
+    await $.ajax({
         type: "POST",
         url: "Ajax/ajax-get-account-data.php",
         data: data,
         success: function (response) {
-            let result = JSON.parse(response);
-            if (result.success == '1') {
-                let currentCurrency = '';
-                let currencyAmount = '';
-                switch (value) {
-                    case 'RON':
-                        currencyAmount = result.accountData.amountRON;
-                        currentCurrency = '<span class="fw-bolder ms-1"> lei</span>';
-                        break;
-                    case 'EUR':
-                        currencyAmount = result.accountData.amountEUR;
-                        currentCurrency = '<i class="bi bi-currency-euro"></i>';
-                        break;
-                    case 'USD':
-                        currencyAmount = result.accountData.amountUSD;
-                        currentCurrency = '<i class="bi bi-currency-dollar"></i>';
-                        break;
-                }
-
-                $('#accountBalance').html(currencyAmount);
-                $(".accountCurrency").html(currentCurrency);
-            }
-            else {
-                console.log('not ok');
-            }
+            result = JSON.parse(response);
         }
     });
+
+    if (result.success == '1')
+        return result.accountData;
+    else
+        return false;
+
+}
+
+async function ChangeCurrencyAccount(value, accountId, itemId) {
+    ChangeCurrency(value, itemId);
+    let data = { 'currency': value, 'accountId': accountId };
+    let accountData = await GetAccountDataAjax(data);
+
+    if (accountData !== false) {
+        let currentCurrency = '';
+        let currencyAmount = '';
+        switch (value) {
+            case 'RON':
+                currencyAmount = accountData.amountRON;
+                currentCurrency = '<span class="fw-bolder ms-1"> lei</span>';
+                break;
+            case 'EUR':
+                currencyAmount = accountData.amountEUR;
+                currentCurrency = '<i class="bi bi-currency-euro"></i>';
+                break;
+            case 'USD':
+                currencyAmount = accountData.amountUSD;
+                currentCurrency = '<i class="bi bi-currency-dollar"></i>';
+                break;
+        }
+
+        $('#accountBalance').html(currencyAmount);
+        $(".accountCurrency").html(currentCurrency);
+    }
+    else {
+        console.log('not ok');
+    }
+
 }
 
 function TransactionTypeSelect(value) {
@@ -71,7 +85,6 @@ function ValidateAjax(id, errorId) {
             url: "Ajax/ajax-validate-account.php",
             data: data,
             success: function (response) {
-                console.log(response);
 
                 var result = JSON.parse(response);
                 if (result.success == '1') {
@@ -96,6 +109,65 @@ function ValidateAjax(id, errorId) {
         });
     });
 
+}
+
+function ShowTransactionTable(data, accountId) {
+    var T = '';
+    data.forEach(element => {
+        if (element != null) {
+            T += `
+        <tr >
+            <td class="fw-bold text-${element.transactionType == 'Depunere' ? 'success' : element.transactionType == 'Cheltuire' ? 'danger' : 'warning'}">
+            ${element.transactionType == 'Transfer' ? element.transferToAccount == accountId ? '<i class="bi bi-arrow-down-left"></i>' : '<i class="bi bi-arrow-up-right"></i>' : ''}
+            ${element.transactionBalance}
+            ${element.transactionCurrency == 'USD' ? '<i class="bi bi-currency-dollar"></i>' : element.transactionCurrency == 'EUR' ? '<i class="bi bi-currency-euro"></i>' : ' lei'}
+            </td>
+            <td>
+                <div  class="d-flex flex-column">
+                    <div class="text-info">
+                    ${element.transactionMemo}  
+                    </div>
+                    <div>
+                        ${element.transactionType}>
+                    </div>
+                </div>
+            </td>
+            <td class="text-info">${element.transactionDate}</td>
+            <td></td>
+        </tr>`;
+        }
+    });
+    if (T != '') {
+        $('#transactionTable').removeClass('d-none');
+        if (!$('#noTransactions').hasClass('d-none')) {
+            $('#noTransactions').addClass('d-none');
+        }
+
+        $('#transactionTableBody').html(T);
+    }
+    else {
+        if (!$('#transactionTable').hasClass('d-none')) {
+            $('#transactionTable').addClass('d-none');
+        }
+        $('#noTransactions').removeClass('d-none');
+    }
+}
+
+function GetTransactionsAjax(accountId) {
+    var data = {
+        'accountId': accountId,
+    };
+    $.ajax({
+        type: "POST",
+        url: "Ajax/ajax-get-transactions-data.php",
+        data: data,
+        success: function (response) {
+            result = JSON.parse(response);
+            if (result.success == 1) {
+                ShowTransactionTable(result.data, accountId);
+            }
+        }
+    });
 }
 
 $(window).on("load", function () {

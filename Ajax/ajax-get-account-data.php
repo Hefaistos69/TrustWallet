@@ -3,9 +3,10 @@ session_start();
 include "../Module/modul-functii.php";
 include "../Module/modul-db.php";
 
-if(isset($_POST['currency']) && isset($_POST['accountId'])){
+if(isset($_POST['accountId'])){
   
-  $_SESSION['selectedCurrency'] = $_POST['currency'];
+  if(isset($_POST['currency']))
+    $_SESSION['selectedCurrency'] = $_POST['currency'];
   $accountId = $_POST['accountId'];
   $query = "SELECT * FROM accounts WHERE accountId = ?;";
   $values = [];
