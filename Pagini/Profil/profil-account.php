@@ -1,3 +1,15 @@
+<?php
+  if(!isset($_SESSION['numRows'])){
+    $_SESSION['numRows'] = 5;
+    ?>
+    <script>
+    console.log(<?=$_SESSION['numRows']?>);
+</script>
+<?php
+  }
+?>
+
+
 <div class="row row-cols-1 row-cols-md-4 g-2 p-2">
 
   <div class="col">
@@ -207,22 +219,33 @@
   <div class="collapse show" id="collapseTransactionTable">
     <div class="card card-body">
       <div id="noTransactions" class="text-warning d-none text-center">Nu există nicio tranzacție!</div>
-      <table id="transactionTable" class="table table-hover">
-        <thead class="text-info border-bottom ">
-          <tr>
-            <th scope="col">Suma</th>
-            <th scope="col">Notiță</th>
-            <th scope="col">Data</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody id="transactionTableBody" class="text-secondary">
+      <div id="transactionTable">
+        <div class="d-flex align-items-center mx-2 mb-2">
+          <label for="rows" class="form-label text-info fs-5 me-2">Numărul de tranzacții</label>
+          <select onchange="ShowTransactionTable(transactionsData, <?=$accountId?>, this.value)" id="rows" class="form-select  text-info bg-dark border-secondary border-1 w-auto">
+            <option <?=$_SESSION['numRows'] == 5? 'selected': ''?> value="5">5</option>
+            <option <?=$_SESSION['numRows'] == 10? 'selected': ''?> value="10">10</option>
+            <option <?=$_SESSION['numRows'] == 15? 'selected': ''?> value="15">15</option>
+            <option <?=$_SESSION['numRows'] == 20? 'selected': ''?> value="20">20</option>
+          </select>
+        </div>
+        <table class="table table-hover">
+          <thead class="text-info border-bottom ">
+            <tr>
+              <th scope="col">Suma</th>
+              <th scope="col">Notiță</th>
+              <th scope="col">Data</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody id="transactionTableBody" class="text-secondary">
 
-        </tbody>
-        <tfoot>
-          <tr></tr>
-        </tfoot>
-      </table>
+          </tbody>
+          <tfoot>
+            <tr></tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
   </div>
 </div>

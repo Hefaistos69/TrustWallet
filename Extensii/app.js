@@ -1,4 +1,4 @@
-
+var transactionsData;
 
 function ShowToasts() {
     var toastElList = [].slice.call(document.querySelectorAll('.toast'))
@@ -92,8 +92,6 @@ function ValidateAjax(id, errorId) {
                         $(id).addClass('d-none');
                         $('#spinner').removeClass('d-none');
                         setTimeout(() => {
-                            // $('#spinner').addClass('d-none');
-                            // $(id).removeClass('d-none');
                             event.currentTarget.submit();
                         }, Math.floor(Math.random() * 2500) + 1000);
                     }
@@ -111,9 +109,17 @@ function ValidateAjax(id, errorId) {
 
 }
 
-function ShowTransactionTable(data, accountId) {
+function ShowTransactionTable(data, accountId, rows) {
+    $.ajax({
+        type: 'POST',
+        data: {'rows': rows},
+        url: 'Ajax/ajax-session-rows.php'
+    });
     var T = '';
-    data.forEach(element => {
+    for(let element of data){
+        if(rows <= 0)
+            break;
+        rows--;
         if (element != null) {
             T += `
         <tr >
@@ -128,7 +134,7 @@ function ShowTransactionTable(data, accountId) {
                     ${element.transactionMemo}  
                     </div>
                     <div>
-                        ${element.transactionType}>
+                        ${element.transactionType}
                     </div>
                 </div>
             </td>
@@ -136,7 +142,7 @@ function ShowTransactionTable(data, accountId) {
             <td></td>
         </tr>`;
         }
-    });
+    };
     if (T != '') {
         $('#transactionTable').removeClass('d-none');
         if (!$('#noTransactions').hasClass('d-none')) {
@@ -164,7 +170,12 @@ function GetTransactionsAjax(accountId) {
         success: function (response) {
             result = JSON.parse(response);
             if (result.success == 1) {
-                ShowTransactionTable(result.data, accountId);
+                ShowTransactionTable(result.data, accountId, $('#rows').val());
+                transactionsData = result.data;
+            }
+            else
+            {
+
             }
         }
     });
