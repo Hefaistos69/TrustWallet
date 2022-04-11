@@ -1,5 +1,4 @@
 <?php
-  session_start();
   unset($_SESSION['selectedCurrency']);
 ?>
 <div class="row row-cols-1 row-cols-md-3 g-4 p-4">

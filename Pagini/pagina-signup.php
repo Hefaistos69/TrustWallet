@@ -59,7 +59,7 @@ if (isset($_SESSION['error'])) {
                 <?= ShowError() ?>
                 <div class="d-grid gap-2 d-lg-flex justify-content-xl-end mb-1">
 
-                  <button class="mx-1 btn btn-success btn text-light" type="submit">Înregistrare</button>
+                  <button class="mx-1 btn btn-outline-success" type="submit">Înregistrare</button>
                 </div>
                 <div class="d-flex flex-column mb-5">
                   <p class="fs-5 text-light mb-0">Ai cont? <a class="text-success fs-5 text-decoration-none" href="./?pagina=login">Autentifică-te</a></p>

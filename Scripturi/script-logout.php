@@ -4,7 +4,7 @@ include "../Module/modul-functii.php";
 
 if(Loggedin())
 {
-  unset($_SESSION['userId']);
+  session_unset();
 }
 AddMessage("Te-ai deconectat cu succes!", "success");
 

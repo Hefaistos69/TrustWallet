@@ -4,3 +4,9 @@
 -verificare la logout X
 
 -adaugare tranzactie accountId vulnerabil
+
+-edit/delete transaction
+-delete account => delete transactions
+-order transactions
+-search transactions
+-exchange

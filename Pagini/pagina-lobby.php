@@ -212,7 +212,7 @@ $userData = mysqli_fetch_assoc($result);
           </div>
           <div id="createErrorDiv"></div>
           <div class="float-end mb-3">
-            <button type="submit" class="btn btn-success text-light">Salvează</button>
+            <button type="submit" class="btn btn-outline-success">Salvează</button>
           </div>
         </form>
       </div>
@@ -254,7 +254,7 @@ $userData = mysqli_fetch_assoc($result);
           </div>
           <div id="editErrorDiv"></div>
           <div class="float-end mb-3">
-            <button type="submit" class="btn btn-success text-light">Salvează</button>
+            <button type="submit" class="btn btn-outline-success">Salvează</button>
           </div>
         </form>
       </div>

@@ -1,5 +1,14 @@
+/////////////
+//VARIABLES//
+/////////////
+
 var transactionsData;
 
+/////////////
+//FUNCTIONS//
+/////////////
+
+//HTML RELATED
 function ShowToasts() {
     var toastElList = [].slice.call(document.querySelectorAll('.toast'))
     var toastList = toastElList.map(function (toastEl) {
@@ -17,23 +26,11 @@ function ChangeCurrency(value, id, inputId = '') {
     }
 }
 
-async function GetAccountDataAjax(data) {
+function SelectTransactions(value) {
+    switch (value) {
+        case 'Toate':
 
-    var result;
-    await $.ajax({
-        type: "POST",
-        url: "Ajax/ajax-get-account-data.php",
-        data: data,
-        success: function (response) {
-            result = JSON.parse(response);
-        }
-    });
-
-    if (result.success == '1')
-        return result.accountData;
-    else
-        return false;
-
+    }
 }
 
 async function ChangeCurrencyAccount(value, accountId, itemId) {
@@ -76,6 +73,48 @@ function TransactionTypeSelect(value) {
 
 }
 
+function ChangeActiveTransactionType(value) {
+    let id = '';
+    for(let element of ['#btnDepunere', '#btnCheltuire', '#btnTransfer', '#btnToate'])
+        $(element).removeClass('active');
+    switch (value) {
+        case 'Depunere':
+            id = '#btnDepunere';
+            break;
+        case 'Cheltuire':
+            id = '#btnCheltuire';
+            break;
+        case 'Transfer':
+            id = '#btnTransfer';
+            break;
+        default:
+            id = '#btnToate';
+    }
+    $(id).addClass('active');
+}
+
+
+//AJAX RELATED
+
+async function GetAccountDataAjax(data) {
+
+    var result;
+    await $.ajax({
+        type: "POST",
+        url: "Ajax/ajax-get-account-data.php",
+        data: data,
+        success: function (response) {
+            result = JSON.parse(response);
+        }
+    });
+
+    if (result.success == '1')
+        return result.accountData;
+    else
+        return false;
+
+}
+
 function ValidateAjax(id, errorId) {
     $(id).on("submit", function (event) {
         event.preventDefault();
@@ -112,12 +151,12 @@ function ValidateAjax(id, errorId) {
 function ShowTransactionTable(data, accountId, rows) {
     $.ajax({
         type: 'POST',
-        data: {'rows': rows},
+        data: { 'rows': rows },
         url: 'Ajax/ajax-session-rows.php'
     });
     var T = '';
-    for(let element of data){
-        if(rows <= 0)
+    for (let element of data) {
+        if (rows <= 0)
             break;
         rows--;
         if (element != null) {
@@ -159,9 +198,12 @@ function ShowTransactionTable(data, accountId, rows) {
     }
 }
 
-function GetTransactionsAjax(accountId) {
+
+function GetTransactionsAjax(accountId, transactionType = 'Toate') {
+    ChangeActiveTransactionType(transactionType);
     var data = {
         'accountId': accountId,
+        'transactionType': transactionType
     };
     $.ajax({
         type: "POST",
@@ -173,13 +215,17 @@ function GetTransactionsAjax(accountId) {
                 ShowTransactionTable(result.data, accountId, $('#rows').val());
                 transactionsData = result.data;
             }
-            else
-            {
-
+            else {
+                console.log(result.error);
             }
         }
     });
 }
+
+
+///////////////////
+//CODE TO EXECUTE//
+///////////////////
 
 $(window).on("load", function () {
     $('.loading-wrapper').fadeOut('slow');
