@@ -45,7 +45,7 @@ if(!isset($_SESSION['transactionType']))
         <h3 class="fs-4 text-secondary mx-3 pt-2"><i class="bi bi-basket2"></i> Cheltuieli lunare</h3>
 
         <h1 class="text-danger mx-3 fw-lighter pb-4 d-flex">
-          <div>0</div>
+          <div id="MonthlySpendings">0</div>
           <div class="accountCurrency"></div>
         </h1>
       </div>
@@ -59,7 +59,7 @@ if(!isset($_SESSION['transactionType']))
         <h3 class="fs-4 text-secondary mx-3 pt-2"><i class="bi bi-cash-coin"></i> Venituri lunare</h3>
 
         <h1 class="text-success mx-3 fw-lighter pb-4 d-flex">
-          <div>0</div>
+          <div id="MonthlyDeposits">0</div>
           <div class="accountCurrency"></div>
         </h1>
       </div>
@@ -73,7 +73,7 @@ if(!isset($_SESSION['transactionType']))
         <h3 class="fs-4 text-secondary mx-3 pt-2"><i class="bi bi-arrow-left-right"></i> Tranzacții lunare</h3>
 
         <h1 class="text-warning mx-3 fw-lighter pb-4">
-          <div>0</div>
+          <div id="MonthlyTransactions">0</div>
         </h1>
       </div>
     </div>
@@ -258,6 +258,5 @@ if(!isset($_SESSION['transactionType']))
 </div>
 
 <script>
-  GetTransactionsAjax(<?= $accountId ?>, '<?=$_SESSION['transactionType']?>');
-  ChangeCurrencyAccount('<?= $accountData['accountCurrency'] ?>', <?= $accountId ?>, '#soldValutaDropdown')
+  ProfileAccontFunctionsAsync(<?= $accountId ?>, '<?= $accountData['accountCurrency'] ?>', '<?=$_SESSION['transactionType']?>', '#soldValutaDropdown');
 </script>

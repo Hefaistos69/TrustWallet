@@ -3,6 +3,7 @@
 /////////////
 
 var transactionsData;
+var monthlyDeposits, monthlySpendings, monthlyTransactions;
 
 /////////////
 //FUNCTIONS//
@@ -18,6 +19,7 @@ function ShowToasts() {
 }
 
 function ChangeCurrency(value, id, inputId = '') {
+    ShowMonthlyData(value);
     if (value == "EUR" || value == "USD" || value == "RON") {
         $(id).html(value);
         if (inputId != '') {
@@ -26,14 +28,9 @@ function ChangeCurrency(value, id, inputId = '') {
     }
 }
 
-function SelectTransactions(value) {
-    switch (value) {
-        case 'Toate':
-
-    }
-}
 
 async function ChangeCurrencyAccount(value, accountId, itemId) {
+
     ChangeCurrency(value, itemId);
     let data = { 'currency': value, 'accountId': accountId };
     let accountData = await GetAccountDataAjax(data);
@@ -75,7 +72,7 @@ function TransactionTypeSelect(value) {
 
 function ChangeActiveTransactionType(value) {
     let id = '';
-    for(let element of ['#btnDepunere', '#btnCheltuire', '#btnTransfer', '#btnToate'])
+    for (let element of ['#btnDepunere', '#btnCheltuire', '#btnTransfer', '#btnToate'])
         $(element).removeClass('active');
     switch (value) {
         case 'Depunere':
@@ -93,8 +90,43 @@ function ChangeActiveTransactionType(value) {
     $(id).addClass('active');
 }
 
+function ShowMonthlyData(currency)
+{
+    
+    let spendings, deposits;
+    switch (currency) {
+        case 'USD':
+            spendings = monthlySpendings['USD'];
+            deposits = monthlyDeposits['USD'];
+            break;
+        case 'RON':
+            spendings = monthlySpendings['RON'];
+            deposits = monthlyDeposits['RON'];
+            break;
+        case 'EUR':
+            spendings = monthlySpendings['EUR'];
+            deposits = monthlyDeposits['EUR'];
+            break;
+    }
+    $('#MonthlyDeposits').html(deposits.toFixed(2));
+    $('#MonthlySpendings').html(spendings.toFixed(2));
+    $('#MonthlyTransactions').html(monthlyTransactions);
+}
+
 
 //AJAX RELATED
+
+async function GetCurrentMonthTransactions(accountId) {
+    await $.ajax({
+        type: 'POST',
+        data: { 'accountId': accountId },
+        url: 'Ajax/ajax-get-transactions-data.php',
+        success: function (response) {
+            let result = JSON.parse(response);
+            ChangeMonthlyData(accountId, result.data);
+        }
+    });
+}
 
 async function GetAccountDataAjax(data) {
 
@@ -222,6 +254,43 @@ function GetTransactionsAjax(accountId, transactionType = 'Toate') {
     });
 }
 
+//RANDOM FUNCTIONS
+
+function ChangeMonthlyData(accountId, data) {
+
+
+    let transactions = data.length - 1;
+    let deposits = { 'USD': 0, 'RON': 0, 'EUR': 0 };
+    let spendings = { 'USD': 0, 'RON': 0, 'EUR': 0 };
+    for (let element of data) {
+        if (element === null)
+            break;
+        switch (element.transactionType) {
+            case 'Depunere':
+                deposits[element.transactionCurrency] += parseFloat(element.transactionBalance);
+                break;
+            case 'Cheltuire':
+                spendings[element.transactionCurrency] += parseFloat(element.transactionBalance);
+                break;
+            case 'Transfer':
+                if (accountId == element.accountId)
+                    spendings[element.transactionCurrency] += parseFloat(element.transactionBalance);
+                else
+                    deposits[element.transactionCurrency] += parseFloat(element.transactionBalance);
+                break;
+        }
+    }
+    monthlyDeposits = deposits;
+    monthlySpendings = spendings;
+    monthlyTransactions = transactions;
+}
+
+async function ProfileAccontFunctionsAsync(accountId, accountCurrency, transactionType, itemId){
+    await GetCurrentMonthTransactions(accountId);
+    //ShowMonthlyData(accountCurrency);
+    GetTransactionsAjax(accountId, transactionType);
+    ChangeCurrencyAccount(accountCurrency, accountId, itemId)
+}
 
 ///////////////////
 //CODE TO EXECUTE//
