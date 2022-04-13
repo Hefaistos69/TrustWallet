@@ -287,7 +287,6 @@ function ChangeMonthlyData(accountId, data) {
 
 async function ProfileAccontFunctionsAsync(accountId, accountCurrency, transactionType, itemId){
     await GetCurrentMonthTransactions(accountId);
-    //ShowMonthlyData(accountCurrency);
     GetTransactionsAjax(accountId, transactionType);
     ChangeCurrencyAccount(accountCurrency, accountId, itemId)
 }

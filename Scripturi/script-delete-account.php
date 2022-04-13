@@ -21,12 +21,16 @@ if(isset($_GET['accountId']))
     }
 
     //delete the transactions
-    $query = "DELETE FROM transactions WHERE accountId = ? AND transactionType != 'Transfer';";
-    if(!QueryDatabase($conn, $query, $values))
+    $query = " DELETE FROM transactions
+    WHERE accountId NOT IN (
+      SELECT accountId FROM accounts
+    ) AND transferToAccount NOT IN(
+      SELECT accountId FROM accounts
+    );";
+    if(!QueryDatabase($conn, $query))
     {
         AddMessage("A apărut o eroare la ștergere!", "danger"); 
     }
-    //$query = " transactionType = ''"
 }
 else
 {

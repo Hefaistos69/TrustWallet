@@ -105,17 +105,17 @@ function AddMessage($text, $type)
 {
   if (!isset($_SESSION['messages']))
     $_SESSION['messages'] = [];
-    $icon = '';
-    switch($type){
-      case 'danger':
-        $icon = '<i class="bi bi-x-circle"></i>';
-        break;
-      case 'warning':
-        $icon = '<i class="bi bi-exclamation-triangle"></i>';
-        break;
-      case 'success':
-        $icon = '<i class="bi bi-check-circle"></i>';
-    }
+  $icon = '';
+  switch ($type) {
+    case 'danger':
+      $icon = '<i class="bi bi-x-circle"></i>';
+      break;
+    case 'warning':
+      $icon = '<i class="bi bi-exclamation-triangle"></i>';
+      break;
+    case 'success':
+      $icon = '<i class="bi bi-check-circle"></i>';
+  }
   $message = [
     'text' => $text,
     'type' => $type,
@@ -139,8 +139,8 @@ function ShowMessages()
           <div class="d-flex p-2 ">
             <div class="toast-body ">
               <div class="d-flex justify-content-center align-items-center">
-                <div class="mx-2 fs-2"><?=$message['icon']?></div>
-                <div class="fs-6"><?=$message['text']?></div>
+                <div class="mx-2 fs-2"><?= $message['icon'] ?></div>
+                <div class="fs-6"><?= $message['text'] ?></div>
               </div>
             </div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -156,7 +156,7 @@ function ShowMessages()
   unset($_SESSION['messages']);
 }
 
-function QueryDatabase($conn, $query, $values)
+function QueryDatabase($conn, $query, $values = array())
 {
   $valueString = "";
   foreach ($values as $value) {
@@ -173,14 +173,16 @@ function QueryDatabase($conn, $query, $values)
     return false;
   }
 
-  if (!mysqli_stmt_bind_param($stmt, $valueString, ...$values)) {
-    //error
-    // AddMessage("binding", "danger");
-    // header("location: ../");
-    // die();
-    return false;
-  }
-
+  if (!empty($values)) {
+    if (!mysqli_stmt_bind_param($stmt, $valueString, ...$values)) {
+      //error
+      // AddMessage("binding", "danger");
+      // header("location: ../");
+      // die();
+      return false;
+    }
+  } 
+  
   if (!mysqli_stmt_execute($stmt)) {
     //error
     // AddMessage("execute", "danger");
@@ -204,12 +206,11 @@ function QueryDatabase($conn, $query, $values)
 function EmptyInput(...$values)
 {
   $result = false;
-  foreach($values as $value)
-  {
-    if(empty($value))
+  foreach ($values as $value) {
+    if (empty($value))
       $result = true;
   }
-  
+
   return $result;
 }
 
@@ -218,9 +219,9 @@ function InvalidUsername($username)
   $result = true;
   if (!preg_match("/^[a-zA-Z0-9]*$/", $username)) {
     $result = true;
-  } else if(strlen($username) > 20){
+  } else if (strlen($username) > 20) {
     $result = true;
-  }else{
+  } else {
     $result = false;
   }
   return $result;
