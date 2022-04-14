@@ -193,7 +193,7 @@ function ShowTransactionTable(data, accountId, rows) {
         rows--;
         if (element != null) {
             T += `
-        <tr >
+        <tr id="transaction-${element.transactionId}">
             <td class="fw-bold text-${element.transactionType == 'Depunere' ? 'success' : element.transactionType == 'Cheltuire' ? 'danger' : 'warning'}">
             ${element.transactionType == 'Transfer' ? element.transferToAccount == accountId ? '<i class="bi bi-arrow-down-left"></i>' : '<i class="bi bi-arrow-up-right"></i>' : ''}
             ${element.transactionBalance}

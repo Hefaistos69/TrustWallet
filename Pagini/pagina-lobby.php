@@ -15,8 +15,7 @@ if (!$resultAccounts = QueryDatabase($conn, $query, $values)) {
 }
 
 $userAccounts = [];
-while($data = mysqli_fetch_assoc($resultAccounts))
-{
+while ($data = mysqli_fetch_assoc($resultAccounts)) {
   $userAccounts[] = $data;
 }
 
@@ -84,7 +83,7 @@ $userData = mysqli_fetch_assoc($result);
           <div class="collapse bg-dark <?= $pagina == 'account' ? 'show' : '' ?>" id="collapseNav">
             <div class="card card-body">
               <?php
-              foreach($userAccounts as $userAccount) {
+              foreach ($userAccounts as $userAccount) {
               ?>
                 <a class="nav-link <?= $pagina == 'account' ? ($accountData['accountId'] == $userAccount['accountId'] ? 'active' : '') : '' ?>" href="./?pagina=account&accountId=<?= htmlspecialchars($userAccount['accountId']) ?>">
                   <?php
@@ -149,7 +148,7 @@ $userData = mysqli_fetch_assoc($result);
         else
           header("Location: ./?pagina=404");
         ?>
-        
+
       </div>
     </div>
   </div>
@@ -191,7 +190,7 @@ $userData = mysqli_fetch_assoc($result);
               <label for="accountCurrency" class="form-label text-light fs-6">Valuta</label>
             </div>
             <div class="col-9 offset-1">
-              <select  onchange="ChangeCurrency(this.value, '#spanSuma')" class="form-select text-light bg-dark border-secondary border-1" name="accountCurrency" id="accountCurrency">
+              <select onchange="ChangeCurrency(this.value, '#spanSuma')" class="form-select text-light bg-dark border-secondary border-1" name="accountCurrency" id="accountCurrency">
                 <option selected>Alege valuta contului</option>
                 <option value="USD">Dolar(USD)</option>
                 <option value="EUR">Euro(EUR)</option>
