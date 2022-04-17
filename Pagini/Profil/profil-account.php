@@ -242,7 +242,7 @@ if(!isset($_SESSION['transactionType']))
               <th scope="col">Suma</th>
               <th scope="col">Notiță</th>
               <th scope="col">Data</th>
-              <th scope="col"></th>
+              <th colspan="4" scope="col"></th>
             </tr>
           </thead>
           <tbody id="transactionTableBody" class="text-secondary">

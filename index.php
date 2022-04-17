@@ -42,7 +42,7 @@ if ($pagina == '') {
   }
 }
 
-if(!isset($fisier)) 
+if (!isset($fisier))
   $fisier = "Pagini/pagina-{$pagina}.php";
 
 if (!file_exists($fisier))
@@ -72,9 +72,12 @@ if (!file_exists($fisier))
   //include 'Module/modul-loadingscreen.php';
   include $fisier;
 
-  
-  ShowMessages();
   ?>
+  <div id="messages" class="toast-container position-fixed m-3 top-0 end-0">
+    <?php
+    ShowMessages();
+    ?>
+  </div>
 
 </body>
 

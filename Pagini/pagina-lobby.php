@@ -263,7 +263,7 @@ $userData = mysqli_fetch_assoc($result);
 </div>
 
 
-<!-- Modal Delete -->
+<!-- Modal Delete Account-->
 <div class="modal fade" id="deleteAccountModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-info bg-dark">

@@ -8,6 +8,20 @@ function Loggedin()
   return false;
 }
 
+function CurrencyToAmount($value)
+{
+  switch ($value) {
+    case 'USD':
+      return 'amountUSD';
+    case 'EUR':
+      return 'amountEUR';
+    case 'RON':
+      return 'amountRON';
+    default:
+      return false;
+  }
+}
+
 function SetOldValues(...$data)
 {
   foreach ($data as $element) {
@@ -128,31 +142,25 @@ function ShowMessages()
 {
   if (!isset($_SESSION['messages']))
     return;
+  foreach ($_SESSION['messages'] as $message) {
 ?>
-  <div class="toast-container position-fixed m-3 top-0 end-0">
-    <?php
-    foreach ($_SESSION['messages'] as $message) {
-    ?>
-      <div class="toast shadow text-light bg-<?= $message['type'] ?> border-0" role="alert" style="z-index: 1990;">
+    <div class="toast shadow text-light bg-<?= $message['type'] ?> border-0" role="alert" style="z-index: 1990;">
 
-        <div class="timer-animation">
-          <div class="d-flex p-2 ">
-            <div class="toast-body ">
-              <div class="d-flex justify-content-center align-items-center">
-                <div class="mx-2 fs-2"><?= $message['icon'] ?></div>
-                <div class="fs-6"><?= $message['text'] ?></div>
-              </div>
+      <div class="timer-animation">
+        <div class="d-flex p-2 ">
+          <div class="toast-body ">
+            <div class="d-flex justify-content-center align-items-center">
+              <div class="mx-2 fs-2"><?= $message['icon'] ?></div>
+              <div class="fs-6"><?= htmlspecialchars($message['text']) ?></div>
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
           </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
       </div>
+    </div>
 
-    <?php
-    }
-    ?>
-  </div>
 <?php
+  }
   unset($_SESSION['messages']);
 }
 
@@ -181,8 +189,8 @@ function QueryDatabase($conn, $query, $values = array())
       // die();
       return false;
     }
-  } 
-  
+  }
+
   if (!mysqli_stmt_execute($stmt)) {
     //error
     // AddMessage("execute", "danger");

@@ -4,6 +4,7 @@
 
 var transactionsData;
 var monthlyDeposits, monthlySpendings, monthlyTransactions;
+var accountCurrentCurrency;
 
 /////////////
 //FUNCTIONS//
@@ -18,6 +19,40 @@ function ShowToasts() {
     toastList.forEach(toast => toast.show());
 }
 
+function Escape(unsafe) {
+    return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+}
+
+function CreateToast(message, type) {
+    let icon = '';
+    switch (type) {
+        case 'danger':
+            icon = '<i class="bi bi-x-circle"></i>';
+            break;
+        case 'warning':
+            icon = '<i class="bi bi-exclamation-triangle"></i>';
+            break;
+        case 'success':
+            icon = '<i class="bi bi-check-circle"></i>';
+    }
+    let T = `<div class="toast shadow text-light bg-${Escape(type)} border-0" role="alert" style="z-index: 1990;">
+
+    <div class="timer-animation">
+      <div class="d-flex p-2 ">
+        <div class="toast-body ">
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="mx-2 fs-2">${icon}</div>
+            <div class="fs-6">${Escape(message)}</div>
+          </div>
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>`;
+  $('#messages').html(T);
+  ShowToasts();
+}
+
 function ChangeCurrency(value, id, inputId = '') {
     ShowMonthlyData(value);
     if (value == "EUR" || value == "USD" || value == "RON") {
@@ -29,8 +64,8 @@ function ChangeCurrency(value, id, inputId = '') {
 }
 
 
-async function ChangeCurrencyAccount(value, accountId, itemId) {
-
+async function ChangeCurrencyAccount(value, accountId, itemId = '') {
+    accountCurrentCurrency = value;
     ChangeCurrency(value, itemId);
     let data = { 'currency': value, 'accountId': accountId };
     let accountData = await GetAccountDataAjax(data);
@@ -90,9 +125,8 @@ function ChangeActiveTransactionType(value) {
     $(id).addClass('active');
 }
 
-function ShowMonthlyData(currency)
-{
-    
+function ShowMonthlyData(currency) {
+
     let spendings, deposits;
     switch (currency) {
         case 'USD':
@@ -180,6 +214,42 @@ function ValidateAjax(id, errorId) {
 
 }
 
+async function DeleteTransaction(transactionId, transactionType, accountId, transactionBalance, transactionCurrency, transferToAccount, transferFromAccount) {
+    
+    let success = false;
+    await $.ajax({
+        type: 'POST',
+        data: {
+            'transactionId': transactionId,
+            'transactionType': transactionType,
+            'transactionBalance': transactionBalance,
+            'transactionCurrency': transactionCurrency,
+            'accountId': transferFromAccount,
+            'transferToAccount': transferToAccount
+        },
+        url: 'Ajax/ajax-delete-transaction.php',
+        success: function (response) {
+            let result = JSON.parse(response);
+            if (result.success == 1) {
+                success = true;
+                GetTransactionsAjax(accountId, result.transactionType);
+                GetCurrentMonthTransactions(accountId);
+                ChangeCurrencyAccount(accountCurrentCurrency, accountId);
+            }
+            else {
+                console.log(result.error);
+            }
+        }
+    });
+    if(success)
+    {
+        CreateToast("Tranzacția a fors ștearsă cu succes!", "warning");
+    }
+    else{
+        CreateToast("A apărut o eroare la ștergerea tranzacției!", "danger");
+    }
+}
+
 function ShowTransactionTable(data, accountId, rows) {
     $.ajax({
         type: 'POST',
@@ -192,14 +262,17 @@ function ShowTransactionTable(data, accountId, rows) {
             break;
         rows--;
         if (element != null) {
+            let id = 'transactionButton-' + element.transactionId;
+            let idEdit = 'buttonEdit-' + element.transactionId;
+            let idDelete = 'buttonDelete-' + element.transactionId;
             T += `
-        <tr >
+        <tr id="${id}">
             <td class="fw-bold text-${element.transactionType == 'Depunere' ? 'success' : element.transactionType == 'Cheltuire' ? 'danger' : 'warning'}">
             ${element.transactionType == 'Transfer' ? element.transferToAccount == accountId ? '<i class="bi bi-arrow-down-left"></i>' : '<i class="bi bi-arrow-up-right"></i>' : ''}
             ${element.transactionBalance}
             ${element.transactionCurrency == 'USD' ? '<i class="bi bi-currency-dollar"></i>' : element.transactionCurrency == 'EUR' ? '<i class="bi bi-currency-euro"></i>' : ' lei'}
             </td>
-            <td>
+            <td >
                 <div  class="d-flex flex-column">
                     <div class="text-info">
                     ${element.transactionMemo}  
@@ -210,8 +283,14 @@ function ShowTransactionTable(data, accountId, rows) {
                 </div>
             </td>
             <td class="text-info">${element.transactionDate}</td>
-            <td></td>
+            <td class="w-15">
+                <div class="d-flex justify-content-center">
+                    <button id='${idEdit}' class="btn btn-outline-success mx-1 d-none"><is class="bi bi-pencil-square"></i></button>
+                    <button onclick="DeleteTransaction(${element.transactionId}, '${element.transactionType}',${accountId}, ${element.transactionBalance}, '${element.transactionCurrency}', '${element.transferToAccount}', ${element.accountId})" id='${idDelete}' class="btn btn-outline-danger mx-1 d-none"><i class="bi bi-trash3"></i></button>
+                </div>
+            </td>
         </tr>`;
+
         }
     };
     if (T != '') {
@@ -221,6 +300,22 @@ function ShowTransactionTable(data, accountId, rows) {
         }
 
         $('#transactionTableBody').html(T);
+        for (let element of data) {
+
+            if (element != null) {
+                let id = 'transactionButton-' + element.transactionId;
+                let idEdit = 'buttonEdit-' + element.transactionId;
+                let idDelete = 'buttonDelete-' + element.transactionId;
+                $('#' + id).on('mouseenter', function () {
+                    $('#' + idEdit).removeClass('d-none');
+                    $('#' + idDelete).removeClass('d-none');
+                }).on('mouseleave', function () {
+                    $('#' + idEdit).addClass('d-none');
+                    $('#' + idDelete).addClass('d-none');
+                });
+            }
+        }
+
     }
     else {
         if (!$('#transactionTable').hasClass('d-none')) {
@@ -283,12 +378,16 @@ function ChangeMonthlyData(accountId, data) {
     monthlyDeposits = deposits;
     monthlySpendings = spendings;
     monthlyTransactions = transactions;
+    ShowMonthlyData(accountCurrentCurrency);
+
 }
 
-async function ProfileAccontFunctionsAsync(accountId, accountCurrency, transactionType, itemId){
+async function ProfileAccontFunctionsAsync(accountId, accountCurrency, transactionType, itemId) {
+    accountCurrentCurrency = accountCurrency;
     await GetCurrentMonthTransactions(accountId);
     GetTransactionsAjax(accountId, transactionType);
-    ChangeCurrencyAccount(accountCurrency, accountId, itemId)
+    await ChangeCurrencyAccount(accountCurrency, accountId, itemId);
+
 }
 
 ///////////////////
@@ -321,5 +420,6 @@ $(function () {
     forms.forEach(element => {
         ValidateAjax(element.formId, element.errorId);
     });
+
 });
 
