@@ -46,13 +46,28 @@ if (
       die();
     }
     $data2 = mysqli_fetch_assoc($result);
-    $data2[$currency] -= $transactionBalance;
-    if ($data2[$currency] < 0)
-      $data2[$currency] = 0;
-    $data[$currency] += $transactionBalance;
+    if ($data2 != null) {
+      $data2[$currency] -= $transactionBalance;
+      if ($data2[$currency] < 0)
+        $data2[$currency] = 0;
 
-    //Update the other account balance
-    $values = PrepareValues($data2[$currency], $transferToAccount);
+      //Update the other account balance
+      $values = PrepareValues($data2[$currency], $transferToAccount);
+      $query = "UPDATE accounts
+            SET {$currency} = ?
+            WHERE accountId = ?;";
+      if (!QueryDatabase($conn, $query, $values)) {
+        echo (json_encode(array('success' => 0, 'error' => 'db-update')));
+        die();
+      }
+    }
+    if ($data != null)
+      $data[$currency] += $transactionBalance;
+  }
+
+  //Update account balance
+  if ($data != null) {
+    $values = PrepareValues($data[$currency], $accountId);
     $query = "UPDATE accounts
             SET {$currency} = ?
             WHERE accountId = ?;";
@@ -60,16 +75,6 @@ if (
       echo (json_encode(array('success' => 0, 'error' => 'db-update')));
       die();
     }
-  }
-
-  //Update account balance
-  $values = PrepareValues($data[$currency], $accountId);
-  $query = "UPDATE accounts
-            SET {$currency} = ?
-            WHERE accountId = ?;";
-  if (!QueryDatabase($conn, $query, $values)) {
-    echo (json_encode(array('success' => 0, 'error' => 'db-update')));
-    die();
   }
 
   //Delete the tranasaction

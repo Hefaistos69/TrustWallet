@@ -52,6 +52,10 @@ $userData = mysqli_fetch_assoc($result);
 
 ?>
 
+<script>
+  userAccounts = JSON.parse('<?=json_encode($userAccounts)?>');
+</script>
+
 <div class="container-fluid bg-primary h-auto min-vh-100">
 
   <!-- Header -->
@@ -71,14 +75,21 @@ $userData = mysqli_fetch_assoc($result);
 
 
     <div class="col-2">
-      <div class="text-secondary fs-5 mt-2 mb-4">Cont personal</div>
+      <a class="text-decoration-none" href="">
+      <div class="d-flex align-items-center mt-4 ms-3">
+        <div class="fs-1 text-success mx-2"><i class="bi bi-person-circle"></i></div>
+        <h5 class="text-light mx-2 my-auto"><?=$userData['usersUsername']?></h5>
+      </div>
+      <div class="text-secondary fs-5 mb-4 ms-5">Cont personal</div>
+      </a>
+      <hr style="height: 3px;">
       <ul class="nav nav-tabs flex-column fs-5">
         <li class="nav-item">
           <a class="nav-link <?= $pagina == 'lobby' ? 'active' : '' ?>" aria-current="page" href="./?pagina=lobby"><i class="bi bi-speedometer2"></i> Acasă</a>
         </li>
         <li class="nav-item ">
           <a class="nav-link <?= $pagina == 'account' ? 'active' : '' ?>" data-bs-toggle="collapse" href="#collapseNav" aria-expanded="true" aria-controls="collapseNav">
-            <i class="bi bi-bank2"></i> Conturi
+            <i class="bi bi-bank2"></i> Conturi bancare
           </a>
           <div class="collapse bg-dark <?= $pagina == 'account' ? 'show' : '' ?>" id="collapseNav">
             <div class="card card-body">
@@ -124,7 +135,7 @@ $userData = mysqli_fetch_assoc($result);
     <div class="col w-100 h-100">
       <div class="d-flex justify-content-between mt-2 mb-5">
         <div class="text-secondary fs-5 ">
-          <?= htmlspecialchars($pagina == 'account' ? "Conturi > {$accountData['accountName']}" : 'Acasă') ?>
+          <?= htmlspecialchars($pagina == 'account' ? "Conturi bancare > {$accountData['accountName']}" : 'Acasă') ?>
         </div>
         <?php
         if ($pagina == 'account') {

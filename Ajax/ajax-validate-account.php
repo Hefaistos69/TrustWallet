@@ -54,7 +54,7 @@ if (isset($_POST['createAccountForm'])) {
     }
 }
 
-//validate the edit accountS form 
+//validate the edit accounts form 
 if (isset($_POST['editAccountForm'])) {
     if (
         isset($_POST['accountName']) && isset($_POST['accountType'])
@@ -92,12 +92,15 @@ if (isset($_POST['editAccountForm'])) {
 }
 
 // validating the add transaction form
+
 if (isset($_POST['addTransaction'])) {
+    
     if (
         isset($_POST['transactionCurrency']) && isset($_POST['transactionBalance'])
         && isset($_POST['transactionType']) && isset($_POST['transferToAccount'])
         && isset($_POST['transactionMemo'])
     ) {
+        
         $transactionCurrency = $_POST['transactionCurrency'];
         $transactionBalance = $_POST['transactionBalance'];
         $transactionType = $_POST['transactionType'];

@@ -2,7 +2,7 @@
 if (!isset($_SESSION['numRows'])) {
   $_SESSION['numRows'] = 5;
 }
-if(!isset($_SESSION['transactionType']))
+if (!isset($_SESSION['transactionType']))
   $_SESSION['transactionType'] = 'Toate';
 ?>
 
@@ -80,14 +80,15 @@ if(!isset($_SESSION['transactionType']))
   </div>
 </div>
 
+<!-- ADD TRANSACTION -->
 <div class="row row-cols-1 row-cols-md-2 g-2 p-2">
   <div class="col">
     <div class="bg-primary rounded-3 mx-2 px-2">
       <div class="d-flex justify-content-between pt-1">
         <h1 class="text-secondary fs-4 ms-2">Adaugă o tranzacție</h1>
 
-        <a class="text-decoration-none text-secondary fs-4" data-bs-toggle="collapse" href="#collapseAddTransaction" role="button" aria-expanded="true" aria-controls="collapseAddTransaction">
-          <i class="bi bi-caret-down-fill"></i>
+        <a onclick="CollapseArrow('collapseAddTransaction')" id="collapseAddTransaction-arrow" class="text-decoration-none text-secondary fs-4" data-bs-toggle="collapse" href="#collapseAddTransaction" role="button" aria-expanded="true" aria-controls="collapseAddTransaction">
+          <i class="bi bi-caret-up-fill"></i>
         </a>
       </div>
 
@@ -130,7 +131,7 @@ if(!isset($_SESSION['transactionType']))
                 </div>
 
                 <div class="mx-2">
-                  <select onchange="TransactionTypeSelect(this.value)" class="form-select text-info bg-dark border-secondary border-1 w-auto" name="transactionType">
+                  <select onchange="TransactionTypeSelect(this.value, '#transferToAccount')" class="form-select text-info bg-dark border-secondary border-1 w-auto" name="transactionType">
                     <option selected value="">Tipul tranzacției</option>
                     <option value="Depunere">Depunere</option>
                     <option value="Cheltuire">Cheltuire</option>
@@ -158,6 +159,7 @@ if(!isset($_SESSION['transactionType']))
                     <?php
                     } else {
                     ?>
+                      <input type="hidden" name="transferToAccount">
                       <div class="fs-6 text-warning">Nu exista cont de transfer!</div>
                     <?php
                     }
@@ -184,13 +186,14 @@ if(!isset($_SESSION['transactionType']))
     </div>
   </div>
 
+  <!-- EXCHANGE -->
   <div class="col">
     <div class="bg-primary rounded-3 mx-2 px-2">
       <div class="d-flex justify-content-between pt-1">
         <h1 class="text-secondary fs-4 ms-2">Schimb valutar</h1>
 
-        <a class="text-decoration-none text-secondary fs-4" data-bs-toggle="collapse" href="#collapseExchange" role="button" aria-expanded="true" aria-controls="collapseExchange">
-          <i class="bi bi-caret-down-fill"></i>
+        <a onclick="CollapseArrow('collapseExchange')" id="collapseExchange-arrow" class="text-decoration-none text-secondary fs-4" data-bs-toggle="collapse" href="#collapseExchange" role="button" aria-expanded="true" aria-controls="collapseExchange">
+          <i class="bi bi-caret-up-fill"></i>
         </a>
       </div>
       <div class="collapse show" id="collapseExchange">
@@ -208,34 +211,34 @@ if(!isset($_SESSION['transactionType']))
   <div class="d-flex justify-content-between pt-1">
     <h1 class="text-secondary fs-4">Tranzacții</h1>
 
-    <a class="text-decoration-none text-secondary fs-4" data-bs-toggle="collapse" href="#collapseTransactionTable" role="button" aria-expanded="true" aria-controls="collapseTransactionTable">
-      <i class="bi bi-caret-down-fill"></i>
+    <a onclick="CollapseArrow('collapseTransactionTable')" id="collapseTransactionTable-arrow" class="text-decoration-none text-secondary fs-4" data-bs-toggle="collapse" href="#collapseTransactionTable" role="button" aria-expanded="true" aria-controls="collapseTransactionTable">
+      <i class="bi bi-caret-up-fill"></i>
     </a>
   </div>
 
   <div class="collapse show" id="collapseTransactionTable">
     <div class="card card-body">
-      
-        <div class="d-flex align-items-center mx-2 my-2 justify-content-between">
-          <div class="d-flex align-items-center">
-            <label for="rows" class="form-label text-info fs-5 me-2">Numărul de tranzacții</label>
-            <select onchange="ShowTransactionTable(transactionsData, <?= $accountId ?>, this.value)" id="rows" class="form-select  text-info bg-dark border-secondary border-1 w-auto">
-              <option <?= $_SESSION['numRows'] == 5 ? 'selected' : '' ?> value="5">5</option>
-              <option <?= $_SESSION['numRows'] == 10 ? 'selected' : '' ?> value="10">10</option>
-              <option <?= $_SESSION['numRows'] == 15 ? 'selected' : '' ?> value="15">15</option>
-              <option <?= $_SESSION['numRows'] == 20 ? 'selected' : '' ?> value="20">20</option>
-            </select>
-          </div>
-          <div class="btn-group" role="group">
-            <button id="btnToate" onclick="GetTransactionsAjax(<?= $accountId ?>)" type="button" class="<?=$_SESSION['transactionType'] == 'Toate'?'active':''?> btn btn-outline-success">Toate</button>
-            <button id="btnDepunere" onclick="GetTransactionsAjax(<?= $accountId ?>, 'Depunere')" type="button" class="<?=$_SESSION['transactionType'] == 'Depunere'?'active':''?> btn btn-outline-success">Depuneri</button>
-            <button id="btnCheltuire" onclick="GetTransactionsAjax(<?= $accountId ?>, 'Cheltuire')" type="button" class="<?=$_SESSION['transactionType'] == 'Cheltuire'?'active':''?> btn btn-outline-success">Cheltuieli</button>
-            <button id="btnTransfer" onclick="GetTransactionsAjax(<?= $accountId ?>, 'Transfer')" type="button" class="<?=$_SESSION['transactionType'] == 'Transfer'?'active':''?> btn btn-outline-success">Transferuri</button>
-          </div>
-        </div>
-        <div id="noTransactions" class="text-warning d-none text-center">Nu există nicio tranzacție!</div>
 
-        <div id="transactionTable">
+      <div class="d-flex align-items-center mx-2 my-2 justify-content-between">
+        <div class="d-flex align-items-center">
+          <label for="rows" class="form-label text-info fs-5 me-2">Numărul de tranzacții</label>
+          <select onchange="ShowTransactionTable(transactionsData, <?= $accountId ?>, this.value)" id="rows" class="form-select  text-info bg-dark border-secondary border-1 w-auto">
+            <option <?= $_SESSION['numRows'] == 5 ? 'selected' : '' ?> value="5">5</option>
+            <option <?= $_SESSION['numRows'] == 10 ? 'selected' : '' ?> value="10">10</option>
+            <option <?= $_SESSION['numRows'] == 15 ? 'selected' : '' ?> value="15">15</option>
+            <option <?= $_SESSION['numRows'] == 20 ? 'selected' : '' ?> value="20">20</option>
+          </select>
+        </div>
+        <div class="btn-group" role="group">
+          <button id="btnToate" onclick="GetTransactionsAjax(<?= $accountId ?>)" type="button" class="<?= $_SESSION['transactionType'] == 'Toate' ? 'active' : '' ?> btn btn-outline-success">Toate</button>
+          <button id="btnDepunere" onclick="GetTransactionsAjax(<?= $accountId ?>, 'Depunere')" type="button" class="<?= $_SESSION['transactionType'] == 'Depunere' ? 'active' : '' ?> btn btn-outline-success">Depuneri</button>
+          <button id="btnCheltuire" onclick="GetTransactionsAjax(<?= $accountId ?>, 'Cheltuire')" type="button" class="<?= $_SESSION['transactionType'] == 'Cheltuire' ? 'active' : '' ?> btn btn-outline-success">Cheltuieli</button>
+          <button id="btnTransfer" onclick="GetTransactionsAjax(<?= $accountId ?>, 'Transfer')" type="button" class="<?= $_SESSION['transactionType'] == 'Transfer' ? 'active' : '' ?> btn btn-outline-success">Transferuri</button>
+        </div>
+      </div>
+      <div id="noTransactions" class="text-warning d-none text-center">Nu există nicio tranzacție!</div>
+
+      <div id="transactionTable">
         <table class="table table-hover">
           <thead class="text-info border-bottom ">
             <tr>
@@ -258,5 +261,5 @@ if(!isset($_SESSION['transactionType']))
 </div>
 
 <script>
-  ProfileAccontFunctionsAsync(<?= $accountId ?>, '<?= $accountData['accountCurrency'] ?>', '<?=$_SESSION['transactionType']?>', '#soldValutaDropdown');
+  ProfileAccontFunctionsAsync(<?= $accountId ?>, '<?= $accountData['accountCurrency'] ?>', '<?= $_SESSION['transactionType'] ?>', '#soldValutaDropdown');
 </script>

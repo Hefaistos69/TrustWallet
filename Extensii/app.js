@@ -3,6 +3,7 @@
 /////////////
 
 var transactionsData;
+var userAccounts = [];
 var monthlyDeposits, monthlySpendings, monthlyTransactions;
 var accountCurrentCurrency;
 
@@ -49,12 +50,25 @@ function CreateToast(message, type) {
       </div>
     </div>
   </div>`;
-  $('#messages').html(T);
-  ShowToasts();
+    $('#messages').html(T);
+    ShowToasts();
+}
+
+function CollapseArrow(id) {
+    id = '#' + id;
+
+    if (!$(id).hasClass('i')) {
+        $(id + '-arrow').html('<i class="bi bi-caret-down-fill"></i>');
+        $(id).addClass('i');
+    }
+    else {
+        $(id + '-arrow').html('<i class="bi bi-caret-up-fill"></i>');
+        $(id).removeClass('i');
+    }
 }
 
 function ChangeCurrency(value, id, inputId = '') {
-    ShowMonthlyData(value);
+
     if (value == "EUR" || value == "USD" || value == "RON") {
         $(id).html(value);
         if (inputId != '') {
@@ -66,6 +80,7 @@ function ChangeCurrency(value, id, inputId = '') {
 
 async function ChangeCurrencyAccount(value, accountId, itemId = '') {
     accountCurrentCurrency = value;
+    ShowMonthlyData(value);
     ChangeCurrency(value, itemId);
     let data = { 'currency': value, 'accountId': accountId };
     let accountData = await GetAccountDataAjax(data);
@@ -97,11 +112,11 @@ async function ChangeCurrencyAccount(value, accountId, itemId = '') {
 
 }
 
-function TransactionTypeSelect(value) {
+function TransactionTypeSelect(value, id) {
     if (value == 'Transfer')
-        $('#transferToAccount').removeClass('d-none');
+        $(id).removeClass('d-none');
     else
-        $('#transferToAccount').addClass('d-none');
+        $(id).addClass('d-none');
 
 }
 
@@ -204,6 +219,7 @@ function ValidateAjax(id, errorId) {
                         event.currentTarget.submit();
                 }
                 else if (result.success == '0') {
+                    console.log(result.error);
                     $(errorId).html(result.error);
 
                 }
@@ -214,8 +230,122 @@ function ValidateAjax(id, errorId) {
 
 }
 
+function EditTransaction(id, element, accountId) {
+    let I = '';
+    for(item of userAccounts)
+    {
+        if(item.accountId == element.accountId)
+            continue;
+        I += `<option ${item.accountId == element.transferToAccount? 'selected' : ''} value="${item.accountId}">${item.accountName}</option>`
+    }
+
+    let T = `
+    <form class="d-flex align-items-center">
+    <td class="w-25">
+        <div class="d-flex align-items-center">
+        <label for="transactionBalance" class="from-label text-info fs-6 me-2 my-auto">Suma</label>
+        <div class="input-group input-group-sm my-auto ">
+
+
+          <span class="input-group-text border-secondary bg-dark text-info">
+            <div class="dropdown text-center">
+              <a style="cursor: pointer;" class="text-decoration-none fs-6 text-info dropdown-toggle" id="editTranzactiiValutaDropdown" data-bs-toggle="dropdown" aria-expanded="false">${element.transactionCurrency}</a>
+
+              <ul class="dropdown-menu dropdown-menu-dark " aria-labelledby="editTranzactiiValutaDropdown">
+                <li><a style="cursor: pointer;" class="dropdown-item" onclick="ChangeCurrency('USD', '#editTranzactiiValutaDropdown', '#editTransactionCurrency')">USD</a></li>
+                <li><a style="cursor: pointer;" class="dropdown-item" onclick="ChangeCurrency('EUR', '#editTranzactiiValutaDropdown', '#editTransactionCurrency')">EUR</a></li>
+                <li><a style="cursor: pointer;" class="dropdown-item" onclick="ChangeCurrency('RON', '#editTranzactiiValutaDropdown', '#editTransactionCurrency')">RON</a></li>
+              </ul>
+            </div>
+
+            </span>
+            <input name="transactionCurrency" id="editTransactionCurrency" type="hidden" value="${element.transactionCurrency}">
+
+            <input value="${element.transactionBalance}" name="transactionBalance" id="transactionBalance" type="text" class="form-control text-info bg-dark border-secondary border-1" aria-label="Amount (to the nearest dollar)">
+            <span class="input-group-text bg-dark border-secondary text-info">.00</span>
+            </div>
+        </div>
+
+        
+    </td>
+    <td class="w-25 ms-2">
+        <div class="d-flex align-items-center mb-3">
+            <label for="transactionMemo" class="form-label text-info fs-6 my-auto me-2">Notiță</label>
+            <input value="${element.transactionMemo}" id="transactionMemo" name="transactionMemo" type="text" class="form-control form-control-sm text-info bg-dark border-secondary border-1" placeholder="max. 20 de caractere">
+        </div>
+    </td>
+    <td class="w-25 ms-2">
+    <div class="d-flex ">
+        <div class="me-2">
+        <select onchange="TransactionTypeSelect(this.value, '#transferToAccount-edit-${element.transactionId}')" class="form-select form-select-sm text-info bg-dark border-secondary border-1 w-auto" name="transactionType">
+            <option value="">Tipul tranzacției</option>
+            <option ${element.transactionType == 'Depunere'? 'selected' : ''} value="Depunere">Depunere</option>
+            <option ${element.transactionType == 'Cheltuire'? 'selected' : ''} value="Cheltuire">Cheltuire</option>
+            <option ${element.transactionType == 'Transfer'? 'selected' : ''} value="Transfer">Transfer</option>
+        </select>
+        </div>
+        <div>
+            <div class="${element.transactionType == 'Transfer'? '' : 'd-none'}" id="transferToAccount-edit-${element.transactionId}">
+                
+                <select name="transferToAccount-edit-${element.transactionId}" class="form-select form-select-sm text-info bg-dark border-secondary border-1 w-auto">
+                    <option value="">Alege contul</option>
+                    ${I}
+                 </select>
+                    
+            </div>
+        </div>
+    </div>
+    </td>
+    <td class="w-15">
+        <div class="d-flex justify-content-center ">
+            <button onclick="ExitEdit('${Escape(JSON.stringify(element))}', '${id}', ${accountId})" id="" style="cursor: pointer;" class="btn btn-outline-danger mx-1"><i class="bi bi-x-lg"></i></button>
+            <button id="" style="cursor: pointer;" class="btn btn-outline-success mx-1"><i class="bi bi-check-lg"></i></button>
+        </div>
+    </td>
+    </form>
+    `;
+    $('#' + id).html(T);
+}
+
+function ExitEdit(element, id, accountId)
+{
+    element = JSON.parse(element);
+    $('#' + id).html(MakeTransactionRow(element, id, accountId))
+}
+
+function MakeTransactionRow(element, id, accountId)
+{
+    let idEdit = 'buttonEdit-' + element.transactionId;
+    let idDelete = 'buttonDelete-' + element.transactionId;
+    let  T = `
+        <td class="w-25 ms-2  text-${element.transactionType == 'Depunere' ? 'success' : element.transactionType == 'Cheltuire' ? 'danger' : 'warning'}">
+        ${element.transactionType == 'Transfer' ? element.transferToAccount == accountId ? '<i class="bi bi-arrow-down-left"></i>' : '<i class="bi bi-arrow-up-right"></i>' : ''}
+        ${element.transactionBalance}
+        ${element.transactionCurrency == 'USD' ? '<i class="bi bi-currency-dollar"></i>' : element.transactionCurrency == 'EUR' ? '<i class="bi bi-currency-euro"></i>' : ' lei'}
+        </td>
+        <td class="w-25 ms-2">
+            <div  class="d-flex flex-column">
+                <div class="text-info">
+                ${element.transactionMemo}  
+                </div>
+                <div>
+                    ${element.transactionType}
+                </div>
+            </div>
+        </td>
+        <td class="w-25 ms-2 text-info">${element.transactionDate}</td>
+        <td class="w-15">
+            <div class="d-flex justify-content-center">
+                
+                <button onclick="EditTransaction('${id}', ${Escape(JSON.stringify(element))}, ${accountId})" id='${idEdit}' class="btn btn-outline-success mx-1 d-none"><i class="bi bi-pencil-square"></i></button>
+                <button onclick="DeleteTransaction(${element.transactionId}, '${element.transactionType}',${accountId}, ${element.transactionBalance}, '${element.transactionCurrency}', '${element.transferToAccount}', ${element.accountId})" id='${idDelete}' class="btn btn-outline-danger mx-1 d-none"><i class="bi bi-trash3"></i></button>
+            </div>
+        </td>`;
+    return T;
+}
+
 async function DeleteTransaction(transactionId, transactionType, accountId, transactionBalance, transactionCurrency, transferToAccount, transferFromAccount) {
-    
+
     let success = false;
     await $.ajax({
         type: 'POST',
@@ -241,11 +371,10 @@ async function DeleteTransaction(transactionId, transactionType, accountId, tran
             }
         }
     });
-    if(success)
-    {
+    if (success) {
         CreateToast("Tranzacția a fors ștearsă cu succes!", "warning");
     }
-    else{
+    else {
         CreateToast("A apărut o eroare la ștergerea tranzacției!", "danger");
     }
 }
@@ -263,33 +392,10 @@ function ShowTransactionTable(data, accountId, rows) {
         rows--;
         if (element != null) {
             let id = 'transactionButton-' + element.transactionId;
-            let idEdit = 'buttonEdit-' + element.transactionId;
-            let idDelete = 'buttonDelete-' + element.transactionId;
-            T += `
-        <tr id="${id}">
-            <td class="fw-bold text-${element.transactionType == 'Depunere' ? 'success' : element.transactionType == 'Cheltuire' ? 'danger' : 'warning'}">
-            ${element.transactionType == 'Transfer' ? element.transferToAccount == accountId ? '<i class="bi bi-arrow-down-left"></i>' : '<i class="bi bi-arrow-up-right"></i>' : ''}
-            ${element.transactionBalance}
-            ${element.transactionCurrency == 'USD' ? '<i class="bi bi-currency-dollar"></i>' : element.transactionCurrency == 'EUR' ? '<i class="bi bi-currency-euro"></i>' : ' lei'}
-            </td>
-            <td >
-                <div  class="d-flex flex-column">
-                    <div class="text-info">
-                    ${element.transactionMemo}  
-                    </div>
-                    <div>
-                        ${element.transactionType}
-                    </div>
-                </div>
-            </td>
-            <td class="text-info">${element.transactionDate}</td>
-            <td class="w-15">
-                <div class="d-flex justify-content-center">
-                    <button id='${idEdit}' class="btn btn-outline-success mx-1 d-none"><is class="bi bi-pencil-square"></i></button>
-                    <button onclick="DeleteTransaction(${element.transactionId}, '${element.transactionType}',${accountId}, ${element.transactionBalance}, '${element.transactionCurrency}', '${element.transferToAccount}', ${element.accountId})" id='${idDelete}' class="btn btn-outline-danger mx-1 d-none"><i class="bi bi-trash3"></i></button>
-                </div>
-            </td>
-        </tr>`;
+            
+            T += `<tr id="${id}">`;
+            T += MakeTransactionRow(element, id, accountId);
+            T += `</tr>`
 
         }
     };
@@ -402,7 +508,7 @@ $(window).on("load", function () {
 
 
 $(function () {
-
+    
     var forms = [
         {
             'formId': '#createAccountForm',
