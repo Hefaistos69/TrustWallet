@@ -205,7 +205,6 @@ function ValidateAjax(id, errorId) {
             url: "Ajax/ajax-validate-account.php",
             data: data,
             success: function (response) {
-
                 var result = JSON.parse(response);
                 if (result.success == '1') {
                     if (result.transaction == true) {
@@ -215,11 +214,10 @@ function ValidateAjax(id, errorId) {
                             event.currentTarget.submit();
                         }, Math.floor(Math.random() * 2500) + 1000);
                     }
-                    else
-                        event.currentTarget.submit();
+                    else;
+                       event.currentTarget.submit();
                 }
                 else if (result.success == '0') {
-                    console.log(result.error);
                     $(errorId).html(result.error);
 
                 }
@@ -230,20 +228,95 @@ function ValidateAjax(id, errorId) {
 
 }
 
+function ValidateTransactionEditAjax(form, errorId, transaction)
+{
+    transaction = JSON.parse(transaction);
+    $.ajax({
+        type: "POST",
+        url: "Ajax/ajax-validate-account.php",
+        data: $(form).serialize(),
+        success: function (response) {
+            console.log(response);
+            var result = JSON.parse(response);
+            if (result.success == '1') {
+                $(errorId).html('');
+                console.log();
+
+            }
+            else if (result.success == '0') {
+                $(errorId).html(result.error);
+
+            }
+
+        }
+    });
+    return false;
+}
+
 function EditTransaction(id, element, accountId) {
-    let I = '';
-    for(item of userAccounts)
-    {
-        if(item.accountId == element.accountId)
+    let itemsSelect = '';
+    for (item of userAccounts) {
+        if (item.accountId == element.accountId)
             continue;
-        I += `<option ${item.accountId == element.transferToAccount? 'selected' : ''} value="${item.accountId}">${item.accountName}</option>`
+        itemsSelect += `<option ${item.accountId == element.transferToAccount ? 'selected' : ''} value="${item.accountId}">${item.accountName}</option>`
+    }
+    let selectAccount = '';
+    if (itemsSelect == '') {
+        selectAccount = `<div id="transferToAccount-edit-${element.transactionId}" class="fs-6 text-warning ${element.transactionType == 'Transfer' ? '' : 'd-none'}">Nu exista cont de transfer!</div>
+                        <input type="hidden" name="transferToAccount" value="">`;
+    }
+    else {
+        selectAccount = `
+    <div>
+        <div class="${element.transactionType == 'Transfer' ? '' : 'd-none'}" id="transferToAccount-edit-${element.transactionId}">
+            
+            <select form="editTransactionForm-${element.transactionId}" name="transferToAccount" class="form-select form-select-sm text-info bg-dark border-secondary border-1 w-auto">
+                <option value="">Alege contul</option>
+                ${itemsSelect}
+             </select>
+                
+        </div>
+    </div>`;
+    }
+    let trsType = '';
+    if (accountId == element.transferToAccount) {
+        let account = undefined;
+        for (item of userAccounts) {
+            if (item.accountId == element.accountId) {
+                account = item;
+                break;
+            }
+        }
+        if (account !== undefined)
+            trsType = `<div  class="fs-6 text-info">Transfer din contul ${account.accountName}.</div>`;
+        else
+            trsType = `<div  class="fs-6 text-info">Transfer.</div>`;
+
+        trsType += `<input type="hidden" name="transactionType" value="Transfer" form="editTransactionForm-${element.transactionId}">`;
+
+    }
+    else {
+        trsType = `
+        <div class="me-2">
+            <select form="editTransactionForm-${element.transactionId}" onchange="TransactionTypeSelect(this.value, '#transferToAccount-edit-${element.transactionId}')" class="form-select form-select-sm text-info bg-dark border-secondary border-1 w-auto" name="transactionType">
+                <option value="">Tipul tranzacției</option>
+                <option ${element.transactionType == 'Depunere' ? 'selected' : ''} value="Depunere">Depunere</option>
+                <option ${element.transactionType == 'Cheltuire' ? 'selected' : ''} value="Cheltuire">Cheltuire</option>
+                <option ${element.transactionType == 'Transfer' ? 'selected' : ''} value="Transfer">Transfer</option>
+            </select>
+        </div>
+        ${selectAccount}`;
     }
 
     let T = `
-    <form class="d-flex align-items-center">
+    <form onsubmit="return ValidateTransactionEditAjax(this,'#editTransactionErrorDiv-${element.transactionId}', '${Escape(JSON.stringify(element))}');" action="" method="POST" id="editTransactionForm-${element.transactionId}" class="d-flex align-items-center"></form>
     <td class="w-25">
+        <input type="hidden" name="editTransaction" form="editTransactionForm-${element.transactionId}">
+        <input type="hidden" name="transferToAccount" value="${element.transferToAccount}" form="editTransactionForm-${element.transactionId}">
+        <input type="hidden" name="transactionId" value="${element.transactionId}" form="editTransactionForm-${element.transactionId}">
+
         <div class="d-flex align-items-center">
-        <label for="transactionBalance" class="from-label text-info fs-6 me-2 my-auto">Suma</label>
+        <label for="transactionBalanceEdit-${element.transactionId}" class="from-label text-info fs-6 me-2 my-auto">Suma</label>
         <div class="input-group input-group-sm my-auto ">
 
 
@@ -259,9 +332,9 @@ function EditTransaction(id, element, accountId) {
             </div>
 
             </span>
-            <input name="transactionCurrency" id="editTransactionCurrency" type="hidden" value="${element.transactionCurrency}">
+            <input form="editTransactionForm-${element.transactionId}" name="transactionCurrency" id="editTransactionCurrency" type="hidden" value="${element.transactionCurrency}">
 
-            <input value="${element.transactionBalance}" name="transactionBalance" id="transactionBalance" type="text" class="form-control text-info bg-dark border-secondary border-1" aria-label="Amount (to the nearest dollar)">
+            <input form="editTransactionForm-${element.transactionId}" value="${element.transactionBalance}" name="transactionBalance" id="transactionBalanceEdit-${element.transactionId}" type="text" class="form-control text-info bg-dark border-secondary border-1" aria-label="Amount (to the nearest dollar)">
             <span class="input-group-text bg-dark border-secondary text-info">.00</span>
             </div>
         </div>
@@ -270,54 +343,68 @@ function EditTransaction(id, element, accountId) {
     </td>
     <td class="w-25 ms-2">
         <div class="d-flex align-items-center mb-3">
-            <label for="transactionMemo" class="form-label text-info fs-6 my-auto me-2">Notiță</label>
-            <input value="${element.transactionMemo}" id="transactionMemo" name="transactionMemo" type="text" class="form-control form-control-sm text-info bg-dark border-secondary border-1" placeholder="max. 20 de caractere">
+            <label for="transactionMemoEdit-${element.transactionId}" class="form-label text-info fs-6 my-auto me-2">Notiță</label>
+            <input form="editTransactionForm-${element.transactionId}" value="${element.transactionMemo}" id="transactionMemoEdit-${element.transactionId}" name="transactionMemo" type="text" class="form-control form-control-sm text-info bg-dark border-secondary border-1" placeholder="max. 20 de caractere">
+        </div>
+        <div id="editTransactionErrorDiv-${element.transactionId}">
         </div>
     </td>
     <td class="w-25 ms-2">
     <div class="d-flex ">
-        <div class="me-2">
-        <select onchange="TransactionTypeSelect(this.value, '#transferToAccount-edit-${element.transactionId}')" class="form-select form-select-sm text-info bg-dark border-secondary border-1 w-auto" name="transactionType">
-            <option value="">Tipul tranzacției</option>
-            <option ${element.transactionType == 'Depunere'? 'selected' : ''} value="Depunere">Depunere</option>
-            <option ${element.transactionType == 'Cheltuire'? 'selected' : ''} value="Cheltuire">Cheltuire</option>
-            <option ${element.transactionType == 'Transfer'? 'selected' : ''} value="Transfer">Transfer</option>
-        </select>
-        </div>
-        <div>
-            <div class="${element.transactionType == 'Transfer'? '' : 'd-none'}" id="transferToAccount-edit-${element.transactionId}">
-                
-                <select name="transferToAccount-edit-${element.transactionId}" class="form-select form-select-sm text-info bg-dark border-secondary border-1 w-auto">
-                    <option value="">Alege contul</option>
-                    ${I}
-                 </select>
-                    
-            </div>
-        </div>
+        ${trsType}
     </div>
     </td>
     <td class="w-15">
         <div class="d-flex justify-content-center ">
-            <button onclick="ExitEdit('${Escape(JSON.stringify(element))}', '${id}', ${accountId})" id="" style="cursor: pointer;" class="btn btn-outline-danger mx-1"><i class="bi bi-x-lg"></i></button>
-            <button id="" style="cursor: pointer;" class="btn btn-outline-success mx-1"><i class="bi bi-check-lg"></i></button>
+            <button onclick="ExitEdit('${Escape(JSON.stringify(element))}', '${id}', ${accountId})" class="btn btn-outline-danger mx-1"><i class="bi bi-x-lg"></i></button>
+            <button type="submit" form="editTransactionForm-${element.transactionId}" class="btn btn-outline-success mx-1"><i class="bi bi-check-lg"></i></button>
         </div>
     </td>
-    </form>
+    
     `;
     $('#' + id).html(T);
 }
 
-function ExitEdit(element, id, accountId)
-{
+function ExitEdit(element, id, accountId) {
     element = JSON.parse(element);
     $('#' + id).html(MakeTransactionRow(element, id, accountId))
 }
 
-function MakeTransactionRow(element, id, accountId)
-{
+function MakeTransactionRow(element, id, accountId) {
     let idEdit = 'buttonEdit-' + element.transactionId;
     let idDelete = 'buttonDelete-' + element.transactionId;
-    let  T = `
+
+    let trsType = '';
+    if (element.transactionType == 'Transfer') {
+        let otherAccountId
+        if (element.transferToAccount == accountId) {
+            otherAccountId = element.accountId;
+        }
+        else {
+            otherAccountId = element.transferToAccount;
+        }
+
+        let otherAccount = undefined;
+        for (item of userAccounts) {
+            if (item.accountId == otherAccountId) {
+                otherAccount = item;
+                break;
+            }
+        }
+        if(otherAccount === undefined)
+        {
+            trsType = 'Transfer';
+        }
+        else
+        {
+            trsType = `Transfer ${element.accountId == accountId? 'către' : 'din'} ${otherAccount.accountName}.`;
+        }
+    }
+    else {
+        trsType = element.transactionType;
+    }
+
+    let T = `
         <td class="w-25 ms-2  text-${element.transactionType == 'Depunere' ? 'success' : element.transactionType == 'Cheltuire' ? 'danger' : 'warning'}">
         ${element.transactionType == 'Transfer' ? element.transferToAccount == accountId ? '<i class="bi bi-arrow-down-left"></i>' : '<i class="bi bi-arrow-up-right"></i>' : ''}
         ${element.transactionBalance}
@@ -329,7 +416,7 @@ function MakeTransactionRow(element, id, accountId)
                 ${element.transactionMemo}  
                 </div>
                 <div>
-                    ${element.transactionType}
+                ${trsType}
                 </div>
             </div>
         </td>
@@ -392,7 +479,7 @@ function ShowTransactionTable(data, accountId, rows) {
         rows--;
         if (element != null) {
             let id = 'transactionButton-' + element.transactionId;
-            
+
             T += `<tr id="${id}">`;
             T += MakeTransactionRow(element, id, accountId);
             T += `</tr>`
@@ -508,7 +595,7 @@ $(window).on("load", function () {
 
 
 $(function () {
-    
+
     var forms = [
         {
             'formId': '#createAccountForm',
@@ -521,7 +608,8 @@ $(function () {
         {
             'formId': '#addTransactionForm',
             'errorId': '#transactionErrorDiv'
-        }
+        },
+        
     ];
     forms.forEach(element => {
         ValidateAjax(element.formId, element.errorId);

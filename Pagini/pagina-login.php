@@ -42,8 +42,8 @@ if (isset($_SESSION['error'])) {
                 </div>
                 <?= ShowError() ?>
                 <div class="d-grid gap-2 d-lg-flex justify-content-xl-end mb-1">
-                  <button class="mx-1 btn btn-outline-success" type="submit">Deținător</button>
-                  <button class="mx-1 btn btn-outline-success" type="submit">Membru</button>
+                  <!-- <button class="mx-1 btn btn-outline-success" type="submit">Deținător</button>
+                  <button class="mx-1 btn btn-outline-success" type="submit">Membru</button> -->
                   <input class="mx-1 btn btn-outline-success" type="submit"  name="btnDemo" value="Demo">
                   <button class="mx-1 btn btn-outline-success" type="submit">Autentificare</button>
                 </div>
