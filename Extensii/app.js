@@ -240,7 +240,9 @@ function ValidateTransactionEditAjax(form, errorId, transaction)
             var result = JSON.parse(response);
             if (result.success == '1') {
                 $(errorId).html('');
-                console.log();
+                $.ajax({
+                    
+                });
 
             }
             else if (result.success == '0') {
