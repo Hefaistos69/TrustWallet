@@ -20,7 +20,7 @@ if (isset($_POST['accountId'])) {
         break;
     }
   } else {
-    $query = 'SELECT * FROM transactions WHERE (accountId = ? OR transferToAccount = ?) AND MONTH(NOW()) = MONTH(transactionDate) ORDER BY transactionDate DESC;';
+    $query = "SELECT * FROM transactions WHERE (accountId = ? OR (transferToAccount = ? AND transactionType = 'Transfer')) AND MONTH(NOW()) = MONTH(transactionDate) ORDER BY transactionDate DESC;";
   }
   $values = PrepareValues($_POST['accountId'], $_POST['accountId']);
   if (!$result = QueryDatabase($conn, $query, $values)) {

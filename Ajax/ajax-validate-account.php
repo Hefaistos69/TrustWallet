@@ -95,6 +95,7 @@ if (isset($_POST['editAccountForm'])) {
 
 if (isset($_POST['addTransaction']) || isset($_POST['editTransaction'])) {
     
+    
     if (
         isset($_POST['transactionCurrency']) && isset($_POST['transactionBalance'])
         && isset($_POST['transactionType']) && isset($_POST['transferToAccount'])
@@ -106,9 +107,7 @@ if (isset($_POST['addTransaction']) || isset($_POST['editTransaction'])) {
         $transactionType = $_POST['transactionType'];
         $transferToAccount = $_POST['transferToAccount'];
         $transactionMemo = $_POST['transactionMemo'];
-        // $values = PrepareValues($transactionBalance, $transactionCurrency, $transactionMemo, $transactionType, $transferToAccount);
-        // echo json_encode(array('success' => 1, 'transaction' => $values));
-        // die();
+        
         $error = false;
         //Empty input
         if (EmptyInput($transactionBalance, $transactionCurrency, $transactionMemo, $transactionType) !== false) {

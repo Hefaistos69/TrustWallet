@@ -6,6 +6,7 @@ var transactionsData;
 var userAccounts = [];
 var monthlyDeposits, monthlySpendings, monthlyTransactions;
 var accountCurrentCurrency;
+var transactionTypeButtons;
 
 /////////////
 //FUNCTIONS//
@@ -215,7 +216,7 @@ function ValidateAjax(id, errorId) {
                         }, Math.floor(Math.random() * 2500) + 1000);
                     }
                     else;
-                       event.currentTarget.submit();
+                    event.currentTarget.submit();
                 }
                 else if (result.success == '0') {
                     $(errorId).html(result.error);
@@ -228,8 +229,8 @@ function ValidateAjax(id, errorId) {
 
 }
 
-function ValidateTransactionEditAjax(form, errorId, transaction)
-{
+function ValidateTransactionEditAjax(accountId, form, errorId, transaction) {
+    
     transaction = JSON.parse(transaction);
     $.ajax({
         type: "POST",
@@ -241,7 +242,26 @@ function ValidateTransactionEditAjax(form, errorId, transaction)
             if (result.success == '1') {
                 $(errorId).html('');
                 $.ajax({
-                    
+                    type: "POST",
+                    url: "Ajax/ajax-edit-transaction.php",
+                    data: $(form).serialize(),
+                    success: function (response) {
+                        console.log(response);
+                        let result = JSON.parse(response);
+                        if (result.success == 1) {
+                            CreateToast("Tranzacția a fost modificată cu succes!", "success");
+                        }
+                        else if(result.error == 'noMoney')
+                        {
+                            CreateToast("Sumă insuficientă pentru modificarea tranzacției!", "warning");
+                        }
+                        else {
+                            CreateToast("A apărut o eroare la modificarea tranzacției!", "danger");
+                        }
+                        GetTransactionsAjax(accountId, transactionTypeButtons);
+                        GetCurrentMonthTransactions(accountId);
+                        ChangeCurrencyAccount(accountCurrentCurrency, accountId);
+                    }
                 });
 
             }
@@ -265,7 +285,7 @@ function EditTransaction(id, element, accountId) {
     let selectAccount = '';
     if (itemsSelect == '') {
         selectAccount = `<div id="transferToAccount-edit-${element.transactionId}" class="fs-6 text-warning ${element.transactionType == 'Transfer' ? '' : 'd-none'}">Nu exista cont de transfer!</div>
-                        <input type="hidden" name="transferToAccount" value="">`;
+                        <input type="hidden" form="editTransactionForm-${element.transactionId}" name="transferToAccount" value="">`;
     }
     else {
         selectAccount = `
@@ -294,7 +314,8 @@ function EditTransaction(id, element, accountId) {
         else
             trsType = `<div  class="fs-6 text-info">Transfer.</div>`;
 
-        trsType += `<input type="hidden" name="transactionType" value="Transfer" form="editTransactionForm-${element.transactionId}">`;
+        trsType += `<input type="hidden" name="transactionType" value="Transfer" form="editTransactionForm-${element.transactionId}">
+        <input type="hidden" name="transferToAccount" value="${element.transferToAccount}" form="editTransactionForm-${element.transactionId}">`;
 
     }
     else {
@@ -311,10 +332,10 @@ function EditTransaction(id, element, accountId) {
     }
 
     let T = `
-    <form onsubmit="return ValidateTransactionEditAjax(this,'#editTransactionErrorDiv-${element.transactionId}', '${Escape(JSON.stringify(element))}');" action="" method="POST" id="editTransactionForm-${element.transactionId}" class="d-flex align-items-center"></form>
+    <form onsubmit="return ValidateTransactionEditAjax(${accountId}, this,'#editTransactionErrorDiv-${element.transactionId}', '${Escape(JSON.stringify(element))}');" action="" method="POST" id="editTransactionForm-${element.transactionId}" class="d-flex align-items-center"></form>
     <td class="w-25">
         <input type="hidden" name="editTransaction" form="editTransactionForm-${element.transactionId}">
-        <input type="hidden" name="transferToAccount" value="${element.transferToAccount}" form="editTransactionForm-${element.transactionId}">
+        
         <input type="hidden" name="transactionId" value="${element.transactionId}" form="editTransactionForm-${element.transactionId}">
 
         <div class="d-flex align-items-center">
@@ -393,13 +414,11 @@ function MakeTransactionRow(element, id, accountId) {
                 break;
             }
         }
-        if(otherAccount === undefined)
-        {
+        if (otherAccount === undefined) {
             trsType = 'Transfer';
         }
-        else
-        {
-            trsType = `Transfer ${element.accountId == accountId? 'către' : 'din'} ${otherAccount.accountName}.`;
+        else {
+            trsType = `Transfer ${element.accountId == accountId ? 'către' : 'din'} ${otherAccount.accountName}.`;
         }
     }
     else {
@@ -487,7 +506,7 @@ function ShowTransactionTable(data, accountId, rows) {
             T += `</tr>`
 
         }
-    };
+    }
     if (T != '') {
         $('#transactionTable').removeClass('d-none');
         if (!$('#noTransactions').hasClass('d-none')) {
@@ -522,6 +541,7 @@ function ShowTransactionTable(data, accountId, rows) {
 
 
 function GetTransactionsAjax(accountId, transactionType = 'Toate') {
+    transactionTypeButtons = transactionType;
     ChangeActiveTransactionType(transactionType);
     var data = {
         'accountId': accountId,
@@ -611,7 +631,7 @@ $(function () {
             'formId': '#addTransactionForm',
             'errorId': '#transactionErrorDiv'
         },
-        
+
     ];
     forms.forEach(element => {
         ValidateAjax(element.formId, element.errorId);

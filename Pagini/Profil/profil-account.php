@@ -186,7 +186,7 @@ if (!isset($_SESSION['transactionType']))
     </div>
   </div>
 
-  <!-- EXCHANGE -->
+  <!-- EXCHANGE
   <div class="col">
     <div class="bg-primary rounded-3 mx-2 px-2">
       <div class="d-flex justify-content-between pt-1">
@@ -202,7 +202,7 @@ if (!isset($_SESSION['transactionType']))
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
 
 </div>

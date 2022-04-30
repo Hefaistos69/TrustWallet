@@ -16,7 +16,7 @@
 
 
   </div>
-  <div class="col">
+  <!-- <div class="col">
     <div class="card mx-2 bg-primary rounded-3">
       <div class="card-body">
         <button class="btn btn-primary w-100">
@@ -37,5 +37,5 @@
         </button>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
