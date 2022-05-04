@@ -5,7 +5,7 @@ if (!Loggedin()) {
   die();
 }
 
-//preluarea conturilor userului curent
+//preluarea conturilor utilizatorului curent
 $query = "SELECT * FROM accounts WHERE usersId = ?;";
 $values = array();
 $values[] = $_SESSION['userId'];
@@ -24,8 +24,7 @@ while ($data = mysqli_fetch_assoc($resultAccounts)) {
 if ($pagina == 'account' && isset($_GET['accountId'])) {
   $accountId = intval($_GET['accountId']);
   $query = "SELECT * FROM accounts WHERE accountId = ?;";
-  $values = array();
-  $values[] = $accountId;
+  $values = PrepareValues($accountId);
   if ($result = QueryDatabase($conn, $query, $values)) {
     $accountData = mysqli_fetch_assoc($result);
   } else {

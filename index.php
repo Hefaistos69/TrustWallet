@@ -78,7 +78,9 @@ if (!file_exists($fisier))
     ShowMessages();
     ?>
   </div>
-
+  <div class="bg-primary text-info d-flex justify-content-center align-items-center" style="height: 100px;">
+    © - 2022 Șteopoaie Vlad - 
+  </div>
 </body>
 
 </html>

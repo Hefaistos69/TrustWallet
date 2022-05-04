@@ -209,14 +209,15 @@ function ValidateAjax(id, errorId) {
                 var result = JSON.parse(response);
                 if (result.success == '1') {
                     if (result.transaction == true) {
+                        console.log(1);
                         $(id).addClass('d-none');
                         $('#spinner').removeClass('d-none');
                         setTimeout(() => {
                             event.currentTarget.submit();
                         }, Math.floor(Math.random() * 2500) + 1000);
                     }
-                    else;
-                    event.currentTarget.submit();
+                    else
+                        event.currentTarget.submit();
                 }
                 else if (result.success == '0') {
                     $(errorId).html(result.error);
